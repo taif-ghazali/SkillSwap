@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SessionSlot } from '../../types';
 import { Card } from './Card';
 import { Badge } from './Badge';
@@ -6,12 +6,14 @@ import { Button } from './Button';
 import { Avatar } from './Avatar';
 import { formatDate, formatTime } from '../../utils';
 import { mockService } from '../../services/mockService';
+import { ReportMisconductModal } from './ReportMisconductModal';
 import {
   Calendar,
   Clock,
   MapPin,
   Star,
   ShieldCheck,
+  ShieldAlert,
   X,
   User,
   BookOpen
@@ -30,6 +32,8 @@ export const SessionDetailsModal: React.FC<SessionDetailsModalProps> = ({
   onBook,
   isCurrentUserTutor,
 }) => {
+  const [showReportModal, setShowReportModal] = useState(false);
+
   if (!slot) return null;
 
   const tutorRating = mockService.getUserRatingSummary(slot.tutor);
@@ -120,12 +124,21 @@ export const SessionDetailsModal: React.FC<SessionDetailsModalProps> = ({
         </div>
 
         {/* Academic Integrity Notice */}
-        <div className="p-3 rounded-lg bg-blue-50/80 border border-blue-200 text-blue-900 text-xs mb-5 flex items-start gap-2.5">
-          <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-          <p className="leading-relaxed text-[11px]">
-            <strong>Honor Code:</strong> SkillSwap is strictly for learning and concept clarification.
-            Doing homework, exams, or graded project submissions for others is prohibited.
-          </p>
+        <div className="p-3 rounded-lg bg-blue-50/80 border border-blue-200 text-blue-900 text-xs mb-5 flex items-start justify-between gap-2.5">
+          <div className="flex items-start gap-2.5">
+            <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+            <p className="leading-relaxed text-[11px]">
+              <strong>Honor Code:</strong> SkillSwap is strictly for learning and concept clarification.
+              Doing homework, exams, or graded project submissions for others is prohibited.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowReportModal(true)}
+            className="text-[11px] text-rose-600 hover:text-rose-800 underline shrink-0 font-medium flex items-center gap-1"
+          >
+            <ShieldAlert className="w-3.5 h-3.5" /> Report Violation
+          </button>
         </div>
 
         {/* Recent Tutor Reviews if any */}
@@ -149,24 +162,43 @@ export const SessionDetailsModal: React.FC<SessionDetailsModalProps> = ({
         )}
 
         {/* Modal Actions */}
-        <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
-          <Button variant="outline" size="sm" onClick={onClose}>
-            Close
-          </Button>
-          {slot.status === 'open' && !isCurrentUserTutor && onBook && (
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() => {
-                onBook(slot.slotId);
-                onClose();
-              }}
-            >
-              Book Session (1 Credit)
+        <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2.5">
+          <button
+            type="button"
+            onClick={() => setShowReportModal(true)}
+            className="text-xs text-slate-400 hover:text-rose-600 flex items-center gap-1"
+          >
+            <ShieldAlert className="w-3.5 h-3.5" /> Report Issue
+          </button>
+
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={onClose}>
+              Close
             </Button>
-          )}
+            {slot.status === 'open' && !isCurrentUserTutor && onBook && (
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => {
+                  onBook(slot.slotId);
+                  onClose();
+                }}
+              >
+                Book Session (1 Credit)
+              </Button>
+            )}
+          </div>
         </div>
       </Card>
+
+      {/* Misconduct Report Dialog */}
+      <ReportMisconductModal
+        isOpen={showReportModal}
+        onClose={() => setShowReportModal(false)}
+        targetId={slot.slotId}
+        targetType="slot"
+        targetTitle={`${slot.skill} (Tutor: ${slot.tutorNick})`}
+      />
     </div>
   );
 };

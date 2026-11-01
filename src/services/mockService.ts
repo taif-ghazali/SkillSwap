@@ -1,5 +1,6 @@
 import { SessionSlot, UserProfile, LedgerTransaction, RatingReview, UserRatingSummary } from '../types';
 import { CURRENT_USER, MOCK_USERS, MOCK_SLOTS, MOCK_TRANSACTIONS, MOCK_REVIEWS } from '../data/mockData';
+import { calculateSuggestedMatches, SuggestedMatch } from '../utils/matching';
 
 // Local storage keys
 const STORAGE_KEY_CURRENT_USER_EMAIL = 'skillswap_current_email';
@@ -7,6 +8,29 @@ const STORAGE_KEY_USERS = 'skillswap_users_directory';
 const STORAGE_KEY_SLOTS = 'skillswap_slots';
 const STORAGE_KEY_LEDGER = 'skillswap_ledger';
 const STORAGE_KEY_REVIEWS = 'skillswap_reviews';
+const STORAGE_KEY_REPORTS = 'skillswap_reports';
+
+export interface MisconductReport {
+  id: string;
+  reportedBy: string;
+  targetId: string; // slotId or user email
+  targetType: 'slot' | 'user';
+  reason: string;
+  details?: string;
+  timestamp: string;
+  status: 'pending' | 'reviewed' | 'resolved';
+}
+
+export interface CampusAnalyticsData {
+  totalUsers: number;
+  totalHoursExchanged: number;
+  activeOpenSlots: number;
+  bookedSessions: number;
+  completedSessions: number;
+  topWantedSkills: { skill: string; count: number }[];
+  topOfferedSkills: { skill: string; count: number }[];
+  popularVenues: { venue: string; count: number }[];
+}
 
 export class MockDataService {
   private currentEmail: string;
@@ -272,11 +296,14 @@ export class MockDataService {
     return this.slots.find((s) => s.slotId === slotId);
   }
 
+  private slotCounter = 0;
+
   public createSlot(slot: Omit<SessionSlot, 'slotId' | 'tutor' | 'tutorNick' | 'status' | 'creditsCost'>): SessionSlot {
     const currentUser = this.getCurrentUser();
+    this.slotCounter += 1;
     const newSlot: SessionSlot = {
       ...slot,
-      slotId: `SL${Date.now()}`,
+      slotId: `SL${Date.now()}_${this.slotCounter}`,
       tutor: currentUser.email,
       tutorNick: currentUser.nick,
       status: 'open',
@@ -575,6 +602,112 @@ export class MockDataService {
 
   public getReviews(): RatingReview[] {
     return [...this.reviews];
+  }
+
+  // ==========================================
+  // ADVANCED FEATURE 1: SUGGESTED MATCHES (DAY 12)
+  // ==========================================
+
+  public getSuggestedMatches(): SuggestedMatch[] {
+    const currentUser = this.getCurrentUser();
+    const allUsers = this.getAllUsers();
+    const openSlots = this.slots.filter((s) => s.status === 'open');
+    return calculateSuggestedMatches(currentUser, allUsers, openSlots);
+  }
+
+  // ==========================================
+  // ADVANCED FEATURE 2: CAMPUS ANALYTICS (DAY 13)
+  // ==========================================
+
+  public getCampusAnalytics(): CampusAnalyticsData {
+    const allUsers = Object.values(this.users);
+    const completedSessions = this.slots.filter((s) => s.status === 'done').length;
+    const bookedSessions = this.slots.filter((s) => s.status === 'booked').length;
+    const activeOpenSlots = this.slots.filter((s) => s.status === 'open').length;
+
+    // Aggregate wanted skills across all users
+    const wantedCounts: Record<string, number> = {};
+    for (const u of allUsers) {
+      for (const w of u.wants || []) {
+        const key = w.trim();
+        if (key) {
+          wantedCounts[key] = (wantedCounts[key] || 0) + 1;
+        }
+      }
+    }
+
+    // Aggregate offered skills across all users
+    const offeredCounts: Record<string, number> = {};
+    for (const u of allUsers) {
+      for (const o of u.offers || []) {
+        const key = o.trim();
+        if (key) {
+          offeredCounts[key] = (offeredCounts[key] || 0) + 1;
+        }
+      }
+    }
+
+    // Aggregate venues
+    const venueCounts: Record<string, number> = {};
+    for (const s of this.slots) {
+      const v = s.place;
+      if (v) {
+        venueCounts[v] = (venueCounts[v] || 0) + 1;
+      }
+    }
+
+    const topWantedSkills = Object.entries(wantedCounts)
+      .map(([skill, count]) => ({ skill, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 6);
+
+    const topOfferedSkills = Object.entries(offeredCounts)
+      .map(([skill, count]) => ({ skill, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 6);
+
+    const popularVenues = Object.entries(venueCounts)
+      .map(([venue, count]) => ({ venue, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+
+    return {
+      totalUsers: allUsers.length,
+      totalHoursExchanged: completedSessions,
+      activeOpenSlots,
+      bookedSessions,
+      completedSessions,
+      topWantedSkills,
+      topOfferedSkills,
+      popularVenues,
+    };
+  }
+
+  // ==========================================
+  // SAFETY & ETHICS: MISCONDUCT REPORTING
+  // ==========================================
+
+  public reportMisconduct(params: {
+    targetId: string;
+    targetType: 'slot' | 'user';
+    reason: string;
+    details?: string;
+  }): { success: boolean; reportId: string } {
+    const reports = this.loadFromStorage<MisconductReport[]>(STORAGE_KEY_REPORTS, []);
+    const reportId = `REP${Date.now()}`;
+    const newReport: MisconductReport = {
+      id: reportId,
+      reportedBy: this.currentEmail,
+      targetId: params.targetId,
+      targetType: params.targetType,
+      reason: params.reason,
+      details: params.details,
+      timestamp: new Date().toISOString(),
+      status: 'pending',
+    };
+    reports.push(newReport);
+    this.saveToStorage(STORAGE_KEY_REPORTS, reports);
+    return { success: true, reportId };
   }
 
   // ==========================================

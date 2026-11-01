@@ -152,9 +152,19 @@ export const DiscoverPage: React.FC = () => {
           )}
         </form>
 
-        {/* Quick Skill Tags (Populate & Activate search) */}
+        {/* Quick Skill Tags & Match My Wants */}
         <div className="flex items-center gap-2 flex-wrap pt-1">
           <span className="text-xs font-semibold text-slate-500">Quick suggestions:</span>
+          {user.wants && user.wants.length > 0 && (
+            <button
+              type="button"
+              onClick={() => handleQuickSkillClick(user.wants[0])}
+              className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 transition-colors flex items-center gap-1 cursor-pointer"
+            >
+              <Sparkles className="w-3 h-3 text-indigo-600" />
+              <span>My Want: {user.wants[0]}</span>
+            </button>
+          )}
           {POPULAR_CAMPUS_SKILLS.map((skill) => {
             const isSelected = searchTerm.toLowerCase() === skill.toLowerCase();
             return (

@@ -9,6 +9,8 @@ import { SkillTag } from '../components/ui/SkillTag';
 import { SessionCard } from '../components/ui/SessionCard';
 import { SessionDetailsModal } from '../components/ui/SessionDetailsModal';
 import { AcademicIntegrityBanner } from '../components/shared/AcademicIntegrityBanner';
+import { SuggestedMatchesSection } from '../components/shared/SuggestedMatchesSection';
+import { CampusAnalyticsSection } from '../components/shared/CampusAnalyticsSection';
 import { POPULAR_CAMPUS_SKILLS } from '../data/mockData';
 import { SessionSlot } from '../types';
 import {
@@ -228,6 +230,12 @@ export const DashboardPage: React.FC = () => {
         </div>
       </Card>
 
+      {/* Advanced Feature 1: Suggested Matches (Day 12) */}
+      <SuggestedMatchesSection onSelectSlot={(slotId) => {
+        const slot = allOpenSlots.find(s => s.slotId === slotId);
+        if (slot) setActiveModalSlot(slot);
+      }} />
+
       {/* Recommended Open Slots Section */}
       <div>
         <div className="flex items-center justify-between mb-4">
@@ -272,6 +280,9 @@ export const DashboardPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Advanced Feature 2: Campus Analytics (Day 13) */}
+      <CampusAnalyticsSection />
 
       {/* Session Details Modal */}
       <SessionDetailsModal
