@@ -1,0 +1,94 @@
+# SKILLSWAP: COMPLETE APPLICATION, BACKEND AND PROJECT DELIVERY
+## MASTER ENGINEERING TASK | IE209 UNIVERSITY MINI-PROJECT
+
+You are the lead full-stack engineer taking over an existing, partially completed project called SkillSwap.
+
+Your responsibility is to take the existing application and deliver a complete, functional, integrated and submission-ready software project.
+
+This is NOT a request to generate a new application from scratch.
+
+The existing repository already contains a substantial React + TypeScript + Vite website with:
+- Dashboard
+- Login
+- Discover & Search
+- Teach a Skill
+- My Sessions
+- Time Wallet
+- My Profile
+- Session cards and booking dialogs
+- Local mock data and persistence
+- An established visual identity and design system
+
+You MUST inspect and preserve the existing implementation.
+
+I have also provided the official IE209 SkillSwap Mini-Project PDF. Treat it as the authoritative requirements document. Follow its functional requirements, data model, architecture, acceptance criteria, safety requirements and deliverables.
+
+Your mission is to complete everything that can reasonably be implemented and prepared within this repository.
+
+---
+
+# PART 1: REPOSITORY AUDIT AND PRESERVATION
+
+Before making changes:
+
+1. Inspect the complete repository and its folder structure.
+2. Identify the current frontend architecture, routes, components, state management and local persistence.
+3. Identify existing business logic and implemented features.
+4. Identify incomplete functionality, duplicated logic and defects.
+5. Run the existing application, tests and production build.
+6. Establish a Git checkpoint if Git is initialized. Do not overwrite existing work without preserving it.
+
+Do not:
+- Rebuild the frontend from scratch.
+- Replace the existing design system.
+- Remove working features.
+- Replace real functionality with static mock screens.
+- Introduce unnecessary dependencies.
+- Claim a feature works without testing it.
+
+The existing SkillSwap website must remain visually recognizable.
+
+# PART 2: BUILD THE COMPLETE BACKEND
+
+## 2.1 Technology
+
+Use the architecture specified in the assignment:
+
+React Website / MIT App Inventor
+        |
+        v
+Google Apps Script Web App API
+        |
+        v
+Google Sheets Database
+
+The backend must be implemented using Google Apps Script JavaScript.
+
+Create a dedicated backend directory containing the complete Apps Script source code, organized into logical files where practical.
+
+The code must be deployable through the Google Apps Script editor.
+
+Do not substitute Firebase, Supabase, MongoDB or another database for the specified architecture.
+
+## 2.2 Google Sheets database
+
+Create a complete database initialization script that automatically creates the required sheets, headers and initial configuration.
+
+The four mandatory sheets and their column structures must follow the assignment.
+
+### Users
+email | nick | offers | wants | credits
+
+### Slots
+slotId | tutor | skill | date | time | place | status | learner | tutorOk | learnerOk
+
+Valid slot statuses:
+- open
+- booked
+- done
+- cancelled
+
+### Ledger
+time | from | to | credits | slotId
+
+### Ratings
