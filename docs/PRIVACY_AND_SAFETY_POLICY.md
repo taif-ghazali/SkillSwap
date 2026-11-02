@@ -72,3 +72,4 @@ SkillSwap adheres to strict data minimization principles:
 ---
 
 *End of Policy &bull; Approved for IE209 Mini-Project Submission*
+

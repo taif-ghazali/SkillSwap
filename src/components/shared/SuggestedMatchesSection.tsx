@@ -144,3 +144,4 @@ export const SuggestedMatchesSection: React.FC<SuggestedMatchesSectionProps> = (
     </div>
   );
 };
+

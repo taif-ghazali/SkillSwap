@@ -159,3 +159,4 @@ function setupDatabase() {
 
   Logger.log('SkillSwap Database setup successfully completed with 20 tutors, 15 slots, ledger & ratings!');
 }
+

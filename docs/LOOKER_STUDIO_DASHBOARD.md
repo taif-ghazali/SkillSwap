@@ -68,3 +68,4 @@ The Looker Studio dashboard connects directly to the Google Sheets database tabs
 4. Repeat to add **`Users`**, **`Slots`**, and **`Ratings`** as additional data sources.
 5. Create a new Blank Report and add the charts specified above.
 6. Share configuration: Set to *"Anyone with the link at University of Hyderabad can view"*.
+

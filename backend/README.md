@@ -116,3 +116,4 @@ Replace `{EXEC_URL}` with your copied Web App URL:
 - **Credit Check**: Validates that available credits (`credits - pending bookings`) is at least 1 before permitting booking.
 - **2-Hour Cancellation Rule**: Blocks any cancellation attempt made less than 2 hours before the scheduled session start.
 - **Campus Safety Rule**: Blocks slots from being published in private hostel rooms. Sessions must be in public campus areas or online.
+
