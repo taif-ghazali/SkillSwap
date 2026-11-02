@@ -6,7 +6,7 @@ import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Avatar } from '../ui/Avatar';
 import { SkillTag } from '../ui/SkillTag';
-import { Sparkles, ArrowRight, Repeat, Calendar, Star } from 'lucide-react';
+import { Sparkles, ArrowRight, Repeat, Calendar, Star, CheckCircle } from 'lucide-react';
 
 export interface SuggestedMatchesSectionProps {
   onSelectSlot?: (slotId: string) => void;
@@ -19,72 +19,72 @@ export const SuggestedMatchesSection: React.FC<SuggestedMatchesSectionProps> = (
   if (matches.length === 0) return null;
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
-          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-indigo-600" />
-            Smart Peer Matches
-            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
-              Day 12 Algorithm
-            </span>
-          </h2>
-          <p className="text-xs text-slate-500">
-            Peers matched with what you want to learn (plus mutual two-way learning swaps)
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center font-bold">
+              <Sparkles className="w-4 h-4 text-brand-500" />
+            </div>
+            <h2 className="text-lg font-extrabold text-slate-900 tracking-tight">
+              Smart Peer Matches
+            </h2>
+            <Badge variant="brand">Day 12 Algorithm</Badge>
+          </div>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Peer recommendations tailored to your interests, highlighting reciprocal two-way learning swaps
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {matches.slice(0, 3).map((m) => {
           const tutorRating = mockService.getUserRatingSummary(m.peer.email);
 
           return (
             <Card
               key={m.peer.email}
-              className={`p-4 transition-all duration-200 flex flex-col justify-between ${
+              className={`p-5 transition-all duration-200 flex flex-col justify-between relative overflow-hidden ${
                 m.isTwoWayMatch
-                  ? 'border-indigo-300 bg-linear-to-br from-indigo-50/60 via-white to-white shadow-subtle'
-                  : 'hover:border-slate-300'
+                  ? 'border-brand-300 bg-gradient-to-br from-brand-50/70 via-white to-teal-50/40 shadow-card hover:shadow-card-hover hover:border-brand-400'
+                  : 'bg-white hover:border-slate-300 hover:shadow-card-hover'
               }`}
             >
+              {/* Distinctive Top Ribbon for Two-Way Swaps */}
+              {m.isTwoWayMatch && (
+                <div className="absolute top-0 right-0 bg-gradient-to-l from-brand-500 to-teal-500 text-white text-[9px] font-black uppercase px-3 py-0.5 rounded-bl-lg tracking-wider shadow-2xs flex items-center gap-1">
+                  <Repeat className="w-2.5 h-2.5" /> 2-Way Swap
+                </div>
+              )}
+
               <div>
-                {/* Header: Peer info & Match Badge */}
-                <div className="flex items-start justify-between gap-2 mb-3">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <Avatar name={m.peer.nick} size="md" />
+                {/* Header: Peer info & Score */}
+                <div className="flex items-start justify-between gap-2 mb-3.5 pr-6">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <Avatar name={m.peer.nick} size="md" isOnline />
                     <div className="min-w-0">
                       <h4 className="text-sm font-bold text-slate-900 truncate">{m.peer.nick}</h4>
-                      <p className="text-[11px] text-slate-500 truncate flex items-center gap-1">
-                        <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
-                        <span>{tutorRating.count > 0 ? tutorRating.average : '5.0'}</span>
-                        <span>&bull;</span>
-                        <span className="truncate">{m.peer.department?.split(' ')[0] || 'SCIS'}</span>
+                      <p className="text-[11px] text-slate-500 truncate flex items-center gap-1.5 mt-0.5 font-medium">
+                        <span className="flex items-center text-[#8c5717] font-semibold bg-[#fef5e0] px-1 rounded">
+                          <Star className="w-3 h-3 text-amber-500 fill-amber-500 mr-0.5 inline" />
+                          {tutorRating.count > 0 ? tutorRating.average : '5.0'}
+                        </span>
+                        <span className="text-slate-300">&bull;</span>
+                        <span className="truncate">{m.peer.department?.split('(')[0].trim() || 'SCIS'}</span>
                       </p>
                     </div>
-                  </div>
-
-                  <div className="text-right shrink-0">
-                    {m.isTwoWayMatch ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200">
-                        <Repeat className="w-3 h-3" /> 2-Way Swap
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                        {m.score}% Match
-                      </span>
-                    )}
                   </div>
                 </div>
 
                 {/* Match Explanation */}
-                <div className="space-y-2 mb-3 text-xs">
+                <div className="space-y-3 mb-4 text-xs">
                   {m.peerOffersIWant.length > 0 && (
-                    <div>
-                      <span className="text-[11px] text-slate-500 font-medium block mb-1">
+                    <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200/60">
+                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                         Teaches what you want:
                       </span>
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap gap-1.5">
                         {m.peerOffersIWant.map((s) => (
                           <SkillTag key={s} skill={s} variant="offer" size="sm" />
                         ))}
@@ -93,11 +93,12 @@ export const SuggestedMatchesSection: React.FC<SuggestedMatchesSectionProps> = (
                   )}
 
                   {m.isTwoWayMatch && m.iOfferPeerWants.length > 0 && (
-                    <div className="pt-1.5 border-t border-indigo-100/80">
-                      <span className="text-[11px] text-indigo-900 font-medium block mb-1">
+                    <div className="bg-teal-50/70 p-2.5 rounded-xl border border-teal-200/60">
+                      <span className="text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1.5 flex items-center gap-1">
+                        <Repeat className="w-3 h-3 text-teal-600" />
                         Wants what you teach:
                       </span>
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap gap-1.5">
                         {m.iOfferPeerWants.map((s) => (
                           <SkillTag key={s} skill={s} variant="want" size="sm" />
                         ))}
@@ -107,13 +108,13 @@ export const SuggestedMatchesSection: React.FC<SuggestedMatchesSectionProps> = (
                 </div>
               </div>
 
-              {/* Action: Open slots available or browse */}
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+              {/* Action: Open slots available or search */}
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                 {m.matchingSlots.length > 0 ? (
                   <Button
                     size="sm"
-                    variant="primary"
-                    className="w-full text-xs"
+                    variant={m.isTwoWayMatch ? 'primary' : 'teal'}
+                    className="w-full text-xs shadow-sm"
                     onClick={() => {
                       if (onSelectSlot) {
                         onSelectSlot(m.matchingSlots[0].slotId);
@@ -129,11 +130,11 @@ export const SuggestedMatchesSection: React.FC<SuggestedMatchesSectionProps> = (
                   <Button
                     size="sm"
                     variant="outline"
-                    className="w-full text-xs"
+                    className="w-full text-xs hover:border-brand-400 hover:text-brand-600"
                     onClick={() => navigate(`/discover?q=${encodeURIComponent(m.peerOffersIWant[0] || '')}`)}
                     rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
                   >
-                    Search Similar Tutors
+                    Browse Peer Slots
                   </Button>
                 )}
               </div>
@@ -144,4 +145,3 @@ export const SuggestedMatchesSection: React.FC<SuggestedMatchesSectionProps> = (
     </div>
   );
 };
-

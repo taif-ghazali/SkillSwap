@@ -122,7 +122,7 @@ export const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
       <PageHeader
         title="My Campus Profile & Skills"
         subtitle="Manage your public nickname, skills offered to teach, and topics you want to learn"
@@ -147,36 +147,36 @@ export const ProfilePage: React.FC = () => {
 
       {/* Validation / Feedback Alerts */}
       {validationError && (
-        <div className="p-3.5 rounded-xl border border-rose-200 bg-rose-50 text-rose-900 text-xs flex items-center gap-2">
+        <div className="p-4 rounded-2xl border border-rose-200 bg-rose-50 text-rose-900 text-xs flex items-center gap-2.5">
           <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
-          <span>{validationError}</span>
+          <span className="font-semibold">{validationError}</span>
         </div>
       )}
 
       {successMessage && (
-        <div className="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-900 text-xs flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-          <span>{successMessage}</span>
+        <div className="p-4 rounded-2xl border border-[#bdf1d9] bg-[#DDF7EB] text-[#0A6B5B] text-xs flex items-center gap-2.5">
+          <CheckCircle2 className="w-4 h-4 shrink-0 text-[#0A6B5B]" />
+          <span className="font-bold">{successMessage}</span>
         </div>
       )}
 
       {/* Profile Header Card */}
-      <Card className="p-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <Card className="p-6 sm:p-7 bg-white shadow-card">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div className="flex items-center gap-4">
             <Avatar name={user.nick} size="xl" isOnline />
             <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-xl font-bold text-slate-900">{user.nick}</h2>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">{user.nick}</h2>
                 <Badge variant="brand">Verified UoH Student</Badge>
               </div>
-              <p className="text-xs text-slate-500 font-mono mt-0.5">{user.email}</p>
+              <p className="text-xs text-slate-400 font-mono mt-1">{user.email}</p>
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 mt-2">
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-1 font-medium">
                   <Building className="w-3.5 h-3.5 text-slate-400" />
                   {user.department || 'School of Computer and Information Sciences (SCIS)'}
                 </span>
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-1 font-medium">
                   <Calendar className="w-3.5 h-3.5 text-slate-400" />
                   Joined {user.joinedDate || '2026'}
                 </span>
@@ -185,26 +185,26 @@ export const ProfilePage: React.FC = () => {
           </div>
 
           {/* Time Credit & Rating summary */}
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="bg-amber-50 border border-amber-200/80 rounded-xl p-3.5 text-center min-w-[120px]">
-              <span className="text-[11px] font-bold text-amber-900 uppercase tracking-wide block">
+          <div className="flex items-center gap-3 shrink-0 w-full sm:w-auto">
+            <div className="bg-gradient-to-br from-[#fffbf2] to-[#fef5e0] border border-[#fde7be] rounded-2xl p-4 text-center flex-1 sm:flex-initial sm:min-w-[130px] shadow-2xs">
+              <span className="text-[10px] font-extrabold text-[#8c5717] uppercase tracking-wider block">
                 Time Credits
               </span>
-              <div className="text-2xl font-black text-amber-950 mt-0.5">
+              <div className="text-2xl font-black text-slate-900 mt-0.5">
                 ⏱ {totalCredits}
               </div>
-              <span className="text-[10px] text-amber-800">1 credit = 1 hr</span>
+              <span className="text-[10px] text-amber-800 font-medium">1 credit = 1 hr</span>
             </div>
 
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center min-w-[120px]">
-              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wide block">
+            <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-center flex-1 sm:flex-initial sm:min-w-[130px] shadow-2xs">
+              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider block">
                 Tutor Rating
               </span>
               <div className="text-2xl font-black text-slate-900 mt-0.5 flex items-center justify-center gap-1">
-                <Star className="w-5 h-5 fill-amber-400 text-amber-400 inline" />
+                <Star className="w-5 h-5 fill-amber-400 text-amber-500 inline" />
                 <span>{ratingSummary.count > 0 ? ratingSummary.average : '5.0'}</span>
               </div>
-              <span className="text-[10px] text-slate-500">
+              <span className="text-[10px] text-slate-500 font-medium">
                 {ratingSummary.count} {ratingSummary.count === 1 ? 'review' : 'reviews'}
               </span>
             </div>
@@ -215,13 +215,13 @@ export const ProfilePage: React.FC = () => {
       {/* Edit Form */}
       <form onSubmit={handleSave} className="space-y-6">
         {/* Nickname & Privacy Note */}
-        <Card className="p-6">
-          <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
-            <User className="w-4 h-4 text-brand-600" />
-            Public Nickname &amp; Privacy
+        <Card className="p-6 bg-white shadow-card">
+          <h3 className="text-sm font-bold text-slate-900 mb-1 flex items-center gap-2 uppercase tracking-wide">
+            <User className="w-4 h-4 text-brand-500" />
+            Public Campus Nickname &amp; Privacy
           </h3>
           <p className="text-xs text-slate-500 mb-4">
-            Only your nickname, university email, and skills are visible to fellow students. Phone numbers and private IDs are never stored.
+            Only your nickname, university email, and skills are visible to fellow students. Personal phone numbers and private IDs are never stored.
           </p>
           <div className="max-w-md">
             <Input
@@ -236,24 +236,24 @@ export const ProfilePage: React.FC = () => {
         </Card>
 
         {/* Skills I Offer (To Teach) */}
-        <Card className="p-6">
+        <Card className="p-6 bg-white shadow-card">
           <div className="flex items-center justify-between mb-2">
             <div>
-              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-emerald-600" />
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wide">
+                <Sparkles className="w-4 h-4 text-teal-600" />
                 Skills I Can Teach (Offers)
               </h3>
               <p className="text-xs text-slate-500">
                 Peers searching for these topics will be able to find you and book sessions (FR-2)
               </p>
             </div>
-            <Badge variant="success">{offersList.length} Offered</Badge>
+            <Badge variant="teal">{offersList.length} Offered</Badge>
           </div>
 
           {/* Active Offer Tags */}
-          <div className="flex flex-wrap gap-2 my-4 min-h-[44px] p-3 bg-slate-50/70 border border-slate-200/60 rounded-xl items-center">
+          <div className="flex flex-wrap gap-2 my-4 min-h-[48px] p-3.5 bg-slate-50/80 border border-slate-200/70 rounded-2xl items-center">
             {offersList.length === 0 ? (
-              <span className="text-xs text-slate-400 italic">No skills listed yet. Add skills below!</span>
+              <span className="text-xs text-slate-400 italic font-medium">No skills listed yet. Add skills below!</span>
             ) : (
               offersList.map((skill) => (
                 <SkillTag
@@ -282,7 +282,7 @@ export const ProfilePage: React.FC = () => {
             />
             <Button
               type="button"
-              variant="secondary"
+              variant="teal"
               leftIcon={<Plus className="w-4 h-4" />}
               onClick={() => handleAddOffer()}
             >
@@ -292,7 +292,7 @@ export const ProfilePage: React.FC = () => {
 
           {/* Quick Suggestions */}
           <div className="mt-3 flex items-center gap-1.5 flex-wrap">
-            <span className="text-[11px] text-slate-400 font-medium">Quick suggestions:</span>
+            <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Quick Suggestions:</span>
             {POPULAR_CAMPUS_SKILLS.slice(0, 5).map((s) => (
               <SkillTag
                 key={s}
@@ -306,11 +306,11 @@ export const ProfilePage: React.FC = () => {
         </Card>
 
         {/* Skills I Want (To Learn) */}
-        <Card className="p-6">
+        <Card className="p-6 bg-white shadow-card">
           <div className="flex items-center justify-between mb-2">
             <div>
-              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-indigo-600" />
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wide">
+                <BookOpen className="w-4 h-4 text-brand-600" />
                 Skills I Want to Learn (Wants)
               </h3>
               <p className="text-xs text-slate-500">
@@ -321,9 +321,9 @@ export const ProfilePage: React.FC = () => {
           </div>
 
           {/* Active Want Tags */}
-          <div className="flex flex-wrap gap-2 my-4 min-h-[44px] p-3 bg-slate-50/70 border border-slate-200/60 rounded-xl items-center">
+          <div className="flex flex-wrap gap-2 my-4 min-h-[48px] p-3.5 bg-slate-50/80 border border-slate-200/70 rounded-2xl items-center">
             {wantsList.length === 0 ? (
-              <span className="text-xs text-slate-400 italic">No topics listed yet. Add what you want to learn!</span>
+              <span className="text-xs text-slate-400 italic font-medium">No topics listed yet. Add what you want to learn!</span>
             ) : (
               wantsList.map((skill) => (
                 <SkillTag
@@ -352,7 +352,7 @@ export const ProfilePage: React.FC = () => {
             />
             <Button
               type="button"
-              variant="secondary"
+              variant="primary"
               leftIcon={<Plus className="w-4 h-4" />}
               onClick={() => handleAddWant()}
             >
@@ -362,7 +362,7 @@ export const ProfilePage: React.FC = () => {
 
           {/* Quick Suggestions */}
           <div className="mt-3 flex items-center gap-1.5 flex-wrap">
-            <span className="text-[11px] text-slate-400 font-medium">Quick suggestions:</span>
+            <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Quick Suggestions:</span>
             {POPULAR_CAMPUS_SKILLS.slice(5, 10).map((s) => (
               <SkillTag
                 key={s}
@@ -376,9 +376,9 @@ export const ProfilePage: React.FC = () => {
         </Card>
 
         {/* Bio */}
-        <Card className="p-6">
+        <Card className="p-6 bg-white shadow-card">
           <div className="space-y-1.5 mb-3">
-            <h3 className="text-base font-bold text-slate-900">
+            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
               Student Bio &amp; About Me
             </h3>
             <p className="text-xs text-slate-500">
@@ -390,19 +390,21 @@ export const ProfilePage: React.FC = () => {
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             placeholder="Tell peers about your academic interests, preferred study hours, or teaching style..."
-            className="w-full rounded-lg border border-slate-200 p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500/20 placeholder:text-slate-400"
+            className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-900 focus:outline-none focus:ring-3 focus:ring-brand-500/15 placeholder:text-slate-400"
           />
         </Card>
 
         {/* Save Bar */}
-        <div className="flex items-center justify-between pt-2">
-          <span className="text-xs text-slate-500">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+          <span className="text-xs text-slate-500 font-medium">
             Changes persist to your browser profile immediately across refreshes
           </span>
           <Button
             type="submit"
             size="md"
+            variant="primary"
             leftIcon={<Save className="w-4 h-4" />}
+            className="shadow-sm"
           >
             Save Profile Changes
           </Button>
@@ -410,15 +412,15 @@ export const ProfilePage: React.FC = () => {
       </form>
 
       {/* Student Reviews & Ratings */}
-      <Card className="p-6">
+      <Card className="p-6 bg-white shadow-card">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wide">
               <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
               Peer Reviews &amp; Ratings Received
             </h3>
             <p className="text-xs text-slate-500">
-              Feedback from students who attended your teaching sessions (FR-8)
+              Verified feedback from students who attended your teaching sessions (FR-8)
             </p>
           </div>
           <Badge variant="credit">
@@ -427,26 +429,26 @@ export const ProfilePage: React.FC = () => {
         </div>
 
         {reviews.length === 0 ? (
-          <p className="text-xs text-slate-400 italic py-2">
+          <p className="text-xs text-slate-400 italic py-3 font-medium">
             No peer reviews yet. Complete a teaching session with a student to receive feedback!
           </p>
         ) : (
           <div className="space-y-3">
             {reviews.map((rev) => (
-              <div key={rev.id} className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/60 text-xs">
+              <div key={rev.id} className="p-4 bg-slate-50 rounded-2xl border border-slate-200/70 text-xs">
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-slate-800">{rev.fromNick}</span>
-                    <span className="text-slate-400 text-[11px]">&bull; {rev.time}</span>
+                    <span className="font-bold text-slate-900">{rev.fromNick}</span>
+                    <span className="text-slate-400 text-[11px] font-mono">&bull; {rev.time}</span>
                   </div>
                   <div className="flex items-center gap-1 text-amber-500 font-bold">
                     {Array.from({ length: rev.stars }).map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
                     ))}
-                    <span className="ml-1 text-slate-600 text-[11px]">({rev.stars}.0)</span>
+                    <span className="ml-1 text-[#8c5717] font-extrabold text-[11px]">({rev.stars}.0)</span>
                   </div>
                 </div>
-                {rev.comment && <p className="text-slate-600 leading-relaxed">{rev.comment}</p>}
+                {rev.comment && <p className="text-slate-600 leading-relaxed font-medium">{rev.comment}</p>}
               </div>
             ))}
           </div>

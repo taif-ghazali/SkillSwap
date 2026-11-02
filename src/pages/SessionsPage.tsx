@@ -8,6 +8,7 @@ import { SessionDetailsModal } from '../components/ui/SessionDetailsModal';
 import { EmptyState } from '../components/ui/EmptyState';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { Badge } from '../components/ui/Badge';
 import { AcademicIntegrityBanner } from '../components/shared/AcademicIntegrityBanner';
 import { SessionSlot } from '../types';
 import {
@@ -16,7 +17,8 @@ import {
   BookOpen,
   CheckCircle2,
   Star,
-  AlertCircle
+  AlertCircle,
+  X
 } from 'lucide-react';
 
 export const SessionsPage: React.FC = () => {
@@ -131,10 +133,10 @@ export const SessionsPage: React.FC = () => {
       : completedSessions;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <PageHeader
         title="My Sessions & Schedule"
-        subtitle="Manage peer learning sessions you are attending, hosting, or completing"
+        subtitle="Manage peer learning sessions you are attending as learner, hosting as tutor, or completed"
         breadcrumbs={[
           { label: 'Dashboard', href: '/dashboard' },
           { label: 'My Sessions' },
@@ -146,18 +148,18 @@ export const SessionsPage: React.FC = () => {
       {/* Action Notification Alert */}
       {actionAlert && (
         <div
-          className={`p-4 rounded-xl border text-sm flex items-center gap-3 transition-all ${
+          className={`p-4 rounded-2xl border text-sm flex items-center gap-3 transition-all ${
             actionAlert.type === 'success'
-              ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+              ? 'bg-[#DDF7EB] border-[#bdf1d9] text-[#0A6B5B]'
               : 'bg-rose-50 border-rose-200 text-rose-900'
           }`}
         >
           <AlertCircle className="w-5 h-5 shrink-0" />
-          <span>{actionAlert.message}</span>
+          <span className="font-semibold">{actionAlert.message}</span>
         </div>
       )}
 
-      {/* Tabs */}
+      {/* Tabs Switcher */}
       <Tabs
         tabs={[
           {
@@ -230,49 +232,64 @@ export const SessionsPage: React.FC = () => {
         isCurrentUserTutor={activeModalSlot ? activeModalSlot.tutor.toLowerCase() === user.email.toLowerCase() : false}
       />
 
-      {/* Rating Modal */}
+      {/* Polished 5-Star Rating Modal */}
       {ratingSlot && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <Card className="w-full max-w-md p-6 bg-white shadow-xl animate-in fade-in zoom-in-95">
-            <h3 className="text-base font-bold text-slate-900 mb-1">
-              Rate Your Peer Session
+          <Card className="w-full max-w-md p-6 sm:p-7 bg-white shadow-2xl relative animate-fade-in border-slate-200">
+            <button
+              onClick={() => setRatingSlot(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors"
+              title="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <h3 className="text-lg font-black text-slate-900 mb-1 tracking-tight">
+              Rate Your Peer Mentorship Session
             </h3>
             <p className="text-xs text-slate-500 mb-4">
-              Session: <strong>{ratingSlot.skill}</strong> with{' '}
-              {ratingSlot.tutor === user.email ? ratingSlot.learnerNick : ratingSlot.tutorNick}
+              Session: <strong className="text-slate-800">{ratingSlot.skill}</strong> with{' '}
+              <strong className="text-brand-600">
+                {ratingSlot.tutor.toLowerCase() === user.email.toLowerCase() ? ratingSlot.learnerNick : ratingSlot.tutorNick}
+              </strong>
             </p>
 
             {ratingError && (
-              <div className="p-3 mb-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-900 text-xs flex items-center gap-2">
+              <div className="p-3 mb-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
-                <span>{ratingError}</span>
+                <span className="font-semibold">{ratingError}</span>
               </div>
             )}
 
             <form onSubmit={handleRateSubmit} className="space-y-4">
               {/* Star Picker */}
-              <div className="flex items-center justify-center gap-2 py-3 bg-slate-50 rounded-lg">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    type="button"
-                    onClick={() => setSelectedStars(star)}
-                    className="p-1 hover:scale-110 transition-transform cursor-pointer"
-                  >
-                    <Star
-                      className={`w-7 h-7 ${
-                        star <= selectedStars
-                          ? 'text-amber-400 fill-amber-400'
-                          : 'text-slate-300'
-                      }`}
-                    />
-                  </button>
-                ))}
+              <div className="flex flex-col items-center justify-center py-4 bg-[#fef5e0]/60 border border-[#fde7be] rounded-2xl">
+                <div className="flex items-center gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setSelectedStars(star)}
+                      className="p-1 hover:scale-125 transition-transform cursor-pointer"
+                    >
+                      <Star
+                        className={`w-8 h-8 ${
+                          star <= selectedStars
+                            ? 'text-amber-500 fill-amber-400'
+                            : 'text-slate-200'
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+                <span className="text-xs font-bold text-[#8c5717] mt-2">
+                  {selectedStars} out of 5 Stars
+                </span>
               </div>
 
               {/* Comment */}
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-800 uppercase tracking-wide">
                   Feedback or Review (Optional)
                 </label>
                 <textarea
@@ -280,11 +297,11 @@ export const SessionsPage: React.FC = () => {
                   value={ratingComment}
                   onChange={(e) => setRatingComment(e.target.value)}
                   placeholder="How was the explanation, clarity, and pacing?"
-                  className="w-full rounded-lg border border-slate-200 p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                  className="w-full rounded-xl border border-slate-200 p-3 text-xs text-slate-900 focus:outline-none focus:ring-3 focus:ring-brand-500/15"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="flex justify-end gap-2.5 pt-2">
                 <Button
                   type="button"
                   variant="outline"
@@ -293,7 +310,7 @@ export const SessionsPage: React.FC = () => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" size="sm">
+                <Button type="submit" size="sm" variant="primary">
                   Submit Rating
                 </Button>
               </div>

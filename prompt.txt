@@ -1,94 +1,198 @@
-# SKILLSWAP: COMPLETE APPLICATION, BACKEND AND PROJECT DELIVERY
-## MASTER ENGINEERING TASK | IE209 UNIVERSITY MINI-PROJECT
+# SKILLSWAP ANDROID: PHASE 1 - COMPLETE BACKEND INTEGRATION
 
-You are the lead full-stack engineer taking over an existing, partially completed project called SkillSwap.
+You are the lead Android application engineer working on our University of Hyderabad IE209 SkillSwap project.
 
-Your responsibility is to take the existing application and deliver a complete, functional, integrated and submission-ready software project.
+You have access to:
+1. The existing MIT App Inventor project (.aia).
+2. The Google Apps Script backend source code.
+3. The database initialization script.
+4. The official IE209 project specification.
 
-This is NOT a request to generate a new application from scratch.
+Your task is to turn the existing MIT App Inventor application into a fully functional Android application connected to our actual Google Apps Script backend.
 
-The existing repository already contains a substantial React + TypeScript + Vite website with:
-- Dashboard
-- Login
-- Discover & Search
-- Teach a Skill
-- My Sessions
-- Time Wallet
-- My Profile
-- Session cards and booking dialogs
-- Local mock data and persistence
-- An established visual identity and design system
+IMPORTANT: DO NOT REBUILD THE APPLICATION FROM SCRATCH.
 
-You MUST inspect and preserve the existing implementation.
+The existing .aia is the master project. Preserve its existing screens, components, procedures, naming conventions and working logic wherever possible.
 
-I have also provided the official IE209 SkillSwap Mini-Project PDF. Treat it as the authoritative requirements document. Follow its functional requirements, data model, architecture, acceptance criteria, safety requirements and deliverables.
+## PHASE A: FULL PROJECT AUDIT
 
-Your mission is to complete everything that can reasonably be implemented and prepared within this repository.
+Before modifying anything:
 
----
+1. Extract and inspect the entire .aia project.
+2. Examine all Designer components and Blocks.
+3. Identify all six required page arrangements:
+   - vaLogin
+   - vaProfile
+   - vaSearch
+   - vaSlot
+   - vaTeach
+   - vaSessions
+4. Inspect existing procedures:
+   - callApi
+   - handleReply
+   - showPage
+   - slotLine
+   - sessionLine
+   - updateWallet
+   - clearSessionSelection
+5. Identify incomplete procedures, missing event handlers, incorrect API parameters and unfinished navigation.
+6. Inspect the supplied Apps Script source to understand its EXACT API contract.
 
-# PART 1: REPOSITORY AUDIT AND PRESERVATION
+Produce a short internal implementation checklist, then proceed with implementation. Do not stop after producing the audit.
 
-Before making changes:
+## PHASE B: BACKEND CONFIGURATION
 
-1. Inspect the complete repository and its folder structure.
-2. Identify the current frontend architecture, routes, components, state management and local persistence.
-3. Identify existing business logic and implemented features.
-4. Identify incomplete functionality, duplicated logic and defects.
-5. Run the existing application, tests and production build.
-6. Establish a Git checkpoint if Git is initialized. Do not overwrite existing work without preserving it.
+Connect the application to our actual Apps Script Web App.
 
-Do not:
-- Rebuild the frontend from scratch.
-- Replace the existing design system.
-- Remove working features.
-- Replace real functionality with static mock screens.
-- Introduce unnecessary dependencies.
-- Claim a feature works without testing it.
+Configuration:
 
-The existing SkillSwap website must remain visually recognizable.
+API URL: [INSERT DEPLOYED /exec URL]
 
-# PART 2: BUILD THE COMPLETE BACKEND
+API KEY: [INSERT MATCHING API KEY]
 
-## 2.1 Technology
+Use these exact credentials throughout the application.
 
-Use the architecture specified in the assignment:
+If either credential is unavailable, do not invent one. Identify the missing value and clearly report that deployment credentials are required.
 
-React Website / MIT App Inventor
-        |
-        v
-Google Apps Script Web App API
-        |
-        v
-Google Sheets Database
+Implement and verify:
 
-The backend must be implemented using Google Apps Script JavaScript.
+- Global apiUrl.
+- Global apiKey.
+- callApi(action, params).
+- webApi URL construction.
+- Correct URL encoding of parameters.
+- HTTP response handling.
+- JSON dictionary decoding.
+- handleReply(action, data).
+- Meaningful network and server error messages.
+- Loading states and duplicate-request prevention.
 
-Create a dedicated backend directory containing the complete Apps Script source code, organized into logical files where practical.
+Match every API action and parameter to the actual supplied Code.gs implementation. Do not blindly assume the example API contract is identical to the deployed backend.
 
-The code must be deployable through the Google Apps Script editor.
+## PHASE C: IMPLEMENT ALL SIX PAGES
 
-Do not substitute Firebase, Supabase, MongoDB or another database for the specified architecture.
+LOGIN:
+- Validate university email ending in @uohyd.ac.in.
+- Accept nickname.
+- Call login API.
+- Retrieve starting or existing credit balance.
+- Save authenticated user details.
+- Navigate to profile after successful login.
 
-## 2.2 Google Sheets database
+PROFILE:
+- Retrieve and display student information.
+- Edit skills offered and wanted.
+- Save changes to Google Sheets.
+- Display current credit balance.
 
-Create a complete database initialization script that automatically creates the required sheets, headers and initial configuration.
+SEARCH:
+- Search available future slots by skill.
+- Exclude the current user's own slots.
+- Populate the existing ListView.
+- Allow selecting a result.
+- Navigate to slot details.
 
-The four mandatory sheets and their column structures must follow the assignment.
+SLOT DETAILS:
+- Display skill, tutor, date, time and venue.
+- Display the academic integrity notice.
+- Prevent booking one's own slot.
+- Request booking confirmation.
+- Enforce credit availability through the backend.
 
-### Users
-email | nick | offers | wants | credits
+TEACH:
+- Accept skill, date, time and venue.
+- Enforce the required date and time formats.
+- Restrict venues to permitted public campus locations or online.
+- Publish slots through the backend.
+- Show confirmation of successful publication.
 
-### Slots
-slotId | tutor | skill | date | time | place | status | learner | tutorOk | learnerOk
+SESSIONS:
+- Retrieve teaching and learning sessions.
+- Clearly distinguish the user's role.
+- Display session status.
+- Implement cancellation.
+- Implement tutor and learner confirmation.
+- Implement post-completion ratings.
+- Refresh wallet and session information after transactions.
 
-Valid slot statuses:
-- open
-- booked
-- done
-- cancelled
+## PHASE D: NAVIGATION AND STATE MANAGEMENT
 
-### Ledger
-time | from | to | credits | slotId
+Implement reliable navigation using the existing six VerticalArrangements.
 
-### Ratings
+Preserve the bottom navigation:
+- Search
+- Teach
+- Sessions
+- Profile
+
+Ensure:
+- Only the relevant page is visible.
+- Navigation does not destroy necessary session state.
+- Selected slot information remains accessible.
+- User identity and credits remain consistent.
+- Login state persists appropriately using TinyDB.
+
+## PHASE E: CRITICAL BUSINESS RULES
+
+Implement and verify against the actual backend:
+
+1. New users receive exactly 2 credits.
+2. Booking requires at least 1 available credit.
+3. Pending bookings must be accounted for.
+4. Users cannot book their own slots.
+5. Cancellation is permitted only at least 2 hours before the session.
+6. Both tutor and learner must confirm.
+7. Credits transfer exactly once after both confirmations.
+8. One confirmation alone must not transfer credits.
+9. Completed sessions can be rated.
+10. Every credit transfer must have a ledger entry.
+
+Credit modifications must remain server-side. Never implement client-side credit transfers.
+
+## PHASE F: RELIABILITY
+
+Handle:
+- No internet connection.
+- Invalid API responses.
+- Incorrect login credentials.
+- Empty search results.
+- Duplicate button presses.
+- Expired or unavailable slots.
+- Insufficient credits.
+- Failed booking or cancellation.
+- Failed confirmation.
+- Invalid form inputs.
+
+Do not silently swallow errors.
+
+## PHASE G: VALIDATION
+
+Test the application against all six required pages and the T1-T8 acceptance tests in the IE209 specification.
+
+Verify that:
+- The application connects to the real backend.
+- Changes persist in Google Sheets.
+- Both website and Android application use the same database.
+- No existing API functionality has been broken.
+
+Do not substitute mock data for actual backend responses.
+
+## FINAL OUTPUT
+
+Provide:
+
+1. Updated MIT App Inventor master project (.aia).
+2. Working Android APK.
+3. List of implemented features.
+4. List of API endpoints successfully tested.
+5. T1-T8 testing results.
+6. Any remaining blockers.
+7. Instructions for reproducing the build.
+
+Do not claim successful backend integration or passing tests without actually verifying them.
+
+PRIORITY: FUNCTIONAL CORRECTNESS OVER VISUAL POLISH.
+
+We will handle Figma-based visual redesign in a separate second phase. Keep the existing design for now.
+
+Make the existing SkillSwap application work end to end.

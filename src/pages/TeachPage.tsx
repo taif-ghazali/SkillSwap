@@ -6,6 +6,7 @@ import { PageHeader } from '../components/layout/PageHeader';
 import { Card } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
+import { Badge } from '../components/ui/Badge';
 import { SkillTag } from '../components/ui/SkillTag';
 import { AcademicIntegrityBanner } from '../components/shared/AcademicIntegrityBanner';
 import { POPULAR_CAMPUS_SKILLS, CAMPUS_LOCATIONS } from '../data/mockData';
@@ -16,7 +17,9 @@ import {
   Sparkles,
   BookOpen,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  ShieldCheck,
+  Award
 } from 'lucide-react';
 
 export const TeachPage: React.FC = () => {
@@ -70,21 +73,23 @@ export const TeachPage: React.FC = () => {
 
   if (successSlotId) {
     return (
-      <div className="max-w-xl mx-auto py-8">
-        <Card className="text-center p-8 border-emerald-200 bg-white">
-          <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 className="w-8 h-8" />
+      <div className="max-w-xl mx-auto py-10 animate-fade-in">
+        <Card className="text-center p-8 sm:p-10 border-brand-200 bg-white shadow-elevated">
+          <div className="w-16 h-16 rounded-2xl bg-[#DDF7EB] text-[#0A6B5B] flex items-center justify-center mx-auto mb-5 shadow-sm">
+            <CheckCircle2 className="w-9 h-9" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900 mb-2">
+          <h2 className="text-2xl font-black text-slate-900 mb-2 tracking-tight">
             Session Slot Published!
           </h2>
-          <p className="text-xs text-slate-500 font-mono mb-4">Slot ID: {successSlotId}</p>
-          <p className="text-sm text-slate-600 mb-6 max-w-md mx-auto">
-            Your session for <strong>{skill}</strong> on {date} at {time} is now live. Other students across campus can book it with their time credits.
+          <p className="text-xs text-slate-400 font-mono mb-4">Slot Reference: {successSlotId}</p>
+          <p className="text-sm text-slate-600 mb-6 max-w-md mx-auto leading-relaxed">
+            Your session for <strong className="text-slate-900 font-bold">{skill}</strong> on{' '}
+            <strong>{date}</strong> at <strong>{time}</strong> is now live. Other students across campus can book it with their time credits.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
               variant="primary"
+              size="md"
               onClick={() => navigate('/sessions')}
               rightIcon={<ArrowRight className="w-4 h-4" />}
             >
@@ -92,6 +97,7 @@ export const TeachPage: React.FC = () => {
             </Button>
             <Button
               variant="outline"
+              size="md"
               onClick={() => {
                 setSuccessSlotId(null);
                 setSkill('');
@@ -107,7 +113,7 @@ export const TeachPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
       <PageHeader
         title="Publish a Teaching Slot"
         subtitle="Share your knowledge with fellow students and earn 1 Time Credit per 1-hour session"
@@ -119,8 +125,8 @@ export const TeachPage: React.FC = () => {
 
       <AcademicIntegrityBanner />
 
-      <Card className="p-6">
-        <form onSubmit={handleSubmit} className="space-y-5">
+      <Card className="p-6 sm:p-8 bg-white shadow-card">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Skill Name */}
           <div>
             <Input
@@ -129,13 +135,13 @@ export const TeachPage: React.FC = () => {
               placeholder="e.g. Python, LaTeX Typesetting, Figma Auto-Layout, Excel VLOOKUP"
               value={skill}
               onChange={(e) => setSkill(e.target.value)}
-              helperText="Be specific about what concepts will be covered in 1 hour"
+              helperText="Be specific about the concept covered in the 60-minute session"
               required
             />
 
             {/* Quick Skills Pick */}
-            <div className="mt-2.5 flex items-center gap-1.5 flex-wrap">
-              <span className="text-[11px] font-semibold text-slate-400">Popular on campus:</span>
+            <div className="mt-3 flex items-center gap-1.5 flex-wrap">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Popular Topics:</span>
               {POPULAR_CAMPUS_SKILLS.slice(0, 6).map((s) => (
                 <SkillTag
                   key={s}
@@ -150,19 +156,19 @@ export const TeachPage: React.FC = () => {
 
           {/* Category */}
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700 tracking-wide">
-              Category
+            <label className="block text-xs font-bold text-slate-800 tracking-wide uppercase">
+              Academic Category
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as any)}
-              className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-3 focus:ring-brand-500/15"
             >
-              <option value="Programming">Programming (Python, React, C++, Data Structures)</option>
-              <option value="Academics & Writing">Academics & Writing (LaTeX, Paper Review, Proofreading)</option>
-              <option value="Tools & Tech">Tools & Tech (Git, Docker, Excel, Linux)</option>
-              <option value="Design & Media">Design & Media (Figma, UI/UX, Video Editing)</option>
-              <option value="Languages">Languages & Soft Skills (Spoken English, Interview Prep)</option>
+              <option value="Programming">Programming &amp; CS (Python, React, C++, Data Structures)</option>
+              <option value="Academics & Writing">Academics &amp; Writing (LaTeX, Paper Review, Proofreading)</option>
+              <option value="Tools & Tech">Tools &amp; Tech (Git, Docker, Excel, Linux)</option>
+              <option value="Design & Media">Design &amp; Media (Figma, UI/UX, Video Editing)</option>
+              <option value="Languages">Languages &amp; Soft Skills (Spoken English, Interview Prep)</option>
               <option value="Other">Other Skills</option>
             </select>
           </div>
@@ -188,7 +194,7 @@ export const TeachPage: React.FC = () => {
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
                 leftIcon={<Clock className="w-4 h-4" />}
-                helperText="1 standard session = 60 minutes"
+                helperText="1 standard peer mentorship session = 60 minutes"
                 required
               />
             </div>
@@ -196,20 +202,20 @@ export const TeachPage: React.FC = () => {
 
           {/* Venue / Location */}
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700 tracking-wide">
+            <label className="block text-xs font-bold text-slate-800 tracking-wide uppercase">
               Meeting Location / Venue (Public campus places or Online only)
             </label>
             <select
               value={place}
               onChange={(e) => setPlace(e.target.value)}
-              className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-3 focus:ring-brand-500/15"
             >
               {CAMPUS_LOCATIONS.map((loc) => (
                 <option key={loc} value={loc}>
                   {loc}
                 </option>
               ))}
-              <option value="custom">Other public campus location...</option>
+              <option value="custom">Other verified campus location...</option>
             </select>
 
             {place === 'custom' && (
@@ -221,41 +227,46 @@ export const TeachPage: React.FC = () => {
                 required
               />
             )}
-            <p className="text-[11px] text-slate-500">
-              Per university safety guidelines, peer sessions must be in public campus areas or online.
+            <p className="text-[11px] text-slate-500 flex items-center gap-1 mt-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-teal-600 inline" />
+              <span>Per campus safety policy, peer sessions must be in public university areas or online. Hostels are strictly prohibited.</span>
             </p>
           </div>
 
           {/* Short Description */}
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700 tracking-wide">
+            <label className="block text-xs font-bold text-slate-800 tracking-wide uppercase">
               Session Overview / Prerequisites (Optional)
             </label>
             <textarea
               rows={3}
-              placeholder="What will the learner achieve in this 1-hour session? (e.g. Setting up LaTeX bibliography with Overleaf, creating templates...)"
+              placeholder="What will the learner achieve in this 1-hour session? (e.g. Setting up LaTeX bibliography with Overleaf, creating reusable templates...)"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 placeholder:text-slate-400"
+              className="w-full rounded-xl border border-slate-200 bg-white p-3.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-3 focus:ring-brand-500/15 placeholder:text-slate-400"
             />
           </div>
 
           {/* Earning Rate Banner */}
-          <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-200/80 flex items-center justify-between text-xs text-amber-900">
-            <div className="flex items-center gap-2">
-              <span className="text-base">⏱</span>
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-[#fef5e0] to-[#fffbf2] border border-[#fde7be] flex items-center justify-between text-xs text-[#8c5717]">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-amber-500/20 flex items-center justify-center font-bold text-base">
+                ⏱
+              </div>
               <span>
-                You will receive <strong>1 Time Credit</strong> automatically upon mutual confirmation.
+                You will receive <strong className="font-extrabold text-slate-900">1 Time Credit</strong> automatically upon mutual confirmation.
               </span>
             </div>
-            <span className="font-semibold text-amber-800">1 hr = 1 credit</span>
+            <span className="font-extrabold text-[#8c5717] bg-white px-2.5 py-1 rounded-lg border border-[#fde7be]">
+              1 hr = 1 credit
+            </span>
           </div>
 
           {/* Submit Button */}
           <div className="pt-2">
             <Button
               type="submit"
-              className="w-full"
+              className="w-full shadow-md"
               size="lg"
               isLoading={isSubmitting}
             >

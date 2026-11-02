@@ -33,10 +33,10 @@ export const Tabs: React.FC<TabsProps> = ({
               key={tab.id}
               onClick={() => onChange(tab.id)}
               className={cn(
-                'py-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 -mb-px',
+                'py-3 text-sm font-semibold border-b-2 transition-all flex items-center gap-2 -mb-px cursor-pointer',
                 isActive
-                  ? 'border-brand-600 text-brand-600 font-semibold'
-                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                  ? 'border-brand-500 text-brand-600'
+                  : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
               )}
             >
               {tab.icon && <span>{tab.icon}</span>}
@@ -44,9 +44,9 @@ export const Tabs: React.FC<TabsProps> = ({
               {tab.count !== undefined && (
                 <span
                   className={cn(
-                    'px-2 py-0.5 text-xs rounded-full font-medium',
+                    'px-2 py-0.5 text-xs rounded-full font-bold',
                     isActive
-                      ? 'bg-brand-100 text-brand-700'
+                      ? 'bg-brand-50 text-brand-700'
                       : 'bg-slate-100 text-slate-600'
                   )}
                 >
@@ -61,7 +61,7 @@ export const Tabs: React.FC<TabsProps> = ({
   }
 
   return (
-    <div className={cn('inline-flex p-1 bg-slate-100 rounded-lg space-x-1', className)}>
+    <div className={cn('inline-flex p-1.5 bg-slate-100/90 rounded-2xl gap-1 border border-slate-200/80', className)}>
       {tabs.map((tab) => {
         const isActive = tab.id === activeTab;
         return (
@@ -69,19 +69,19 @@ export const Tabs: React.FC<TabsProps> = ({
             key={tab.id}
             onClick={() => onChange(tab.id)}
             className={cn(
-              'px-3.5 py-1.5 text-xs font-medium rounded-md transition-all flex items-center gap-2',
+              'px-4 py-2 text-xs font-bold rounded-xl transition-all duration-150 flex items-center gap-2 cursor-pointer select-none',
               isActive
-                ? 'bg-white text-slate-900 shadow-sm font-semibold'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+                ? 'bg-white text-slate-900 shadow-sm font-extrabold'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
             )}
           >
-            {tab.icon && <span>{tab.icon}</span>}
+            {tab.icon && <span className={isActive ? 'text-brand-500' : 'text-slate-400'}>{tab.icon}</span>}
             <span>{tab.label}</span>
             {tab.count !== undefined && (
               <span
                 className={cn(
-                  'px-1.5 py-0.2 rounded-full text-[10px] font-semibold',
-                  isActive ? 'bg-slate-100 text-slate-800' : 'bg-slate-200 text-slate-600'
+                  'px-2 py-0.5 rounded-full text-[10px] font-extrabold transition-colors',
+                  isActive ? 'bg-[#DDF7EB] text-[#0A6B5B]' : 'bg-slate-200 text-slate-600'
                 )}
               >
                 {tab.count}

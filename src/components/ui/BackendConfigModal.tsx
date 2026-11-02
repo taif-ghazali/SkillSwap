@@ -9,7 +9,6 @@ import {
   X,
   CheckCircle2,
   AlertCircle,
-  ExternalLink,
   RefreshCw,
   Database,
   ShieldCheck
@@ -70,39 +69,39 @@ export const BackendConfigModal: React.FC<BackendConfigModalProps> = ({ isOpen, 
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-      <Card className="w-full max-w-lg p-6 bg-white shadow-2xl relative animate-in fade-in zoom-in-95">
+      <Card className="w-full max-w-lg p-6 sm:p-7 bg-white shadow-elevated relative animate-fade-in border-slate-200">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors"
+          className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition-colors"
           title="Close"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-brand-50 border border-brand-200/80 text-brand-600 flex items-center justify-center">
-            <Database className="w-5 h-5" />
+        <div className="flex items-center gap-3.5 mb-5">
+          <div className="w-11 h-11 rounded-2xl bg-brand-50 border border-brand-200/80 text-brand-600 flex items-center justify-center shadow-2xs">
+            <Database className="w-5 h-5 text-brand-500" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-slate-900">Backend &amp; Database Settings</h3>
+            <h3 className="text-base font-extrabold text-slate-900">Backend &amp; Database Settings</h3>
             <p className="text-xs text-slate-500">
-              IE209 Architecture: Google Apps Script Web App + Google Sheets
+              IE209 Architecture: Google Apps Script Web App API + Google Sheets
             </p>
           </div>
         </div>
 
         {/* Current Mode Badge */}
-        <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 mb-4 flex items-center justify-between text-xs">
+        <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/80 mb-5 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-slate-700">Active Mode:</span>
+            <span className="font-bold text-slate-700">Active Mode:</span>
             {apiClient.isConfigured() ? (
-              <Badge variant="success">Live Google Apps Script Web App</Badge>
+              <Badge variant="success">Live Google Apps Script API</Badge>
             ) : (
               <Badge variant="brand">Local State Engine (Offline / Demo)</Badge>
             )}
           </div>
-          <span className="text-[11px] text-slate-500">
-            {apiClient.isConfigured() ? 'Cloud Synced' : 'Zero Network Latency'}
+          <span className="text-[11px] text-slate-400 font-medium">
+            {apiClient.isConfigured() ? 'Cloud Synced' : 'Instant & Reliable'}
           </span>
         </div>
 
@@ -135,9 +134,9 @@ export const BackendConfigModal: React.FC<BackendConfigModalProps> = ({ isOpen, 
         {/* Test Result Message */}
         {testResult && (
           <div
-            className={`mt-4 p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
+            className={`mt-4 p-3.5 rounded-2xl border text-xs flex items-start gap-2.5 ${
               testResult.success
-                ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                ? 'bg-[#DDF7EB] border-[#bdf1d9] text-[#0A6B5B]'
                 : 'bg-rose-50 border-rose-200 text-rose-900'
             }`}
           >
@@ -146,23 +145,23 @@ export const BackendConfigModal: React.FC<BackendConfigModalProps> = ({ isOpen, 
             ) : (
               <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
             )}
-            <span>{testResult.message}</span>
+            <span className="font-semibold">{testResult.message}</span>
           </div>
         )}
 
         {/* Action Buttons */}
-        <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+        <div className="mt-6 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
           <Button
             type="button"
             variant="ghost"
             size="sm"
             onClick={handleClear}
-            className="text-xs text-slate-500"
+            className="text-xs text-slate-500 w-full sm:w-auto"
           >
-            Use Local Demo Mode
+            Reset to Demo Mode
           </Button>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <Button
               type="button"
               variant="outline"
@@ -179,7 +178,7 @@ export const BackendConfigModal: React.FC<BackendConfigModalProps> = ({ isOpen, 
               size="sm"
               onClick={handleSave}
             >
-              Save Configuration
+              Save Settings
             </Button>
           </div>
         </div>
@@ -187,4 +186,3 @@ export const BackendConfigModal: React.FC<BackendConfigModalProps> = ({ isOpen, 
     </div>
   );
 };
-

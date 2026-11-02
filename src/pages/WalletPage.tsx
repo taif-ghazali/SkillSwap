@@ -16,7 +16,9 @@ import {
   History,
   Lock,
   Calendar,
-  RotateCcw
+  RotateCcw,
+  CheckCircle,
+  ShieldCheck
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -36,10 +38,10 @@ export const WalletPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <PageHeader
         title="Time Credit Wallet & Ledger"
-        subtitle="Transparent ledger of your campus time credits (1 hour peer teaching = 1 credit)"
+        subtitle="Transparent immutable ledger of your campus time credits (1 hour peer teaching = 1 credit)"
         breadcrumbs={[
           { label: 'Dashboard', href: '/dashboard' },
           { label: 'Time Wallet' },
@@ -57,7 +59,7 @@ export const WalletPage: React.FC = () => {
             <Button
               variant="outline"
               size="sm"
-              leftIcon={<Search className="w-4 h-4" />}
+              leftIcon={<Search className="w-3.5 h-3.5" />}
               onClick={() => navigate('/discover')}
             >
               Spend Credits
@@ -65,7 +67,7 @@ export const WalletPage: React.FC = () => {
             <Button
               variant="primary"
               size="sm"
-              leftIcon={<PlusCircle className="w-4 h-4" />}
+              leftIcon={<PlusCircle className="w-3.5 h-3.5" />}
               onClick={() => navigate('/teach')}
             >
               Earn Credits
@@ -76,61 +78,61 @@ export const WalletPage: React.FC = () => {
 
       <AcademicIntegrityBanner />
 
-      {/* Wallet Balance Cards (Strict mathematical consistency) */}
+      {/* Wallet Balance Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Total Balance */}
-        <Card className="bg-linear-to-br from-amber-500/15 via-amber-500/5 to-white border-amber-200">
+        <Card className="bg-gradient-to-br from-[#fffbf2] via-[#fef5e0] to-white border-[#fde7be] shadow-card">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-amber-900 uppercase tracking-wider">
+            <span className="text-xs font-bold text-[#8c5717] uppercase tracking-wider">
               Total Credit Balance
             </span>
-            <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-lg shadow-inner">
+            <div className="w-9 h-9 rounded-2xl bg-amber-500/20 flex items-center justify-center text-lg font-bold shadow-inner text-amber-900">
               ⏱
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-4xl font-black text-amber-950">{totalCredits}</span>
-            <span className="text-sm font-semibold text-amber-800">Credits</span>
+            <span className="text-4xl font-black text-slate-900">{totalCredits}</span>
+            <span className="text-sm font-bold text-amber-800">Credits</span>
           </div>
-          <p className="mt-2 text-[11px] text-amber-700">
+          <p className="mt-2 text-[11px] text-[#8c5717] font-medium">
             Initial grant: 2 credits upon registration with @uohyd.ac.in
           </p>
         </Card>
 
         {/* Available to Book */}
-        <Card className="border-slate-200 bg-white">
+        <Card className="border-slate-200 bg-white shadow-card">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
               Available to Book
             </span>
-            <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-2xl bg-[#DDF7EB] text-[#0A6B5B] flex items-center justify-center font-bold">
               <Calendar className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="text-4xl font-black text-slate-900">{availableCredits}</span>
-            <span className="text-sm font-semibold text-slate-500">Free to spend</span>
+            <span className="text-sm font-semibold text-emerald-700">Free to Spend</span>
           </div>
-          <p className="mt-2 text-[11px] text-slate-500">
-            Formula: Total credits ({totalCredits}) &minus; pending reservations ({reservedCredits})
+          <p className="mt-2 text-[11px] text-slate-500 font-medium">
+            Formula: Total credits ({totalCredits}) &minus; pending bookings ({reservedCredits})
           </p>
         </Card>
 
         {/* Pending Reservations */}
-        <Card className="border-slate-200 bg-white">
+        <Card className="border-slate-200 bg-white shadow-card">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
               Held in Escrow
             </span>
-            <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center">
               <Lock className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="text-4xl font-black text-slate-900">{reservedCredits}</span>
-            <span className="text-sm font-semibold text-slate-500">Credits reserved</span>
+            <span className="text-sm font-semibold text-slate-500">Reserved</span>
           </div>
-          <p className="mt-2 text-[11px] text-slate-500">
+          <p className="mt-2 text-[11px] text-slate-500 font-medium">
             Transfers to tutor only after session completion &amp; mutual confirmation
           </p>
         </Card>
@@ -138,7 +140,7 @@ export const WalletPage: React.FC = () => {
 
       {/* Pending Reservations Breakdown if any */}
       {pendingReservations.length > 0 && (
-        <Card className="p-5 border-amber-200 bg-amber-50/50">
+        <Card className="p-5 border-amber-200 bg-amber-50/50 shadow-sm">
           <h3 className="text-xs font-bold text-amber-950 uppercase tracking-wider mb-2 flex items-center gap-2">
             <Lock className="w-3.5 h-3.5 text-amber-700" />
             Active Bookings Holding Time Credits ({pendingReservations.length})
@@ -147,8 +149,8 @@ export const WalletPage: React.FC = () => {
             {pendingReservations.map((slot) => (
               <div key={slot.slotId} className="py-2.5 flex items-center justify-between">
                 <div>
-                  <span className="font-semibold text-slate-800">{slot.skill}</span>
-                  <span className="text-slate-500 ml-2">with tutor {slot.tutorNick} on {slot.date}</span>
+                  <span className="font-bold text-slate-900">{slot.skill}</span>
+                  <span className="text-slate-500 ml-2">with tutor <strong className="text-brand-600">{slot.tutorNick}</strong> on {slot.date}</span>
                 </div>
                 <Badge variant="credit">1 Credit Reserved</Badge>
               </div>
@@ -158,7 +160,7 @@ export const WalletPage: React.FC = () => {
       )}
 
       {/* Ledger History Table */}
-      <Card className="p-6">
+      <Card className="p-6 bg-white shadow-card">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -166,7 +168,7 @@ export const WalletPage: React.FC = () => {
               Time Credit Transaction Ledger
             </h3>
             <p className="text-xs text-slate-500">
-              Immutable ledger record for every credit transferred upon completed session
+              Immutable server ledger record for every credit transferred upon completed session
             </p>
           </div>
           <Badge variant="brand">LockService Protected</Badge>
@@ -178,15 +180,15 @@ export const WalletPage: React.FC = () => {
             description="Complete a peer learning session with mutual confirmation to record your first transaction."
           />
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto -mx-6 px-6">
             <table className="w-full text-left text-xs text-slate-700">
-              <thead className="bg-slate-50 text-slate-500 border-b border-slate-200 font-semibold uppercase text-[10px] tracking-wider">
+              <thead className="bg-slate-50 text-slate-400 border-b border-slate-200 font-bold uppercase text-[10px] tracking-wider">
                 <tr>
-                  <th className="py-3 px-4">Date & Time</th>
+                  <th className="py-3 px-4">Date &amp; Time</th>
                   <th className="py-3 px-4">From (Learner)</th>
                   <th className="py-3 px-4">To (Tutor)</th>
                   <th className="py-3 px-4">Skill Session</th>
-                  <th className="py-3 px-4 text-right">Amount</th>
+                  <th className="py-3 px-4 text-right">Credit Movement</th>
                   <th className="py-3 px-4 text-right">Slot ID</th>
                 </tr>
               </thead>
@@ -194,37 +196,37 @@ export const WalletPage: React.FC = () => {
                 {ledger.map((tx) => {
                   const isIncoming = tx.to.toLowerCase() === user.email.toLowerCase();
                   return (
-                    <tr key={tx.id} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-3 px-4 text-slate-500 font-mono text-[11px] whitespace-nowrap">
+                    <tr key={tx.id} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-3.5 px-4 text-slate-500 font-mono text-[11px] whitespace-nowrap">
                         {tx.time}
                       </td>
-                      <td className="py-3 px-4 font-medium text-slate-800">
+                      <td className="py-3.5 px-4 font-semibold text-slate-900">
                         {tx.fromNick || tx.from.split('@')[0]}
                         {tx.from.toLowerCase() === user.email.toLowerCase() && (
-                          <span className="ml-1 text-[10px] text-brand-600 font-normal">(You)</span>
+                          <span className="ml-1 text-[10px] text-brand-600 font-bold">(You)</span>
                         )}
                       </td>
-                      <td className="py-3 px-4 font-medium text-slate-800">
+                      <td className="py-3.5 px-4 font-semibold text-slate-900">
                         {tx.toNick || tx.to.split('@')[0]}
                         {tx.to.toLowerCase() === user.email.toLowerCase() && (
-                          <span className="ml-1 text-[10px] text-brand-600 font-normal">(You)</span>
+                          <span className="ml-1 text-[10px] text-brand-600 font-bold">(You)</span>
                         )}
                       </td>
-                      <td className="py-3 px-4 text-slate-700 font-medium">
+                      <td className="py-3.5 px-4 text-slate-800 font-medium">
                         {tx.skill}
                       </td>
-                      <td className="py-3 px-4 text-right font-bold whitespace-nowrap">
+                      <td className="py-3.5 px-4 text-right font-extrabold whitespace-nowrap">
                         {isIncoming ? (
-                          <span className="inline-flex items-center gap-1 text-emerald-600">
-                            <ArrowDownLeft className="w-3.5 h-3.5" /> +{tx.credits} credit
+                          <span className="inline-flex items-center gap-1 text-[#0A6B5B] bg-[#DDF7EB] px-2.5 py-1 rounded-full border border-[#bdf1d9]">
+                            <ArrowDownLeft className="w-3.5 h-3.5" /> +{tx.credits} Credit
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-slate-600">
-                            <ArrowUpRight className="w-3.5 h-3.5" /> -{tx.credits} credit
+                          <span className="inline-flex items-center gap-1 text-slate-600 bg-slate-100 px-2.5 py-1 rounded-full">
+                            <ArrowUpRight className="w-3.5 h-3.5" /> -{tx.credits} Credit
                           </span>
                         )}
                       </td>
-                      <td className="py-3 px-4 text-right font-mono text-[11px] text-slate-400">
+                      <td className="py-3.5 px-4 text-right font-mono text-[11px] text-slate-400">
                         {tx.slotId}
                       </td>
                     </tr>

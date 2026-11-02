@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, forwardRef } from 'react';
 import { cn } from '../../utils';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -16,7 +16,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full space-y-1.5">
         {label && (
-          <label htmlFor={inputId} className="block text-xs font-semibold text-slate-700 tracking-wide">
+          <label htmlFor={inputId} className="block text-xs font-bold text-slate-800 tracking-wide uppercase">
             {label}
           </label>
         )}
@@ -30,8 +30,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             ref={ref}
             className={cn(
-              'w-full rounded-lg border bg-white px-3.5 py-2 text-sm text-slate-900 transition-colors placeholder:text-slate-400',
-              'focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20',
+              'w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-slate-900 transition-all duration-150 placeholder:text-slate-400',
+              'focus:border-brand-500 focus:outline-none focus:ring-3 focus:ring-brand-500/15 focus:bg-white',
               'disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed',
               error ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20' : 'border-slate-200 hover:border-slate-300',
               leftIcon ? 'pl-10' : '',
@@ -41,13 +41,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {rightAction && (
-            <div className="absolute right-2 flex items-center">
+            <div className="absolute right-2.5 flex items-center">
               {rightAction}
             </div>
           )}
         </div>
         {error ? (
-          <p className="text-xs text-rose-600 font-medium">{error}</p>
+          <p className="text-xs text-rose-600 font-semibold flex items-center gap-1">{error}</p>
         ) : helperText ? (
           <p className="text-xs text-slate-500">{helperText}</p>
         ) : null}

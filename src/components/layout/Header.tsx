@@ -6,7 +6,7 @@ import { Avatar } from '../ui/Avatar';
 import { Button } from '../ui/Button';
 import { BackendConfigModal } from '../ui/BackendConfigModal';
 import { apiClient } from '../../services/apiClient';
-import { PlusCircle, Search, Database, ShieldCheck } from 'lucide-react';
+import { PlusCircle, Search, Database, Sparkles } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const { user } = useAuth();
@@ -19,13 +19,16 @@ export const Header: React.FC = () => {
       <div className="flex items-center justify-between gap-4 max-w-7xl mx-auto">
         {/* Mobile Brand / Left side */}
         <div className="flex items-center gap-3 md:hidden">
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold text-base shadow-xs">
+          <Link to="/dashboard" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#263778] via-[#2f4396] to-[#4969F5] flex items-center justify-center text-white font-extrabold text-lg shadow-sm">
               S
             </div>
             <div>
-              <span className="font-extrabold text-slate-900 tracking-tight text-sm">SkillSwap</span>
-              <span className="ml-1 text-[10px] font-bold text-brand-600">UoH</span>
+              <div className="flex items-center gap-1">
+                <span className="font-extrabold text-slate-900 tracking-tight text-sm">SkillSwap</span>
+                <span className="text-[10px] font-bold text-brand-600 bg-brand-50 px-1 rounded">UoH</span>
+              </div>
+              <p className="text-[9px] text-slate-400 font-medium">Learn Together</p>
             </div>
           </Link>
         </div>
@@ -34,31 +37,31 @@ export const Header: React.FC = () => {
         <div className="hidden md:flex items-center flex-1 max-w-md">
           <div
             onClick={() => navigate('/discover')}
-            className="w-full flex items-center gap-2 px-3.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 hover:border-slate-300 hover:text-slate-600 text-xs cursor-pointer transition-colors shadow-2xs"
+            className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50/80 text-slate-400 hover:border-brand-300 hover:bg-white hover:text-slate-600 text-xs cursor-pointer transition-all duration-150 shadow-2xs group"
           >
-            <Search className="w-3.5 h-3.5 text-slate-400" />
-            <span>Search tutors by skill (Python, LaTeX, Figma, Excel)...</span>
-            <kbd className="ml-auto px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] text-slate-400 font-mono">
+            <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-brand-500 transition-colors" />
+            <span className="font-medium">Search tutors by skill (Python, LaTeX, Figma, Excel)...</span>
+            <kbd className="ml-auto px-1.5 py-0.5 rounded-md bg-white border border-slate-200 text-[10px] text-slate-400 font-mono shadow-2xs">
               /
             </kbd>
           </div>
         </div>
 
-        {/* Right Section: Backend Status, Time Wallet, Post Slot, Profile */}
-        <div className="flex items-center gap-2.5">
+        {/* Right Section: Backend Status, Time Wallet, Teach Slot, Profile */}
+        <div className="flex items-center gap-3">
           {/* Backend Connection Status Badge / Button */}
           <button
             type="button"
             onClick={() => setShowBackendModal(true)}
-            className={`hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border cursor-pointer transition-colors ${
+            className={`hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold border cursor-pointer transition-all duration-150 active:scale-95 ${
               isBackendLive
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
-                : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200/80'
+                ? 'bg-[#DDF7EB] text-[#0A6B5B] border-[#bdf1d9] hover:bg-[#cbf5e2]'
+                : 'bg-slate-100/90 text-slate-600 border-slate-200 hover:bg-slate-200/80'
             }`}
-            title="Configure Google Apps Script API & Google Sheets connection"
+            title="Configure Google Apps Script API & Google Sheets database"
           >
-            <Database className="w-3 h-3" />
-            <span>{isBackendLive ? 'Live API Connected' : 'Local / Demo Mode'}</span>
+            <Database className="w-3.5 h-3.5" />
+            <span>{isBackendLive ? 'Live Sheets API' : 'Demo Local Mode'}</span>
           </button>
 
           {/* Prominent Time Wallet on Every Page per Spec 5B */}
@@ -70,13 +73,17 @@ export const Header: React.FC = () => {
             variant="primary"
             leftIcon={<PlusCircle className="w-3.5 h-3.5" />}
             onClick={() => navigate('/teach')}
-            className="hidden sm:inline-flex"
+            className="hidden sm:inline-flex shadow-sm hover:shadow-md transition-shadow"
           >
             Teach Slot
           </Button>
 
           {/* User Profile Avatar Link */}
-          <Link to="/profile" className="flex items-center gap-2 p-0.5 rounded-full hover:ring-2 hover:ring-brand-500/30 transition-all">
+          <Link
+            to="/profile"
+            className="flex items-center gap-2 p-0.5 rounded-full hover:ring-2 hover:ring-brand-500/30 transition-all active:scale-95"
+            title={`${user.nick} - View Profile`}
+          >
             <Avatar name={user.nick} size="sm" />
           </Link>
         </div>

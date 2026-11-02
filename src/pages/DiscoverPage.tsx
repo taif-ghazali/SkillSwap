@@ -12,7 +12,7 @@ import { SkillTag } from '../components/ui/SkillTag';
 import { AcademicIntegrityBanner } from '../components/shared/AcademicIntegrityBanner';
 import { POPULAR_CAMPUS_SKILLS } from '../data/mockData';
 import { SessionSlot } from '../types';
-import { Search, Filter, AlertCircle, Sparkles } from 'lucide-react';
+import { Search, Filter, AlertCircle, Sparkles, CheckCircle } from 'lucide-react';
 
 export const DiscoverPage: React.FC = () => {
   const { user, availableCredits, refreshUserData } = useAuth();
@@ -33,12 +33,12 @@ export const DiscoverPage: React.FC = () => {
   }, [queryFromUrl, categoryFromUrl]);
 
   const categories = [
-    { id: 'all', label: 'All Categories' },
-    { id: 'Programming', label: 'Programming' },
-    { id: 'Design & Media', label: 'Design & Media' },
-    { id: 'Tools & Tech', label: 'Tools & Tech' },
-    { id: 'Academics & Writing', label: 'Academics & Writing' },
-    { id: 'Languages', label: 'Languages' },
+    { id: 'all', label: 'All Disciplines' },
+    { id: 'Programming', label: 'Programming & CS' },
+    { id: 'Design & Media', label: 'Design & UI/UX' },
+    { id: 'Tools & Tech', label: 'Tools & Tech (Git/Docker)' },
+    { id: 'Academics & Writing', label: 'LaTeX & Academic Writing' },
+    { id: 'Languages', label: 'Languages & Soft Skills' },
   ];
 
   const filteredSlots = useMemo(() => {
@@ -60,12 +60,10 @@ export const DiscoverPage: React.FC = () => {
   };
 
   const handleQuickSkillClick = (skill: string) => {
-    // Populate and immediately activate the search
     updateFilters(skill, selectedCategory);
   };
 
   const handleCategoryClick = (catId: string) => {
-    // If clicking already selected category (other than 'all'), toggle back to 'all'
     const nextCategory = selectedCategory === catId && catId !== 'all' ? 'all' : catId;
     updateFilters(searchTerm, nextCategory);
   };
@@ -101,10 +99,10 @@ export const DiscoverPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <PageHeader
         title="Discover Peer Mentors & Sessions"
-        subtitle="Search campus slots by skill, date, and venue at the University of Hyderabad"
+        subtitle="Search open campus slots by skill, date, and verified venue at the University of Hyderabad"
         breadcrumbs={[
           { label: 'Dashboard', href: '/dashboard' },
           { label: 'Discover & Search' },
@@ -115,54 +113,57 @@ export const DiscoverPage: React.FC = () => {
 
       {bookingMessage && (
         <div
-          className={`p-4 rounded-xl border text-sm flex items-center gap-3 transition-all ${
+          className={`p-4 rounded-2xl border text-sm flex items-center gap-3 transition-all ${
             bookingMessage.type === 'success'
-              ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+              ? 'bg-[#DDF7EB] border-[#bdf1d9] text-[#0A6B5B]'
               : 'bg-rose-50 border-rose-200 text-rose-900'
           }`}
         >
           <AlertCircle className="w-5 h-5 shrink-0" />
-          <span>{bookingMessage.text}</span>
+          <span className="font-semibold">{bookingMessage.text}</span>
         </div>
       )}
 
-      {/* Search Bar & Filters */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-slate-200/80 shadow-subtle space-y-4">
-        <form onSubmit={handleSearchSubmit} className="flex gap-2.5">
+      {/* Search Bar & Filters Card */}
+      <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/90 shadow-card space-y-4">
+        <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-2.5">
           <Input
             id="skillSearch"
-            placeholder="Search by skill name (e.g. LaTeX, Python, Figma, Excel)..."
+            placeholder="Search by skill name (e.g. LaTeX, Python, Figma, Excel, Spoken English)..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             leftIcon={<Search className="w-4 h-4" />}
             className="w-full"
           />
-          <Button type="submit" size="md">
-            Search
-          </Button>
-          {(searchTerm || selectedCategory !== 'all') && (
-            <Button
-              type="button"
-              variant="outline"
-              size="md"
-              onClick={handleClearAll}
-            >
-              Reset Filters
+          <div className="flex items-center gap-2">
+            <Button type="submit" size="md" className="shrink-0">
+              Search
             </Button>
-          )}
+            {(searchTerm || selectedCategory !== 'all') && (
+              <Button
+                type="button"
+                variant="outline"
+                size="md"
+                onClick={handleClearAll}
+                className="shrink-0"
+              >
+                Reset
+              </Button>
+            )}
+          </div>
         </form>
 
         {/* Quick Skill Tags & Match My Wants */}
         <div className="flex items-center gap-2 flex-wrap pt-1">
-          <span className="text-xs font-semibold text-slate-500">Quick suggestions:</span>
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Quick Suggestions:</span>
           {user.wants && user.wants.length > 0 && (
             <button
               type="button"
               onClick={() => handleQuickSkillClick(user.wants[0])}
-              className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 transition-colors flex items-center gap-1 cursor-pointer"
+              className="text-xs px-3 py-1 rounded-full font-bold bg-brand-50 text-brand-700 border border-brand-200 hover:bg-brand-100 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
             >
-              <Sparkles className="w-3 h-3 text-indigo-600" />
-              <span>My Want: {user.wants[0]}</span>
+              <Sparkles className="w-3.5 h-3.5 text-brand-600" />
+              <span>Match My Want: {user.wants[0]}</span>
             </button>
           )}
           {POPULAR_CAMPUS_SKILLS.map((skill) => {
@@ -180,9 +181,9 @@ export const DiscoverPage: React.FC = () => {
         </div>
 
         {/* Category Filter Pills (Clearable) */}
-        <div className="pt-2 border-t border-slate-100 flex items-center gap-2 overflow-x-auto pb-1">
+        <div className="pt-3 border-t border-slate-100 flex items-center gap-2 overflow-x-auto pb-1">
           <Filter className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-          <span className="text-xs text-slate-500 font-medium shrink-0">Category:</span>
+          <span className="text-xs text-slate-400 font-bold uppercase tracking-wider shrink-0">Filter:</span>
           {categories.map((cat) => {
             const isCatActive = selectedCategory === cat.id;
             return (
@@ -190,10 +191,10 @@ export const DiscoverPage: React.FC = () => {
                 key={cat.id}
                 type="button"
                 onClick={() => handleCategoryClick(cat.id)}
-                className={`text-xs px-3 py-1 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
+                className={`text-xs px-3.5 py-1.5 rounded-full font-bold transition-all shrink-0 cursor-pointer ${
                   isCatActive
-                    ? 'bg-brand-600 text-white shadow-2xs font-semibold'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/25'
+                    : 'bg-slate-100/90 text-slate-600 hover:bg-slate-200'
                 }`}
               >
                 {cat.label}
@@ -204,16 +205,16 @@ export const DiscoverPage: React.FC = () => {
       </div>
 
       {/* Results Header */}
-      <div className="flex items-center justify-between text-xs text-slate-600">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 px-1">
         <div>
-          Showing <strong>{filteredSlots.length}</strong> available open session{filteredSlots.length !== 1 ? 's' : ''}
-          {searchTerm && <span> matching &ldquo;{searchTerm}&rdquo;</span>}
-          {selectedCategory !== 'all' && <span> in {selectedCategory}</span>}
+          Showing <strong className="text-slate-900 font-bold">{filteredSlots.length}</strong> available open session{filteredSlots.length !== 1 ? 's' : ''}
+          {searchTerm && <span> matching &ldquo;<span className="text-brand-600 font-bold">{searchTerm}</span>&rdquo;</span>}
+          {selectedCategory !== 'all' && <span> in <span className="font-semibold">{selectedCategory}</span></span>}
         </div>
-        <div className="flex items-center gap-1.5 text-slate-500">
-          <span>Available credits to book:</span>
-          <strong className="text-amber-900 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 font-bold">
-            ⏱ {availableCredits}
+        <div className="flex items-center gap-2">
+          <span className="text-slate-500">Available credits:</span>
+          <strong className="text-[#8c5717] bg-[#fef5e0] px-2.5 py-1 rounded-full border border-[#fde7be] font-bold">
+            ⏱ {availableCredits} Credits
           </strong>
         </div>
       </div>
@@ -224,7 +225,7 @@ export const DiscoverPage: React.FC = () => {
           title="No Open Slots Found"
           description={
             searchTerm || selectedCategory !== 'all'
-              ? `No tutors have open future slots matching your search criteria. Try a different skill, clear the filters, or publish your own slot.`
+              ? `No tutors have open future slots matching your search criteria. Try a different skill or clear the filters.`
               : 'There are currently no open future slots available. Be the first to publish a teaching slot!'
           }
           actionLabel="Clear All Filters"
