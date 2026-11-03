@@ -27,9 +27,9 @@ export class AppsScriptApiClient {
 
   public getStoredUrl(): string {
     try {
-      return localStorage.getItem(STORAGE_KEY_API_URL) || '';
+      return localStorage.getItem(STORAGE_KEY_API_URL) || import.meta.env.VITE_APPS_SCRIPT_URL || '';
     } catch {
-      return '';
+      return import.meta.env.VITE_APPS_SCRIPT_URL || '';
     }
   }
 
@@ -68,7 +68,34 @@ export class AppsScriptApiClient {
   }
 
   public isConfigured(): boolean {
-    return Boolean(this.apiUrl && this.apiUrl.startsWith('https://script.google.com'));
+    return this.validEndpoint(this.apiUrl);
+  }
+
+  private validEndpoint(value: string): boolean {
+    try {
+      const url = new URL(value);
+      return url.origin === 'https://script.google.com' && /^\/(?:macros|a\/macros\/[A-Za-z0-9.-]+)\/s\/[A-Za-z0-9_-]+\/exec$/.test(url.pathname) && !url.search && !url.hash && !url.username && !url.password;
+    } catch { return false; }
+  }
+
+  private async request<T>(endpoint: string, key: string, action: string, params: Record<string, string | number> = {}): Promise<{ success: boolean; data?: T; error?: string }> {
+    if (!this.validEndpoint(endpoint)) return { success: false, error: 'Enter a Google Apps Script /exec URL without query parameters.' };
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 20000);
+    try {
+      const url = new URL(endpoint);
+      Object.entries(params).forEach(([name, value]) => url.searchParams.set(name, String(value)));
+      url.searchParams.set('key', key);
+      url.searchParams.set('action', action);
+      const response = await fetch(url.toString(), { signal: controller.signal, redirect: 'follow', headers: { Accept: 'application/json' } });
+      if (!response.ok) return { success: false, error: `Server returned HTTP ${response.status}.` };
+      const json = await response.json();
+      if (!json || json.action !== action || !Object.prototype.hasOwnProperty.call(json, 'data') || json.data == null) return { success: false, error: 'Unexpected server response.' };
+      if (json.data.error) return { success: false, error: String(json.data.error) };
+      return { success: true, data: json.data };
+    } catch {
+      return { success: false, error: controller.signal.aborted ? 'Request timed out. Refresh session data before retrying an action.' : 'Unable to read the server response. Check your connection and deployment access, then refresh before retrying.' };
+    } finally { clearTimeout(timer); }
   }
 
   /**
@@ -82,39 +109,8 @@ export class AppsScriptApiClient {
       return { success: false, error: 'Live backend URL is not configured' };
     }
 
-    try {
-      const url = new URL(this.apiUrl);
-      url.searchParams.set('key', this.apiKey);
-      url.searchParams.set('action', action);
+    return this.request<T>(this.apiUrl, this.apiKey, action, params);
 
-      Object.entries(params).forEach(([k, v]) => {
-        if (v !== undefined && v !== null) {
-          url.searchParams.set(k, String(v));
-        }
-      });
-
-      const response = await fetch(url.toString(), {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        return { success: false, error: `HTTP ${response.status}: ${response.statusText}` };
-      }
-
-      const json = await response.json();
-      if (json.data && json.data.error) {
-        return { success: false, error: json.data.error };
-      }
-      return { success: true, data: json.data };
-    } catch (err: any) {
-      return {
-        success: false,
-        error: err.message || 'Network request failed. Ensure Apps Script Web App has access set to "Anyone".',
-      };
-    }
   }
 
   /**
@@ -124,40 +120,10 @@ export class AppsScriptApiClient {
     testUrl: string,
     testKey: string = DEFAULT_KEY
   ): Promise<{ success: boolean; message: string; data?: any }> {
-    try {
-      const url = new URL(testUrl.trim());
-      url.searchParams.set('key', testKey.trim());
-      url.searchParams.set('action', 'ping');
-
-      const response = await fetch(url.toString(), {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        return { success: false, message: `Server returned status ${response.status}` };
-      }
-
-      const json = await response.json();
-      if (json.data && json.data.error) {
-        return { success: false, message: json.data.error };
-      }
-
-      return {
-        success: true,
-        message: 'Successfully connected to Google Apps Script Web App API!',
-        data: json.data,
-      };
-    } catch (err: any) {
-      return {
-        success: false,
-        message: err.message || 'Connection failed. Verify Web App deployment settings.',
-      };
-    }
+    const result = await this.request<{ status: string }>(testUrl.trim(), testKey.trim(), 'ping');
+    const success = result.success && result.data?.status === 'healthy';
+    return { success, message: success ? 'Authenticated connection verified.' : result.error || 'Server health check failed.' };
   }
 }
 
 export const apiClient = new AppsScriptApiClient();
-

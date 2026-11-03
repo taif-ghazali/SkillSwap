@@ -1,0 +1,1395 @@
+{
+  "run": "20261102222723",
+  "date": "2026-11-04",
+  "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+  "learner": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+  "requests": [
+    {
+      "action": "ping",
+      "params": {},
+      "data": {
+        "status": "healthy",
+        "timestamp": "2026-11-02T16:57:25.050Z",
+        "university": "University of Hyderabad"
+      }
+    },
+    {
+      "action": "login",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "nick": "DISPOSABLE QA time boundary 20261102222723"
+      },
+      "data": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "nick": "DISPOSABLE QA time boundary 20261102222723",
+        "credits": 2,
+        "isNew": true,
+        "offers": [],
+        "wants": []
+      }
+    },
+    {
+      "action": "publish",
+      "params": {
+        "email": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+        "skill": "DISPOSABLE TIME 20261102222723 02:45",
+        "date": "2026-11-04",
+        "time": "02:45",
+        "place": "Online - disposable QA, no real meeting"
+      },
+      "data": {
+        "ok": true,
+        "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5"
+      }
+    },
+    {
+      "action": "mine",
+      "params": {
+        "email": "skillswap.qa.20261102221239.tutor@uohyd.ac.in"
+      },
+      "data": {
+        "credits": 3,
+        "nick": "DISPOSABLE QA Tutor 20261102221239",
+        "slots": [
+          {
+            "slotId": "SLfa0f9bd5-95d6-47be-8824-0105bd95cbd8",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 long",
+            "date": "2026-11-03",
+            "time": "02:12",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL2a00f8d7-d22d-4615-917a-065c5f98ac42",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 near",
+            "date": "2026-11-02",
+            "time": "23:12",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "booked",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL3f0eead1-0170-42aa-807d-6937669163d4",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 completion",
+            "date": "2026-11-02",
+            "time": "22:15",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL1d59ce0a-bce9-48c1-acbb-1cf0f3031f78",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 spare",
+            "date": "2026-11-03",
+            "time": "03:13",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL2b4fa599-c17e-43e3-a045-bd6112e879b1",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 completion replacement",
+            "date": "2026-11-02",
+            "time": "22:18",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "done",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "yes",
+            "learnerOk": "yes"
+          },
+          {
+            "slotId": "SLaf750ef4-33ec-461b-8806-a97c88e7007b",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 early time regression",
+            "date": "2026-11-03",
+            "time": "02:45",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 02:45",
+            "date": "2026-11-04",
+            "time": "02:45",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          }
+        ]
+      }
+    },
+    {
+      "action": "search",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "skill": "20261102222723"
+      },
+      "data": [
+        {
+          "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 02:45",
+          "date": "2026-11-04",
+          "time": "02:45",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        }
+      ]
+    },
+    {
+      "action": "book",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SL39eb62fb-b8f5-4077-a417-2417973158f5"
+      },
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "action": "mine",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in"
+      },
+      "data": {
+        "credits": 2,
+        "nick": "DISPOSABLE QA time boundary 20261102222723",
+        "slots": [
+          {
+            "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 02:45",
+            "date": "2026-11-04",
+            "time": "02:45",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "booked",
+            "learner": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+            "tutorOk": "",
+            "learnerOk": ""
+          }
+        ]
+      }
+    },
+    {
+      "action": "confirm",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SL39eb62fb-b8f5-4077-a417-2417973158f5"
+      },
+      "data": {
+        "error": "Confirm only after the session has started"
+      }
+    },
+    {
+      "action": "cancel",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SL39eb62fb-b8f5-4077-a417-2417973158f5"
+      },
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "action": "publish",
+      "params": {
+        "email": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+        "skill": "DISPOSABLE TIME 20261102222723 09:05",
+        "date": "2026-11-04",
+        "time": "09:05",
+        "place": "Online - disposable QA, no real meeting"
+      },
+      "data": {
+        "ok": true,
+        "slotId": "SLe93c7803-5d95-4980-b1f6-d94c57754ced"
+      }
+    },
+    {
+      "action": "mine",
+      "params": {
+        "email": "skillswap.qa.20261102221239.tutor@uohyd.ac.in"
+      },
+      "data": {
+        "credits": 3,
+        "nick": "DISPOSABLE QA Tutor 20261102221239",
+        "slots": [
+          {
+            "slotId": "SLfa0f9bd5-95d6-47be-8824-0105bd95cbd8",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 long",
+            "date": "2026-11-03",
+            "time": "02:12",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL2a00f8d7-d22d-4615-917a-065c5f98ac42",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 near",
+            "date": "2026-11-02",
+            "time": "23:12",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "booked",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL3f0eead1-0170-42aa-807d-6937669163d4",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 completion",
+            "date": "2026-11-02",
+            "time": "22:15",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL1d59ce0a-bce9-48c1-acbb-1cf0f3031f78",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 spare",
+            "date": "2026-11-03",
+            "time": "03:13",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL2b4fa599-c17e-43e3-a045-bd6112e879b1",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 completion replacement",
+            "date": "2026-11-02",
+            "time": "22:18",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "done",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "yes",
+            "learnerOk": "yes"
+          },
+          {
+            "slotId": "SLaf750ef4-33ec-461b-8806-a97c88e7007b",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 early time regression",
+            "date": "2026-11-03",
+            "time": "02:45",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 02:45",
+            "date": "2026-11-04",
+            "time": "02:45",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SLe93c7803-5d95-4980-b1f6-d94c57754ced",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 09:05",
+            "date": "2026-11-04",
+            "time": "09:05",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          }
+        ]
+      }
+    },
+    {
+      "action": "search",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "skill": "20261102222723"
+      },
+      "data": [
+        {
+          "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 02:45",
+          "date": "2026-11-04",
+          "time": "02:45",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SLe93c7803-5d95-4980-b1f6-d94c57754ced",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 09:05",
+          "date": "2026-11-04",
+          "time": "09:05",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        }
+      ]
+    },
+    {
+      "action": "book",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SLe93c7803-5d95-4980-b1f6-d94c57754ced"
+      },
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "action": "mine",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in"
+      },
+      "data": {
+        "credits": 2,
+        "nick": "DISPOSABLE QA time boundary 20261102222723",
+        "slots": [
+          {
+            "slotId": "SLe93c7803-5d95-4980-b1f6-d94c57754ced",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 09:05",
+            "date": "2026-11-04",
+            "time": "09:05",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "booked",
+            "learner": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+            "tutorOk": "",
+            "learnerOk": ""
+          }
+        ]
+      }
+    },
+    {
+      "action": "confirm",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SLe93c7803-5d95-4980-b1f6-d94c57754ced"
+      },
+      "data": {
+        "error": "Confirm only after the session has started"
+      }
+    },
+    {
+      "action": "cancel",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SLe93c7803-5d95-4980-b1f6-d94c57754ced"
+      },
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "action": "publish",
+      "params": {
+        "email": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+        "skill": "DISPOSABLE TIME 20261102222723 12:30",
+        "date": "2026-11-04",
+        "time": "12:30",
+        "place": "Online - disposable QA, no real meeting"
+      },
+      "data": {
+        "ok": true,
+        "slotId": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb"
+      }
+    },
+    {
+      "action": "mine",
+      "params": {
+        "email": "skillswap.qa.20261102221239.tutor@uohyd.ac.in"
+      },
+      "data": {
+        "credits": 3,
+        "nick": "DISPOSABLE QA Tutor 20261102221239",
+        "slots": [
+          {
+            "slotId": "SLfa0f9bd5-95d6-47be-8824-0105bd95cbd8",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 long",
+            "date": "2026-11-03",
+            "time": "02:12",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL2a00f8d7-d22d-4615-917a-065c5f98ac42",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 near",
+            "date": "2026-11-02",
+            "time": "23:12",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "booked",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL3f0eead1-0170-42aa-807d-6937669163d4",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 completion",
+            "date": "2026-11-02",
+            "time": "22:15",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL1d59ce0a-bce9-48c1-acbb-1cf0f3031f78",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 spare",
+            "date": "2026-11-03",
+            "time": "03:13",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL2b4fa599-c17e-43e3-a045-bd6112e879b1",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 completion replacement",
+            "date": "2026-11-02",
+            "time": "22:18",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "done",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "yes",
+            "learnerOk": "yes"
+          },
+          {
+            "slotId": "SLaf750ef4-33ec-461b-8806-a97c88e7007b",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 early time regression",
+            "date": "2026-11-03",
+            "time": "02:45",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 02:45",
+            "date": "2026-11-04",
+            "time": "02:45",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SLe93c7803-5d95-4980-b1f6-d94c57754ced",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 09:05",
+            "date": "2026-11-04",
+            "time": "09:05",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 12:30",
+            "date": "2026-11-04",
+            "time": "12:30",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          }
+        ]
+      }
+    },
+    {
+      "action": "search",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "skill": "20261102222723"
+      },
+      "data": [
+        {
+          "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 02:45",
+          "date": "2026-11-04",
+          "time": "02:45",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SLe93c7803-5d95-4980-b1f6-d94c57754ced",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 09:05",
+          "date": "2026-11-04",
+          "time": "09:05",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 12:30",
+          "date": "2026-11-04",
+          "time": "12:30",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        }
+      ]
+    },
+    {
+      "action": "book",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb"
+      },
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "action": "mine",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in"
+      },
+      "data": {
+        "credits": 2,
+        "nick": "DISPOSABLE QA time boundary 20261102222723",
+        "slots": [
+          {
+            "slotId": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 12:30",
+            "date": "2026-11-04",
+            "time": "12:30",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "booked",
+            "learner": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+            "tutorOk": "",
+            "learnerOk": ""
+          }
+        ]
+      }
+    },
+    {
+      "action": "confirm",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb"
+      },
+      "data": {
+        "error": "Confirm only after the session has started"
+      }
+    },
+    {
+      "action": "cancel",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb"
+      },
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "action": "publish",
+      "params": {
+        "email": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+        "skill": "DISPOSABLE TIME 20261102222723 18:45",
+        "date": "2026-11-04",
+        "time": "18:45",
+        "place": "Online - disposable QA, no real meeting"
+      },
+      "data": {
+        "ok": true,
+        "slotId": "SL01767806-2639-4098-8ce8-6e75e0ccd87c"
+      }
+    },
+    {
+      "action": "mine",
+      "params": {
+        "email": "skillswap.qa.20261102221239.tutor@uohyd.ac.in"
+      },
+      "data": {
+        "credits": 3,
+        "nick": "DISPOSABLE QA Tutor 20261102221239",
+        "slots": [
+          {
+            "slotId": "SLfa0f9bd5-95d6-47be-8824-0105bd95cbd8",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 long",
+            "date": "2026-11-03",
+            "time": "02:12",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL2a00f8d7-d22d-4615-917a-065c5f98ac42",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 near",
+            "date": "2026-11-02",
+            "time": "23:12",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "booked",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL3f0eead1-0170-42aa-807d-6937669163d4",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 completion",
+            "date": "2026-11-02",
+            "time": "22:15",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL1d59ce0a-bce9-48c1-acbb-1cf0f3031f78",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 spare",
+            "date": "2026-11-03",
+            "time": "03:13",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL2b4fa599-c17e-43e3-a045-bd6112e879b1",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 completion replacement",
+            "date": "2026-11-02",
+            "time": "22:18",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "done",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "yes",
+            "learnerOk": "yes"
+          },
+          {
+            "slotId": "SLaf750ef4-33ec-461b-8806-a97c88e7007b",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 early time regression",
+            "date": "2026-11-03",
+            "time": "02:45",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 02:45",
+            "date": "2026-11-04",
+            "time": "02:45",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SLe93c7803-5d95-4980-b1f6-d94c57754ced",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 09:05",
+            "date": "2026-11-04",
+            "time": "09:05",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 12:30",
+            "date": "2026-11-04",
+            "time": "12:30",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL01767806-2639-4098-8ce8-6e75e0ccd87c",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 18:45",
+            "date": "2026-11-04",
+            "time": "18:45",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          }
+        ]
+      }
+    },
+    {
+      "action": "search",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "skill": "20261102222723"
+      },
+      "data": [
+        {
+          "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 02:45",
+          "date": "2026-11-04",
+          "time": "02:45",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SLe93c7803-5d95-4980-b1f6-d94c57754ced",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 09:05",
+          "date": "2026-11-04",
+          "time": "09:05",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 12:30",
+          "date": "2026-11-04",
+          "time": "12:30",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SL01767806-2639-4098-8ce8-6e75e0ccd87c",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 18:45",
+          "date": "2026-11-04",
+          "time": "18:45",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        }
+      ]
+    },
+    {
+      "action": "book",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SL01767806-2639-4098-8ce8-6e75e0ccd87c"
+      },
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "action": "mine",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in"
+      },
+      "data": {
+        "credits": 2,
+        "nick": "DISPOSABLE QA time boundary 20261102222723",
+        "slots": [
+          {
+            "slotId": "SL01767806-2639-4098-8ce8-6e75e0ccd87c",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 18:45",
+            "date": "2026-11-04",
+            "time": "18:45",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "booked",
+            "learner": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+            "tutorOk": "",
+            "learnerOk": ""
+          }
+        ]
+      }
+    },
+    {
+      "action": "confirm",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SL01767806-2639-4098-8ce8-6e75e0ccd87c"
+      },
+      "data": {
+        "error": "Confirm only after the session has started"
+      }
+    },
+    {
+      "action": "cancel",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "slot": "SL01767806-2639-4098-8ce8-6e75e0ccd87c"
+      },
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "action": "search",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "skill": "20261102222723"
+      },
+      "data": [
+        {
+          "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 02:45",
+          "date": "2026-11-04",
+          "time": "02:45",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SLe93c7803-5d95-4980-b1f6-d94c57754ced",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 09:05",
+          "date": "2026-11-04",
+          "time": "09:05",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 12:30",
+          "date": "2026-11-04",
+          "time": "12:30",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SL01767806-2639-4098-8ce8-6e75e0ccd87c",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 18:45",
+          "date": "2026-11-04",
+          "time": "18:45",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        }
+      ]
+    },
+    {
+      "action": "mine",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in"
+      },
+      "data": {
+        "credits": 2,
+        "nick": "DISPOSABLE QA time boundary 20261102222723",
+        "slots": []
+      }
+    },
+    {
+      "action": "confirm",
+      "params": {
+        "email": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+        "slot": "SL2b4fa599-c17e-43e3-a045-bd6112e879b1"
+      },
+      "data": {
+        "error": "Session is not in booked state"
+      }
+    },
+    {
+      "action": "mine",
+      "params": {
+        "email": "skillswap.qa.20261102221239.tutor@uohyd.ac.in"
+      },
+      "data": {
+        "credits": 3,
+        "nick": "DISPOSABLE QA Tutor 20261102221239",
+        "slots": [
+          {
+            "slotId": "SLfa0f9bd5-95d6-47be-8824-0105bd95cbd8",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 long",
+            "date": "2026-11-03",
+            "time": "02:12",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL2a00f8d7-d22d-4615-917a-065c5f98ac42",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 near",
+            "date": "2026-11-02",
+            "time": "23:12",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "booked",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL3f0eead1-0170-42aa-807d-6937669163d4",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 completion",
+            "date": "2026-11-02",
+            "time": "22:15",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL1d59ce0a-bce9-48c1-acbb-1cf0f3031f78",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 spare",
+            "date": "2026-11-03",
+            "time": "03:13",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL2b4fa599-c17e-43e3-a045-bd6112e879b1",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 completion replacement",
+            "date": "2026-11-02",
+            "time": "22:18",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "done",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "yes",
+            "learnerOk": "yes"
+          },
+          {
+            "slotId": "SLaf750ef4-33ec-461b-8806-a97c88e7007b",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 early time regression",
+            "date": "2026-11-03",
+            "time": "02:45",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 02:45",
+            "date": "2026-11-04",
+            "time": "02:45",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SLe93c7803-5d95-4980-b1f6-d94c57754ced",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 09:05",
+            "date": "2026-11-04",
+            "time": "09:05",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 12:30",
+            "date": "2026-11-04",
+            "time": "12:30",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL01767806-2639-4098-8ce8-6e75e0ccd87c",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE TIME 20261102222723 18:45",
+            "date": "2026-11-04",
+            "time": "18:45",
+            "place": "Online - disposable QA, no real meeting",
+            "status": "open",
+            "learner": "",
+            "tutorOk": "",
+            "learnerOk": ""
+          }
+        ]
+      }
+    },
+    {
+      "action": "mine",
+      "params": {
+        "email": "skillswap.qa.20261102221239.learner@uohyd.ac.in"
+      },
+      "data": {
+        "credits": 1,
+        "nick": "DISPOSABLE QA learner 20261102221239",
+        "slots": [
+          {
+            "slotId": "SL2a00f8d7-d22d-4615-917a-065c5f98ac42",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 near",
+            "date": "2026-11-02",
+            "time": "23:12",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "booked",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "",
+            "learnerOk": ""
+          },
+          {
+            "slotId": "SL2b4fa599-c17e-43e3-a045-bd6112e879b1",
+            "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+            "skill": "DISPOSABLE QA 20261102221239 completion replacement",
+            "date": "2026-11-02",
+            "time": "22:18",
+            "place": "Online - disposable QA test, no real meeting",
+            "status": "done",
+            "learner": "skillswap.qa.20261102221239.learner@uohyd.ac.in",
+            "tutorOk": "yes",
+            "learnerOk": "yes"
+          }
+        ]
+      }
+    },
+    {
+      "action": "search",
+      "params": {
+        "email": "skillswap.qa.time.20261102222723@uohyd.ac.in",
+        "skill": "20261102222723"
+      },
+      "data": [
+        {
+          "slotId": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 02:45",
+          "date": "2026-11-04",
+          "time": "02:45",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SLe93c7803-5d95-4980-b1f6-d94c57754ced",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 09:05",
+          "date": "2026-11-04",
+          "time": "09:05",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 12:30",
+          "date": "2026-11-04",
+          "time": "12:30",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        },
+        {
+          "slotId": "SL01767806-2639-4098-8ce8-6e75e0ccd87c",
+          "tutor": "skillswap.qa.20261102221239.tutor@uohyd.ac.in",
+          "skill": "DISPOSABLE TIME 20261102222723 18:45",
+          "date": "2026-11-04",
+          "time": "18:45",
+          "place": "Online - disposable QA, no real meeting",
+          "status": "open",
+          "learner": "",
+          "tutorOk": "",
+          "learnerOk": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "Authenticated ping after version update",
+      "result": "PASS"
+    },
+    {
+      "name": "Disposable time-test learner starts with 2 credits",
+      "result": "PASS"
+    },
+    {
+      "name": "Publish 02:45",
+      "result": "PASS"
+    },
+    {
+      "name": "Read 02:45 exactly",
+      "result": "PASS"
+    },
+    {
+      "name": "Discover 02:45 exactly",
+      "result": "PASS"
+    },
+    {
+      "name": "Book 02:45",
+      "result": "PASS"
+    },
+    {
+      "name": "Booked state and time 02:45",
+      "result": "PASS"
+    },
+    {
+      "name": "Premature confirmation denied 02:45",
+      "result": "PASS"
+    },
+    {
+      "name": "Cancel 02:45 to release reservation",
+      "result": "PASS"
+    },
+    {
+      "name": "Publish 09:05",
+      "result": "PASS"
+    },
+    {
+      "name": "Read 09:05 exactly",
+      "result": "PASS"
+    },
+    {
+      "name": "Discover 09:05 exactly",
+      "result": "PASS"
+    },
+    {
+      "name": "Book 09:05",
+      "result": "PASS"
+    },
+    {
+      "name": "Booked state and time 09:05",
+      "result": "PASS"
+    },
+    {
+      "name": "Premature confirmation denied 09:05",
+      "result": "PASS"
+    },
+    {
+      "name": "Cancel 09:05 to release reservation",
+      "result": "PASS"
+    },
+    {
+      "name": "Publish 12:30",
+      "result": "PASS"
+    },
+    {
+      "name": "Read 12:30 exactly",
+      "result": "PASS"
+    },
+    {
+      "name": "Discover 12:30 exactly",
+      "result": "PASS"
+    },
+    {
+      "name": "Book 12:30",
+      "result": "PASS"
+    },
+    {
+      "name": "Booked state and time 12:30",
+      "result": "PASS"
+    },
+    {
+      "name": "Premature confirmation denied 12:30",
+      "result": "PASS"
+    },
+    {
+      "name": "Cancel 12:30 to release reservation",
+      "result": "PASS"
+    },
+    {
+      "name": "Publish 18:45",
+      "result": "PASS"
+    },
+    {
+      "name": "Read 18:45 exactly",
+      "result": "PASS"
+    },
+    {
+      "name": "Discover 18:45 exactly",
+      "result": "PASS"
+    },
+    {
+      "name": "Book 18:45",
+      "result": "PASS"
+    },
+    {
+      "name": "Booked state and time 18:45",
+      "result": "PASS"
+    },
+    {
+      "name": "Premature confirmation denied 18:45",
+      "result": "PASS"
+    },
+    {
+      "name": "Cancel 18:45 to release reservation",
+      "result": "PASS"
+    },
+    {
+      "name": "All four new publications are discoverable together",
+      "result": "PASS"
+    },
+    {
+      "name": "Learner ends with unchanged balance and no reservations",
+      "result": "PASS"
+    },
+    {
+      "name": "Existing completed session remains idempotent",
+      "result": "PASS"
+    },
+    {
+      "name": "Original transaction balances preserved",
+      "result": "PASS"
+    },
+    {
+      "name": "All times stay canonical after UI conversion to native time cells",
+      "result": "PASS"
+    }
+  ],
+  "slots": {
+    "02:45": "SL39eb62fb-b8f5-4077-a417-2417973158f5",
+    "09:05": "SLe93c7803-5d95-4980-b1f6-d94c57754ced",
+    "12:30": "SLb2e3e570-2e02-4634-a961-6dcc24f03afb",
+    "18:45": "SL01767806-2639-4098-8ce8-6e75e0ccd87c"
+  },
+  "deployment_version": 2,
+  "direct_storage_proof": {
+    "02:45": {
+      "isText": true,
+      "exact": true,
+      "length": 5
+    },
+    "09:05": {
+      "isText": true,
+      "exact": true,
+      "length": 5
+    },
+    "12:30": {
+      "isText": true,
+      "exact": true,
+      "length": 5
+    },
+    "18:45": {
+      "isText": true,
+      "exact": true,
+      "length": 5
+    }
+  },
+  "format_challenge": {
+    "native_time_conversion_discovery": "PASS",
+    "conversion_undone": true,
+    "final_typed_strings_reverified": true
+  }
+}

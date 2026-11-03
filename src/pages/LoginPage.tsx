@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { BackendConfigModal } from '../components/ui/BackendConfigModal';
+import { appService } from '../services/appService';
 import { useAuth } from '../context/AuthContext';
 import { Card } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
@@ -11,12 +13,13 @@ export const LoginPage: React.FC = () => {
   const { login, user } = useAuth();
   const navigate = useNavigate();
 
+  const [showConfig, setShowConfig] = useState(false);
   const [email, setEmail] = useState(user.email || '');
   const [nick, setNick] = useState(user.nick || '');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -32,22 +35,26 @@ export const LoginPage: React.FC = () => {
     }
 
     setIsLoading(true);
-    setTimeout(() => {
-      login(cleanEmail, nick.trim() || undefined);
-      setIsLoading(false);
+    try {
+      await login(cleanEmail, nick.trim() || undefined);
       navigate('/dashboard');
-    }, 400);
+    } catch (error) { setError(error instanceof Error ? error.message : 'Login failed.'); }
+    finally { setIsLoading(false); }
   };
 
-  const handleQuickDemoUser = (demoEmail: string, demoNick: string) => {
+  const handleQuickDemoUser = async (demoEmail: string, demoNick: string) => {
     setEmail(demoEmail);
     setNick(demoNick);
-    login(demoEmail, demoNick);
+    appService.activateDemo();
+    await login(demoEmail, demoNick);
     navigate('/dashboard');
   };
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <BackendConfigModal isOpen={showConfig} onClose={() => setShowConfig(false)} />
+      <button type="button" onClick={() => setShowConfig(true)} className="relative z-10 mx-auto mb-4 underline">Configure live backend</button>
+      <p className="relative z-10 text-center mb-4">{appService.isLive() ? 'Live mode: sign in to your university account.' : 'Demo mode: changes stay on this device.'}</p>
       {/* Decorative ambient background accents */}
       <div className="absolute top-0 -left-40 w-96 h-96 bg-brand-400/10 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-0 -right-40 w-96 h-96 bg-teal-400/10 rounded-full blur-3xl pointer-events-none"></div>

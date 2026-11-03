@@ -1,198 +1,113 @@
-# SKILLSWAP ANDROID: PHASE 1 - COMPLETE BACKEND INTEGRATION
+# SkillSwap Android App: Backend Integration and Functional Completion
 
-You are the lead Android application engineer working on our University of Hyderabad IE209 SkillSwap project.
+You are working on the existing SkillSwap project. Your immediate task is to make the existing MIT App Inventor Android application fully functional by integrating it with the already deployed Google Apps Script backend.
 
-You have access to:
-1. The existing MIT App Inventor project (.aia).
-2. The Google Apps Script backend source code.
-3. The database initialization script.
-4. The official IE209 project specification.
-
-Your task is to turn the existing MIT App Inventor application into a fully functional Android application connected to our actual Google Apps Script backend.
-
-IMPORTANT: DO NOT REBUILD THE APPLICATION FROM SCRATCH.
-
-The existing .aia is the master project. Preserve its existing screens, components, procedures, naming conventions and working logic wherever possible.
-
-## PHASE A: FULL PROJECT AUDIT
+## 1. Project reconnaissance
 
 Before modifying anything:
 
-1. Extract and inspect the entire .aia project.
-2. Examine all Designer components and Blocks.
-3. Identify all six required page arrangements:
-   - vaLogin
-   - vaProfile
-   - vaSearch
-   - vaSlot
-   - vaTeach
-   - vaSessions
-4. Inspect existing procedures:
-   - callApi
-   - handleReply
-   - showPage
-   - slotLine
-   - sessionLine
-   - updateWallet
-   - clearSessionSelection
-5. Identify incomplete procedures, missing event handlers, incorrect API parameters and unfinished navigation.
-6. Inspect the supplied Apps Script source to understand its EXACT API contract.
+- Inspect the entire existing project directory.
+- Locate the existing website source code.
+- Locate the existing Apps Script backend source.
+- Locate `SkillSwap_MiniProject_Team_Reviewed.aia`.
+- Locate existing Figma exports and design references.
+- Read the backend API implementation and existing website API integration.
 
-Produce a short internal implementation checklist, then proceed with implementation. Do not stop after producing the audit.
+Do not create a new application from scratch.
 
-## PHASE B: BACKEND CONFIGURATION
+Do not overwrite or restructure working website or backend components.
 
-Connect the application to our actual Apps Script Web App.
+## 2. Non-negotiable architecture
 
-Configuration:
+Both the website and Android application MUST use:
 
-API URL: [INSERT DEPLOYED /exec URL]
+- The same existing Google Apps Script deployment.
+- The same existing `/exec` API endpoint.
+- The same production Google Spreadsheet.
+- The same API contract and authentication mechanism.
 
-API KEY: [INSERT MATCHING API KEY]
+Absolutely do not create another spreadsheet, Apps Script project, backend deployment, or mock database.
 
-Use these exact credentials throughout the application.
+The website is already operational. Treat its existing integration as the reference implementation.
 
-If either credential is unavailable, do not invent one. Identify the missing value and clearly report that deployment credentials are required.
+## 3. Configure the MIT App Inventor application
 
-Implement and verify:
+Inspect the existing `.aia` project and its blocks.
 
-- Global apiUrl.
-- Global apiKey.
-- callApi(action, params).
-- webApi URL construction.
-- Correct URL encoding of parameters.
-- HTTP response handling.
-- JSON dictionary decoding.
-- handleReply(action, data).
-- Meaningful network and server error messages.
-- Loading states and duplicate-request prevention.
+Configure:
+- `global apiUrl`
+- `global apiKey`
 
-Match every API action and parameter to the actual supplied Code.gs implementation. Do not blindly assume the example API contract is identical to the deployed backend.
+Retrieve the correct values from the existing project configuration and backend source. Do not invent credentials.
 
-## PHASE C: IMPLEMENT ALL SIX PAGES
-
-LOGIN:
-- Validate university email ending in @uohyd.ac.in.
-- Accept nickname.
-- Call login API.
-- Retrieve starting or existing credit balance.
-- Save authenticated user details.
-- Navigate to profile after successful login.
-
-PROFILE:
-- Retrieve and display student information.
-- Edit skills offered and wanted.
-- Save changes to Google Sheets.
-- Display current credit balance.
-
-SEARCH:
-- Search available future slots by skill.
-- Exclude the current user's own slots.
-- Populate the existing ListView.
-- Allow selecting a result.
-- Navigate to slot details.
-
-SLOT DETAILS:
-- Display skill, tutor, date, time and venue.
-- Display the academic integrity notice.
-- Prevent booking one's own slot.
-- Request booking confirmation.
-- Enforce credit availability through the backend.
-
-TEACH:
-- Accept skill, date, time and venue.
-- Enforce the required date and time formats.
-- Restrict venues to permitted public campus locations or online.
-- Publish slots through the backend.
-- Show confirmation of successful publication.
-
-SESSIONS:
-- Retrieve teaching and learning sessions.
-- Clearly distinguish the user's role.
-- Display session status.
-- Implement cancellation.
-- Implement tutor and learner confirmation.
-- Implement post-completion ratings.
-- Refresh wallet and session information after transactions.
-
-## PHASE D: NAVIGATION AND STATE MANAGEMENT
-
-Implement reliable navigation using the existing six VerticalArrangements.
-
-Preserve the bottom navigation:
-- Search
-- Teach
-- Sessions
-- Profile
+Implement and verify the existing `callApi` and `handleReply` procedures.
 
 Ensure:
-- Only the relevant page is visible.
-- Navigation does not destroy necessary session state.
-- Selected slot information remains accessible.
-- User identity and credits remain consistent.
-- Login state persists appropriately using TinyDB.
+- Correct GET/POST request construction.
+- Correct JSON encoding and decoding.
+- API key and action parameters are transmitted correctly.
+- Loading states and error handling work.
+- Responses update the correct application components.
+- Navigation and application state remain consistent.
 
-## PHASE E: CRITICAL BUSINESS RULES
+Preserve the existing application design and logic wherever possible.
 
-Implement and verify against the actual backend:
+## 4. Complete the application functionality
 
-1. New users receive exactly 2 credits.
-2. Booking requires at least 1 available credit.
-3. Pending bookings must be accounted for.
-4. Users cannot book their own slots.
-5. Cancellation is permitted only at least 2 hours before the session.
-6. Both tutor and learner must confirm.
-7. Credits transfer exactly once after both confirmations.
-8. One confirmation alone must not transfer credits.
-9. Completed sessions can be rated.
-10. Every credit transfer must have a ledger entry.
+Test every existing workflow against the actual live backend:
 
-Credit modifications must remain server-side. Never implement client-side credit transfers.
+1. University email login and registration.
+2. Profile loading and persistence.
+3. Teaching skills and learning interests.
+4. Available tutor discovery and skill search.
+5. Publishing teaching slots.
+6. Booking a session.
+7. Cancelling a booking.
+8. Session listings and status updates.
+9. Tutor and learner confirmations.
+10. Credit reservation and transfer.
+11. Wallet and transaction history.
+12. Ratings and tutor review display.
 
-## PHASE F: RELIABILITY
+The website and app must produce consistent results when accessing the same accounts and data.
 
-Handle:
-- No internet connection.
-- Invalid API responses.
-- Incorrect login credentials.
-- Empty search results.
-- Duplicate button presses.
-- Expired or unavailable slots.
-- Insufficient credits.
-- Failed booking or cancellation.
-- Failed confirmation.
-- Invalid form inputs.
+Do not merely test whether HTTP requests succeed. Verify actual application state and corresponding spreadsheet records.
 
-Do not silently swallow errors.
+## 5. Testing and safety
 
-## PHASE G: VALIDATION
+Use clearly labelled disposable QA accounts and slots.
 
-Test the application against all six required pages and the T1-T8 acceptance tests in the IE209 specification.
+Never delete or modify genuine user records.
+
+Clean up only the QA records created during your testing, without disturbing existing data or legitimate transactions.
 
 Verify that:
-- The application connects to the real backend.
-- Changes persist in Google Sheets.
-- Both website and Android application use the same database.
-- No existing API functionality has been broken.
+- Credits cannot be double-spent.
+- Duplicate bookings are prevented.
+- Cancellation correctly restores credits where applicable.
+- Ratings persist.
+- Profiles survive application restarts.
+- Existing website functionality remains unaffected.
 
-Do not substitute mock data for actual backend responses.
+Do not claim a feature passes unless it has actually been tested.
 
-## FINAL OUTPUT
+## 6. Deliverables
 
-Provide:
+At completion, provide:
 
-1. Updated MIT App Inventor master project (.aia).
-2. Working Android APK.
-3. List of implemented features.
-4. List of API endpoints successfully tested.
-5. T1-T8 testing results.
-6. Any remaining blockers.
-7. Instructions for reproducing the build.
+- Updated MIT App Inventor `.aia` project.
+- Android APK if the available build workflow supports it.
+- A complete list of implemented functionalities.
+- Live integration test results.
+- Known limitations or remaining bugs.
+- Exact instructions for importing the updated project into MIT App Inventor and installing the APK.
 
-Do not claim successful backend integration or passing tests without actually verifying them.
+Preserve the original `.aia` as a backup.
 
-PRIORITY: FUNCTIONAL CORRECTNESS OVER VISUAL POLISH.
+## 7. Scope restrictions
 
-We will handle Figma-based visual redesign in a separate second phase. Keep the existing design for now.
+This phase is exclusively about making the existing Android application work with the existing backend.
 
-Make the existing SkillSwap application work end to end.
+Do not redesign the app using Figma yet. Do not rebuild the website. Do not modify the backend API contract unnecessarily. Do not create another production environment.
+
+**Definition of done:** The existing Android application successfully completes the entire SkillSwap user journey using the same live accounts, database, credits, bookings and ratings as the website.

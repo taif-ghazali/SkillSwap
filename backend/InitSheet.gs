@@ -8,7 +8,7 @@
  * HOW TO RUN:
  * 1. Open Google Sheets -> Extensions -> Apps Script
  * 2. Paste this file alongside Code.gs
- * 3. In the toolbar function dropdown, select `setupDatabase()`
+ * 3. DEMO ONLY: select `setupDatabase()` (clears existing data).
  * 4. Click 'Run' and grant required spreadsheet permissions.
  *
  * It creates all 4 required tabs with exact column headers and realistic seed
@@ -16,6 +16,10 @@
  */
 
 function setupDatabase() {
+  throw new Error('Demo reset disabled. Use prepareDeployment() for production. For a disposable demo sheet, explicitly run resetDemoDatabase().');
+}
+
+function resetDemoDatabase() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
 
   // 1. SETUP USERS TAB

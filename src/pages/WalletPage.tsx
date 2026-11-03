@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { mockService } from '../services/mockService';
+import { appService } from '../services/appService';
 import { PageHeader } from '../components/layout/PageHeader';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -26,11 +26,12 @@ export const WalletPage: React.FC = () => {
   const { user, totalCredits, availableCredits, reservedCredits, resetDemoData } = useAuth();
   const navigate = useNavigate();
 
-  const ledger = mockService.getLedger();
-  const mySessions = mockService.getMySlots();
+  const ledger = appService.getLedger();
+  const mySessions = appService.getMySlots();
   const pendingReservations = mySessions.learning.filter((s) => s.status === 'booked');
 
   const handleResetData = () => {
+    if (appService.isLive()) return;
     if (window.confirm('Reset demo transactions and credit balances back to defaults?')) {
       resetDemoData();
       alert('Wallet and ledger have been reset.');
@@ -53,6 +54,7 @@ export const WalletPage: React.FC = () => {
               size="sm"
               leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
               onClick={handleResetData}
+              disabled={appService.isLive()}
             >
               Reset Demo
             </Button>

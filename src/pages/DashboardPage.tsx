@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { mockService } from '../services/mockService';
+import { appService } from '../services/appService';
 import { PageHeader } from '../components/layout/PageHeader';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -38,15 +38,15 @@ export const DashboardPage: React.FC = () => {
   const [bookingMessage, setBookingMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
   // Derive counts from shared data consistently
-  const mySlots = mockService.getMySlots();
+  const mySlots = appService.getMySlots();
   const bookedSessionsCount = [...mySlots.teaching, ...mySlots.learning].filter(
     (s) => s.status === 'booked'
   ).length;
 
-  const recentTransactions = mockService.getLedger().slice(0, 3);
+  const recentTransactions = appService.getLedger().slice(0, 3);
 
   // Open slots: Prioritize matching user's "wants" topics
-  const allOpenSlots = mockService.searchOpenSlots();
+  const allOpenSlots = appService.searchOpenSlots();
   const userWantsLower = (user.wants || []).map((w) => w.toLowerCase());
 
   const recommendedSlots = [...allOpenSlots].sort((a, b) => {
@@ -57,14 +57,14 @@ export const DashboardPage: React.FC = () => {
     return 0;
   }).slice(0, 3);
 
-  const handleBook = (slotId: string) => {
+  const handleBook = async (slotId: string) => {
     const confirmed = window.confirm(
       'Book this session for 1 credit?\n\nAcademic Integrity Rule: Sessions are for learning only; no doing assignments or exams for others.'
     );
 
     if (!confirmed) return;
 
-    const result = mockService.bookSlot(slotId);
+    const result = await appService.bookSlot(slotId);
     if (result.success) {
       refreshUserData();
       setBookingMessage({

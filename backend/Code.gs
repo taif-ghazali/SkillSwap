@@ -42,12 +42,18 @@ function handleRequest(p) {
     return out(p ? p.action : 'unknown', { error: 'bad key' });
   }
 
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  // Serialize reads and writes together so pending-credit checks cannot race.
+  // confirm() owns the same lock itself and must not acquire it twice.
+  const lock = p.action === 'confirm' ? null : LockService.getScriptLock();
   try {
+    if (lock) lock.waitLock(10000);
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
     const result = route(ss, p);
     return out(p.action, result);
   } catch (err) {
     return out(p.action, { error: String(err.message || err) });
+  } finally {
+    if (lock && lock.hasLock()) lock.releaseLock();
   }
 }
 
@@ -55,12 +61,67 @@ function handleRequest(p) {
  * Read all rows of a sheet tab as an array of JavaScript objects
  */
 function rows(ss, tab) {
+  if (tab === 'Slots') return readSlotTable(ss).slots;
   const sheet = ss.getSheetByName(tab);
   if (!sheet) return [];
   const v = sheet.getDataRange().getDisplayValues();
   if (!v || v.length <= 1) return [];
   const h = v.shift();
   return v.map(r => Object.fromEntries(h.map((k, i) => [k, r[i]])));
+}
+
+// Slot dates/times are domain values, never locale-dependent display strings.
+function readSlotTable(ss) {
+  const sheet = ss.getSheetByName('Slots');
+  if (!sheet) return { headers: [], slots: [] };
+  const values = sheet.getDataRange().getValues();
+  if (!values.length) return { headers: [], slots: [] };
+  const headers = values[0].map(String);
+  const timezone = ss.getSpreadsheetTimeZone();
+  const slots = values.slice(1).map(row => Object.fromEntries(headers.map((key, index) => {
+    const raw = row[index];
+    if (key === 'time') return [key, normalizeSlotTime(raw, timezone)];
+    if (key === 'date') return [key, normalizeSlotDate(raw, timezone)];
+    return [key, raw == null ? '' : String(raw)];
+  })));
+  return { headers: headers, slots: slots };
+}
+
+function normalizeSlotTime(value, timezone) {
+  if (Object.prototype.toString.call(value) === '[object Date]') {
+    return isNaN(value.getTime()) ? '' : Utilities.formatDate(value, timezone, 'HH:mm');
+  }
+  if (typeof value === 'number') {
+    if (!Number.isFinite(value) || value < 0) return '';
+    // Sheets serial times are fractions of a day; ignore floating-point noise.
+    const minutes = Math.floor(((value % 1) * 1440) + 1e-7) % 1440;
+    return String(Math.floor(minutes / 60)).padStart(2, '0') + ':' + String(minutes % 60).padStart(2, '0');
+  }
+  const match = /^(\d{1,2}):([0-5]\d)(?::[0-5]\d(?:\.\d+)?)?$/.exec(String(value == null ? '' : value).trim());
+  if (!match || Number(match[1]) > 23) return '';
+  return match[1].padStart(2, '0') + ':' + match[2];
+}
+
+function normalizeSlotDate(value, timezone) {
+  if (Object.prototype.toString.call(value) === '[object Date]') {
+    return isNaN(value.getTime()) ? '' : Utilities.formatDate(value, timezone, 'yyyy-MM-dd');
+  }
+  if (typeof value === 'number') {
+    if (!Number.isFinite(value)) return '';
+    const date = new Date(Date.UTC(1899, 11, 30) + Math.floor(value) * 86400000);
+    return isNaN(date.getTime()) ? '' : date.toISOString().slice(0, 10);
+  }
+  return String(value == null ? '' : value).trim();
+}
+
+function appendSlot(ss, values) {
+  // Explicit stringValue bypasses Sheets' USER_ENTERED parsing. A text format
+  // alone does not prevent appendRow from coercing a clock string into a time.
+  Sheets.Spreadsheets.batchUpdate({ requests: [{ appendCells: {
+    sheetId: ss.getSheetByName('Slots').getSheetId(),
+    rows: [{ values: values.map(value => ({ userEnteredValue: { stringValue: String(value) }, userEnteredFormat: { numberFormat: { type: 'TEXT' } } })) }],
+    fields: 'userEnteredValue,userEnteredFormat.numberFormat'
+  } }] }, ss.getId());
 }
 
 /**
@@ -88,7 +149,7 @@ function route(ss, p) {
 
   // 1. LOGIN / SIGNUP (FR-1)
   if (action === 'login') {
-    if (!email.endsWith('@uohyd.ac.in')) {
+    if (!/^[^\s@]+@uohyd\.ac\.in$/.test(email)) {
       return { error: 'Use your university email (@uohyd.ac.in)' };
     }
     const allUsers = rows(ss, 'Users');
@@ -138,8 +199,8 @@ function route(ss, p) {
 
       // Future slots check
       try {
-        const slotDate = new Date(s.date + 'T' + s.time);
-        if (isNaN(slotDate.getTime()) || slotDate <= now) return false;
+        const slotDate = slotInstant(s.date, s.time);
+        if (!slotDate || slotDate <= now) return false;
       } catch (e) {
         return false;
       }
@@ -175,14 +236,16 @@ function route(ss, p) {
       return { error: 'Missing required slot details (skill, date, time, place)' };
     }
 
-    // Safety validation: Sessions in public campus places or online only
-    const placeLower = String(p.place).toLowerCase();
-    if (placeLower.includes('hostel room') || placeLower.includes('my room')) {
+    const start = slotInstant(p.date, p.time);
+    if (!start || start <= new Date()) {
+      return { error: 'Use a future campus date yyyy-MM-dd and time HH:mm' };
+    }
+    if (!String(p.skill).trim() || !permittedPlace(p.place)) {
       return { error: 'Sessions must be in public campus areas (library, labs, canteen) or online; never in private rooms.' };
     }
 
-    const id = 'SL' + Date.now();
-    ss.getSheetByName('Slots').appendRow([
+    const id = 'SL' + Utilities.getUuid();
+    appendSlot(ss, [
       id,
       email,
       p.skill.trim(),
@@ -214,7 +277,7 @@ function route(ss, p) {
     return setSlot(
       ss,
       p.slot,
-      s => s.status === 'open' && s.tutor.toLowerCase() !== email,
+      s => s.status === 'open' && s.tutor.toLowerCase() !== email && slotInstant(s.date, s.time) > new Date(),
       { status: 'booked', learner: email, tutorOk: '', learnerOk: '' }
     );
   }
@@ -232,9 +295,10 @@ function route(ss, p) {
         if (!isParticipant) return false;
 
         // Cancel allowed up to 2 hours before start (FR-6)
-        const slotTime = new Date(s.date + 'T' + s.time);
+        const slotTime = slotInstant(s.date, s.time);
+        if (!slotTime) return false;
         const diffMs = slotTime.getTime() - new Date().getTime();
-        return diffMs > 2 * 36e5; // 2 hours in ms
+        return diffMs >= 2 * 36e5; // inclusive two-hour boundary
       },
       { status: 'open', learner: '', tutorOk: '', learnerOk: '' }
     );
@@ -259,7 +323,13 @@ function route(ss, p) {
       (targetSlot.learner && targetSlot.learner.toLowerCase() === email);
     if (!isParticipant) return { error: 'Only session participants can rate' };
 
-    const starsNum = Math.min(5, Math.max(1, Math.round(Number(p.stars))));
+    const starsNum = Number(p.stars);
+    if (!Number.isInteger(starsNum) || starsNum < 1 || starsNum > 5) {
+      return { error: 'Stars must be a whole number from 1 to 5' };
+    }
+    if (rows(ss, 'Ratings').some(r => r.slotId === p.slot && r.from.toLowerCase() === email)) {
+      return { error: 'You have already rated this session' };
+    }
     ss.getSheetByName('Ratings').appendRow([p.slot, email, starsNum, new Date()]);
     return { ok: true, stars: starsNum };
   }
@@ -329,12 +399,12 @@ function confirm(ss, slotId, email) {
 
   try {
     const sh = ss.getSheetByName('Slots');
-    const v = sh.getDataRange().getDisplayValues();
-    const h = v[0];
+    const table = readSlotTable(ss);
+    const h = table.headers;
 
-    for (let i = 1; i < v.length; i++) {
-      if (v[i][0] === slotId) {
-        const s = Object.fromEntries(h.map((k, j) => [k, v[i][j]]));
+    for (let i = 1; i <= table.slots.length; i++) {
+      if (table.slots[i - 1].slotId === slotId) {
+        const s = table.slots[i - 1];
 
         if (s.status !== 'booked') {
           return { error: 'Session is not in booked state' };
@@ -348,27 +418,27 @@ function confirm(ss, slotId, email) {
 
         if (!col) return { error: 'Not your session' };
 
+        const start = slotInstant(s.date, s.time);
+        if (!start || start > new Date()) return { error: 'Confirm only after the session has started' };
+
+        // Validate both accounts before recording either confirmation or transfer.
+        const participants = rows(ss, 'Users');
+        const learner = participants.find(u => u.email.toLowerCase() === s.learner.toLowerCase());
+        const tutor = participants.find(u => u.email.toLowerCase() === s.tutor.toLowerCase());
+        if (!learner || !tutor || !Number.isFinite(Number(learner.credits)) || Number(learner.credits) < 1 || !Number.isFinite(Number(tutor.credits))) {
+          return { error: 'Invalid participant balance; ask the team to check the sheet' };
+        }
+
         // Mark individual confirmation
         sh.getRange(i + 1, h.indexOf(col) + 1).setValue('yes');
         s[col] = 'yes';
 
         // Check if BOTH sides have confirmed
         if (s.tutorOk === 'yes' && s.learnerOk === 'yes') {
-          // Transition state to 'done'
-          sh.getRange(i + 1, h.indexOf('status') + 1).setValue('done');
-
-          // Move 1 time credit from learner to tutor
-          addCredits(ss, s.learner, -1);
-          addCredits(ss, s.tutor, 1);
-
-          // Append immutable ledger transaction
-          ss.getSheetByName('Ledger').appendRow([
-            new Date(),
-            s.learner,
-            s.tutor,
-            1,
-            slotId
-          ]);
+          // Flush confirmation writes before one atomic Sheets transaction.
+          // If a batch fails, no balances/status/ledger change; retry is safe.
+          SpreadsheetApp.flush();
+          transferCredit(ss, sh, i, h, s);
 
           return { ok: true, transferred: true };
         }
@@ -388,12 +458,12 @@ function confirm(ss, slotId, email) {
  */
 function setSlot(ss, id, allowed, fields) {
   const sh = ss.getSheetByName('Slots');
-  const v = sh.getDataRange().getDisplayValues();
-  const h = v[0];
+  const table = readSlotTable(ss);
+  const h = table.headers;
 
-  for (let i = 1; i < v.length; i++) {
-    if (v[i][0] === id) {
-      const s = Object.fromEntries(h.map((k, j) => [k, v[i][j]]));
+  for (let i = 1; i <= table.slots.length; i++) {
+    if (table.slots[i - 1].slotId === id) {
+      const s = table.slots[i - 1];
       if (!allowed(s)) {
         return { error: 'Not possible now (taken, your own slot, or too late)' };
       }
@@ -412,21 +482,40 @@ function setSlot(ss, id, allowed, fields) {
   return { error: 'Unknown slot' };
 }
 
-/**
- * Safely adjusts credit balance for a student in the Users table
- */
-function addCredits(ss, emailToUpdate, n) {
-  const sh = ss.getSheetByName('Users');
-  const v = sh.getDataRange().getValues();
-  const targetEmail = String(emailToUpdate).toLowerCase();
+// Campus local time is explicit, independent of execution-host timezone.
+function slotInstant(date, time) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(date)) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(String(time))) return null;
+  const result = new Date(date + 'T' + time + ':00+05:30');
+  const calendar = new Date(date + 'T00:00:00Z');
+  if (isNaN(result.getTime()) || isNaN(calendar.getTime()) || calendar.toISOString().slice(0, 10) !== date) return null;
+  return result;
+}
 
-  for (let i = 1; i < v.length; i++) {
-    if (String(v[i][0]).toLowerCase() === targetEmail) {
-      const current = Number(v[i][4]) || 0;
-      const updated = Math.max(0, current + n);
-      sh.getRange(i + 1, 5).setValue(updated);
-      return;
-    }
-  }
+function permittedPlace(place) {
+  const text = String(place).trim().toLowerCase();
+  if (/\b(hostel|private|bedroom|my room|home|residence)\b/.test(text)) return false;
+  return /^(online\b|https:\/\/)/.test(text) || /\b(library|lab|labs|laboratory|canteen|foyer|seminar hall|amphitheatre|amphitheater)\b/.test(text);
+}
+
+function transferCredit(ss, slotSheet, slotRowIndex, headers, slot) {
+  const usersSheet = ss.getSheetByName('Users');
+  const users = usersSheet.getDataRange().getValues();
+  const learnerIndex = users.findIndex((u, i) => i > 0 && String(u[0]).toLowerCase() === slot.learner.toLowerCase());
+  const tutorIndex = users.findIndex((u, i) => i > 0 && String(u[0]).toLowerCase() === slot.tutor.toLowerCase());
+  if (learnerIndex < 1 || tutorIndex < 1 || learnerIndex === tutorIndex) throw new Error('Invalid credit participants');
+  const learnerCredits = Number(users[learnerIndex][4]);
+  const tutorCredits = Number(users[tutorIndex][4]);
+  if (!Number.isFinite(learnerCredits) || learnerCredits < 1 || !Number.isFinite(tutorCredits)) throw new Error('Invalid credit balance');
+  const cell = (sheetId, row, col, value) => ({ updateCells: {
+    range: { sheetId: sheetId, startRowIndex: row, endRowIndex: row + 1, startColumnIndex: col, endColumnIndex: col + 1 },
+    rows: [{ values: [{ userEnteredValue: typeof value === 'number' ? { numberValue: value } : { stringValue: value } }] }],
+    fields: 'userEnteredValue'
+  } });
+  Sheets.Spreadsheets.batchUpdate({ requests: [
+    cell(usersSheet.getSheetId(), learnerIndex, 4, learnerCredits - 1),
+    cell(usersSheet.getSheetId(), tutorIndex, 4, tutorCredits + 1),
+    cell(slotSheet.getSheetId(), slotRowIndex, headers.indexOf('status'), 'done'),
+    { appendCells: { sheetId: ss.getSheetByName('Ledger').getSheetId(), rows: [{ values: [new Date().toISOString(), slot.learner, slot.tutor, 1, slot.slotId].map(value => ({ userEnteredValue: typeof value === 'number' ? { numberValue: value } : { stringValue: value } })) }], fields: 'userEnteredValue' } }
+  ] }, ss.getId());
 }
 

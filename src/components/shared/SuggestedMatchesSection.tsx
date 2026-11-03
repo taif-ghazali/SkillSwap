@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { mockService } from '../../services/mockService';
+import { appService } from '../../services/appService';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -14,7 +14,7 @@ export interface SuggestedMatchesSectionProps {
 
 export const SuggestedMatchesSection: React.FC<SuggestedMatchesSectionProps> = ({ onSelectSlot }) => {
   const navigate = useNavigate();
-  const matches = mockService.getSuggestedMatches();
+  const matches = appService.getSuggestedMatches();
 
   if (matches.length === 0) return null;
 
@@ -39,7 +39,7 @@ export const SuggestedMatchesSection: React.FC<SuggestedMatchesSectionProps> = (
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {matches.slice(0, 3).map((m) => {
-          const tutorRating = mockService.getUserRatingSummary(m.peer.email);
+          const tutorRating = appService.getUserRatingSummary(m.peer.email);
 
           return (
             <Card

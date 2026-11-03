@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { mockService } from '../services/mockService';
+import { appService } from '../services/appService';
 import { PageHeader } from '../components/layout/PageHeader';
 import { Card } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
@@ -41,7 +41,7 @@ export const TeachPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successSlotId, setSuccessSlotId] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!skill.trim()) {
       alert('Please enter the skill or topic you want to teach.');
@@ -55,8 +55,8 @@ export const TeachPage: React.FC = () => {
     }
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      const newSlot = mockService.createSlot({
+    try {
+      const newSlot = await appService.createSlot({
         skill: skill.trim(),
         category,
         date,
@@ -68,7 +68,8 @@ export const TeachPage: React.FC = () => {
       refreshUserData();
       setIsSubmitting(false);
       setSuccessSlotId(newSlot.slotId);
-    }, 400);
+    } catch (error) { alert(error instanceof Error ? error.message : 'Publication failed.'); }
+    finally { setIsSubmitting(false); }
   };
 
   if (successSlotId) {
@@ -161,6 +162,7 @@ export const TeachPage: React.FC = () => {
             </label>
             <select
               value={category}
+              disabled={appService.isLive()}
               onChange={(e) => setCategory(e.target.value as any)}
               className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-3 focus:ring-brand-500/15"
             >
@@ -242,6 +244,7 @@ export const TeachPage: React.FC = () => {
               rows={3}
               placeholder="What will the learner achieve in this 1-hour session? (e.g. Setting up LaTeX bibliography with Overleaf, creating reusable templates...)"
               value={description}
+              disabled={appService.isLive()}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full rounded-xl border border-slate-200 bg-white p-3.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-3 focus:ring-brand-500/15 placeholder:text-slate-400"
             />

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card } from './Card';
 import { Button } from './Button';
 import { Input } from './Input';
-import { mockService } from '../../services/mockService';
+import { appService } from '../../services/appService';
 import { ShieldAlert, X, CheckCircle2 } from 'lucide-react';
 
 export interface ReportMisconductModalProps {
@@ -27,15 +27,16 @@ export const ReportMisconductModal: React.FC<ReportMisconductModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = mockService.reportMisconduct({
+    const result = await appService.reportMisconduct({
       targetId,
       targetType,
       reason,
       details: details.trim() || undefined,
     });
 
+    if (!result.success) { alert(result.error || 'Report failed.'); return; }
     if (result.success) {
       setReportId(result.reportId);
       setIsSubmitted(true);

@@ -9,10 +9,10 @@ import { apiClient } from '../../services/apiClient';
 import { PlusCircle, Search, Database, Sparkles } from 'lucide-react';
 
 export const Header: React.FC = () => {
-  const { user } = useAuth();
+  const { user, isLive, isBusy } = useAuth();
   const navigate = useNavigate();
   const [showBackendModal, setShowBackendModal] = useState(false);
-  const isBackendLive = apiClient.isConfigured();
+  const isBackendLive = isLive && apiClient.isConfigured();
 
   return (
     <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 py-3">
@@ -53,6 +53,7 @@ export const Header: React.FC = () => {
           <button
             type="button"
             onClick={() => setShowBackendModal(true)}
+            disabled={isBusy}
             className={`hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold border cursor-pointer transition-all duration-150 active:scale-95 ${
               isBackendLive
                 ? 'bg-[#DDF7EB] text-[#0A6B5B] border-[#bdf1d9] hover:bg-[#cbf5e2]'
@@ -61,7 +62,7 @@ export const Header: React.FC = () => {
             title="Configure Google Apps Script API & Google Sheets database"
           >
             <Database className="w-3.5 h-3.5" />
-            <span>{isBackendLive ? 'Live Sheets API' : 'Demo Local Mode'}</span>
+            <span>{isBackendLive ? 'Live backend configured' : isLive ? 'Configure live backend' : 'Demo local mode'}</span>
           </button>
 
           {/* Prominent Time Wallet on Every Page per Spec 5B */}

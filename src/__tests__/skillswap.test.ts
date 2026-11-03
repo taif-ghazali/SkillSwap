@@ -104,7 +104,7 @@ describe('SkillSwap IE209 Acceptance Test Suite (T1 - T8 & Core Requirements)', 
   it('T4: Cancellation at least 2 hours before start reopens the slot and releases credits', () => {
     // Create slot 5 hours in the future
     const futureDate = new Date(Date.now() + 5 * 36e5);
-    const dateStr = futureDate.toISOString().split('T')[0];
+    const dateStr = `${futureDate.getFullYear()}-${String(futureDate.getMonth() + 1).padStart(2, '0')}-${String(futureDate.getDate()).padStart(2, '0')}`;
     const timeStr = `${String(futureDate.getHours()).padStart(2, '0')}:${String(futureDate.getMinutes()).padStart(2, '0')}`;
 
     service.loginWithEmail('tutor.t4@uohyd.ac.in', 'Tutor T4');
@@ -131,7 +131,7 @@ describe('SkillSwap IE209 Acceptance Test Suite (T1 - T8 & Core Requirements)', 
   it('T5: Cancellation less than 2 hours before start is rejected', () => {
     // Create slot 1 hour in the future
     const nearDate = new Date(Date.now() + 1 * 36e5);
-    const dateStr = nearDate.toISOString().split('T')[0];
+    const dateStr = `${nearDate.getFullYear()}-${String(nearDate.getMonth() + 1).padStart(2, '0')}-${String(nearDate.getDate()).padStart(2, '0')}`;
     const timeStr = `${String(nearDate.getHours()).padStart(2, '0')}:${String(nearDate.getMinutes()).padStart(2, '0')}`;
 
     service.loginWithEmail('tutor.t5@uohyd.ac.in', 'Tutor T5');

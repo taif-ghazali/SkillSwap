@@ -1,5 +1,5 @@
 import React from 'react';
-import { mockService } from '../../services/mockService';
+import { appService } from '../../services/appService';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import {
@@ -14,7 +14,11 @@ import {
 } from 'lucide-react';
 
 export const CampusAnalyticsSection: React.FC = () => {
-  const analytics = mockService.getCampusAnalytics();
+  if (appService.isLive()) {
+    const data = appService.dashboard;
+    return <Card><h2>Campus activity</h2>{data ? <p>{data.usersCount} students · {data.openCount} open sessions · {data.bookedCount} booked · {data.completedCount} completed</p> : <p>Campus activity is currently unavailable.</p>}</Card>;
+  }
+  const analytics = appService.getCampusAnalytics();
 
   // Find max count for normalized visual bar widths
   const maxWanted = Math.max(...analytics.topWantedSkills.map((s) => s.count), 1);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { mockService } from '../services/mockService';
+import { appService } from '../services/appService';
 import { PageHeader } from '../components/layout/PageHeader';
 import { Tabs } from '../components/ui/Tabs';
 import { SessionCard } from '../components/ui/SessionCard';
@@ -35,14 +35,14 @@ export const SessionsPage: React.FC = () => {
   // Details modal
   const [activeModalSlot, setActiveModalSlot] = useState<SessionSlot | null>(null);
 
-  const { teaching, learning } = mockService.getMySlots();
+  const { teaching, learning } = appService.getMySlots();
 
   const bookedLearning = learning.filter((s) => s.status === 'booked');
   const bookedTeaching = teaching.filter((s) => s.status === 'booked' || s.status === 'open');
   const completedSessions = [...learning, ...teaching].filter((s) => s.status === 'done');
 
-  const handleConfirm = (slotId: string) => {
-    const result = mockService.confirmSession(slotId);
+  const handleConfirm = async (slotId: string) => {
+    const result = await appService.confirmSession(slotId);
     refreshUserData();
 
     if (result.success) {
@@ -75,13 +75,13 @@ export const SessionsPage: React.FC = () => {
     }, 6000);
   };
 
-  const handleCancel = (slotId: string) => {
+  const handleCancel = async (slotId: string) => {
     const confirmed = window.confirm(
       'Are you sure you want to cancel this booking?\n\nCancellation rule: Permitted only when at least 2 hours remain before session start.'
     );
     if (!confirmed) return;
 
-    const result = mockService.cancelSlot(slotId);
+    const result = await appService.cancelSlot(slotId);
     refreshUserData();
 
     if (result.success) {
@@ -101,12 +101,12 @@ export const SessionsPage: React.FC = () => {
     }, 6000);
   };
 
-  const handleRateSubmit = (e: React.FormEvent) => {
+  const handleRateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!ratingSlot) return;
 
     setRatingError(null);
-    const result = mockService.addRating(ratingSlot.slotId, selectedStars, ratingComment);
+    const result = await appService.addRating(ratingSlot.slotId, selectedStars, ratingComment);
 
     if (result.success) {
       refreshUserData();
@@ -295,6 +295,7 @@ export const SessionsPage: React.FC = () => {
                 <textarea
                   rows={3}
                   value={ratingComment}
+                  disabled={appService.isLive()}
                   onChange={(e) => setRatingComment(e.target.value)}
                   placeholder="How was the explanation, clarity, and pacing?"
                   className="w-full rounded-xl border border-slate-200 p-3 text-xs text-slate-900 focus:outline-none focus:ring-3 focus:ring-brand-500/15"

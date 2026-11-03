@@ -5,7 +5,7 @@ import { Badge } from './Badge';
 import { Button } from './Button';
 import { Avatar } from './Avatar';
 import { formatDate, formatTime } from '../../utils';
-import { mockService } from '../../services/mockService';
+import { appService } from '../../services/appService';
 import { ReportMisconductModal } from './ReportMisconductModal';
 import {
   Calendar,
@@ -36,8 +36,8 @@ export const SessionDetailsModal: React.FC<SessionDetailsModalProps> = ({
 
   if (!slot) return null;
 
-  const tutorRating = mockService.getUserRatingSummary(slot.tutor);
-  const tutorReviews = mockService.getReviewsForUser(slot.tutor);
+  const tutorRating = appService.getUserRatingSummary(slot.tutor);
+  const tutorReviews = appService.getReviewsForUser(slot.tutor);
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
@@ -72,7 +72,7 @@ export const SessionDetailsModal: React.FC<SessionDetailsModalProps> = ({
                 </span>
               ) : (
                 <span className="text-[10px] text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
-                  New Tutor
+                  {appService.isLive() ? 'Rating unavailable' : 'New Tutor'}
                 </span>
               )}
             </div>

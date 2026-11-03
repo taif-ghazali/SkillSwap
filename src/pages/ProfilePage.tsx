@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { mockService } from '../services/mockService';
+import { appService } from '../services/appService';
 import { PageHeader } from '../components/layout/PageHeader';
 import { Card } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
@@ -46,8 +46,8 @@ export const ProfilePage: React.FC = () => {
   }, [user]);
 
   // Dynamic rating summary
-  const ratingSummary = mockService.getUserRatingSummary(user.email);
-  const reviews = mockService.getReviewsForUser(user.email);
+  const ratingSummary = appService.getUserRatingSummary(user.email);
+  const reviews = appService.getReviewsForUser(user.email);
 
   const handleAddOffer = (skillToAdd?: string) => {
     setValidationError(null);
@@ -89,7 +89,7 @@ export const ProfilePage: React.FC = () => {
     setWantsList(wantsList.filter((s) => s.toLowerCase() !== skillToRemove.toLowerCase()));
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError(null);
 
@@ -99,7 +99,7 @@ export const ProfilePage: React.FC = () => {
       return;
     }
 
-    const res = updateProfile({
+    const res = await updateProfile({
       nick: cleanNick,
       offers: offersList,
       wants: wantsList,
@@ -115,6 +115,7 @@ export const ProfilePage: React.FC = () => {
   };
 
   const handleResetData = () => {
+    if (appService.isLive()) return;
     if (window.confirm('Reset all demo data (credits, slots, bookings, reviews) back to default initial state?')) {
       resetDemoData();
       alert('Demo data has been reset to defaults.');
@@ -136,6 +137,7 @@ export const ProfilePage: React.FC = () => {
             size="sm"
             leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
             onClick={handleResetData}
+              disabled={appService.isLive()}
             title="Reset test data to initial defaults"
           >
             Reset Demo Data
@@ -202,7 +204,7 @@ export const ProfilePage: React.FC = () => {
               </span>
               <div className="text-2xl font-black text-slate-900 mt-0.5 flex items-center justify-center gap-1">
                 <Star className="w-5 h-5 fill-amber-400 text-amber-500 inline" />
-                <span>{ratingSummary.count > 0 ? ratingSummary.average : '5.0'}</span>
+                <span>{appService.isLive() ? 'Unavailable' : ratingSummary.count > 0 ? ratingSummary.average : 'Not rated'}</span>
               </div>
               <span className="text-[10px] text-slate-500 font-medium">
                 {ratingSummary.count} {ratingSummary.count === 1 ? 'review' : 'reviews'}
@@ -388,6 +390,7 @@ export const ProfilePage: React.FC = () => {
           <textarea
             rows={3}
             value={bio}
+            disabled={appService.isLive()}
             onChange={(e) => setBio(e.target.value)}
             placeholder="Tell peers about your academic interests, preferred study hours, or teaching style..."
             className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-900 focus:outline-none focus:ring-3 focus:ring-brand-500/15 placeholder:text-slate-400"

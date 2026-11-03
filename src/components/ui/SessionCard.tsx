@@ -5,7 +5,7 @@ import { Badge } from './Badge';
 import { Button } from './Button';
 import { Avatar } from './Avatar';
 import { formatDate, formatTime } from '../../utils';
-import { mockService } from '../../services/mockService';
+import { appService } from '../../services/appService';
 import {
   Calendar,
   Clock,
@@ -37,7 +37,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({
   isCurrentUserLearner,
   isBookingLoading,
 }) => {
-  const tutorRating = mockService.getUserRatingSummary(slot.tutor);
+  const tutorRating = appService.getUserRatingSummary(slot.tutor);
 
   const getStatusBadge = () => {
     switch (slot.status) {
@@ -96,7 +96,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({
                   {tutorRating.average}
                 </span>
               ) : (
-                <span className="text-[10px] text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">New Tutor</span>
+                <span className="text-[10px] text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">{appService.isLive() ? 'Rating unavailable' : 'New Tutor'}</span>
               )}
             </div>
             <p className="text-[11px] text-slate-400 truncate flex items-center gap-1 mt-0.5 font-medium">

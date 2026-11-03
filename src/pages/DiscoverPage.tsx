@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { mockService } from '../services/mockService';
+import { appService } from '../services/appService';
 import { PageHeader } from '../components/layout/PageHeader';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
@@ -42,8 +42,8 @@ export const DiscoverPage: React.FC = () => {
   ];
 
   const filteredSlots = useMemo(() => {
-    return mockService.searchOpenSlots(searchTerm, selectedCategory);
-  }, [searchTerm, selectedCategory]);
+    return appService.searchOpenSlots(searchTerm, selectedCategory);
+  }, [searchTerm, selectedCategory, user]);
 
   const updateFilters = (newSearch: string, newCategory: string) => {
     setSearchTerm(newSearch);
@@ -72,14 +72,14 @@ export const DiscoverPage: React.FC = () => {
     updateFilters('', 'all');
   };
 
-  const handleBook = (slotId: string) => {
+  const handleBook = async (slotId: string) => {
     const confirmed = window.confirm(
       'Book this session for 1 credit?\n\nAcademic Integrity Rule: Sessions are for learning only; no doing assignments or exams for others.'
     );
 
     if (!confirmed) return;
 
-    const result = mockService.bookSlot(slotId);
+    const result = await appService.bookSlot(slotId);
     if (result.success) {
       refreshUserData();
       setBookingMessage({

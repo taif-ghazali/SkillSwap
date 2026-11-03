@@ -117,3 +117,7 @@ Replace `{EXEC_URL}` with your copied Web App URL:
 - **2-Hour Cancellation Rule**: Blocks any cancellation attempt made less than 2 hours before the scheduled session start.
 - **Campus Safety Rule**: Blocks slots from being published in private hostel rooms. Sessions must be in public campus areas or online.
 
+# Reviewed deployment workflow (2026-11-02)
+
+Use [DEPLOYMENT.md](DEPLOYMENT.md) for the current production setup and unchanged API contract. Run `prepareDeployment()` to create empty tabs safely. `setupDatabase()` is now intentionally disabled because the old seed routine clears data; `resetDemoDatabase()` is for disposable demo sheets only. Confirmation uses the Sheets v4 advanced service, configured in the supplied manifest, to commit balances, status and ledger atomically.
+

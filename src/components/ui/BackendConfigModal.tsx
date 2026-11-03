@@ -4,6 +4,7 @@ import { Button } from './Button';
 import { Input } from './Input';
 import { Badge } from './Badge';
 import { apiClient } from '../../services/apiClient';
+import { appService } from '../../services/appService';
 import {
   Server,
   X,
@@ -47,11 +48,16 @@ export const BackendConfigModal: React.FC<BackendConfigModalProps> = ({ isOpen, 
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setIsTesting(true);
+    const result = await apiClient.testConnection(url, key);
+    setIsTesting(false);
+    if (!result.success) { setTestResult(result); return; }
     apiClient.saveConfig(url, key);
+    appService.activateLive();
     setTestResult({
       success: true,
-      message: 'Backend settings saved. The app will communicate with your Google Sheet API.',
+      message: 'Authenticated backend saved. Sign in to use live data.',
     });
     setTimeout(() => {
       onClose();
@@ -60,6 +66,7 @@ export const BackendConfigModal: React.FC<BackendConfigModalProps> = ({ isOpen, 
 
   const handleClear = () => {
     apiClient.clearConfig();
+    appService.activateDemo();
     setUrl('');
     setTestResult({
       success: true,
@@ -94,14 +101,14 @@ export const BackendConfigModal: React.FC<BackendConfigModalProps> = ({ isOpen, 
         <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/80 mb-5 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-700">Active Mode:</span>
-            {apiClient.isConfigured() ? (
+            {appService.isLive() && apiClient.isConfigured() ? (
               <Badge variant="success">Live Google Apps Script API</Badge>
             ) : (
-              <Badge variant="brand">Local State Engine (Offline / Demo)</Badge>
+              <Badge variant="brand">{appService.isLive() ? 'Live mode: configure endpoint' : 'Local demo mode'}</Badge>
             )}
           </div>
           <span className="text-[11px] text-slate-400 font-medium">
-            {apiClient.isConfigured() ? 'Cloud Synced' : 'Instant & Reliable'}
+            {appService.isLive() ? 'Sign in after configuration' : 'Local data only'}
           </span>
         </div>
 
@@ -114,7 +121,7 @@ export const BackendConfigModal: React.FC<BackendConfigModalProps> = ({ isOpen, 
               placeholder="https://script.google.com/macros/s/.../exec"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              helperText="Deploy Code.gs & InitSheet.gs as Web App (Execute as Me, Access: Anyone)"
+              helperText="Enter the deployed /exec URL without query parameters."
             />
           </div>
 
@@ -123,10 +130,10 @@ export const BackendConfigModal: React.FC<BackendConfigModalProps> = ({ isOpen, 
               label="API Shared Secret Key"
               id="apiKey"
               type="password"
-              placeholder="team-secret-123"
+              placeholder="Existing backend key"
               value={key}
               onChange={(e) => setKey(e.target.value)}
-              helperText="Matches const KEY = 'team-secret-123' at the top of Code.gs"
+              helperText="Use the key configured in the deployed backend."
             />
           </div>
         </div>
@@ -177,6 +184,7 @@ export const BackendConfigModal: React.FC<BackendConfigModalProps> = ({ isOpen, 
               variant="primary"
               size="sm"
               onClick={handleSave}
+              disabled={isTesting}
             >
               Save Settings
             </Button>
