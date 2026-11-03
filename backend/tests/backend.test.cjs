@@ -8,7 +8,7 @@ const crypto=require('node:crypto');
 function fixture(){
   const tables={Users:[['email','nick','offers','wants','credits']],Slots:[['slotId','tutor','skill','date','time','place','status','learner','tutorOk','learnerOk']],Ledger:[['time','from','to','credits','slotId']],Ratings:[['slotId','from','stars','time']]};
   const ids={Users:1,Slots:2,Ledger:3,Ratings:4};
-  const sheet=name=>({getSheetId:()=>ids[name],getDataRange:()=>({getDisplayValues:()=>tables[name].map(r=>r.map(String)),getValues:()=>structuredClone(tables[name])}),appendRow:r=>tables[name].push(r),getRange:(row,col,n=1,m=1)=>({setValue:v=>tables[name][row-1][col-1]=v,setValues:values=>{for(let i=0;i<n;i++)for(let j=0;j<m;j++)tables[name][row+i-1][col+j-1]=values[i][j];}})});
+  const sheet=name=>({getSheetId:()=>ids[name],getDataRange:()=>({getDisplayValues:()=>tables[name].map(r=>r.map(String)),getValues:()=>structuredClone(tables[name])}),appendRow:r=>tables[name].push(r),getRange:(row,col,n=1,m=1)=>({getValues:()=>Array.from({length:n},(_,i)=>Array.from({length:m},(_,j)=>tables[name][row+i-1]?.[col+j-1] ?? '')),setValue:v=>tables[name][row-1][col-1]=v,setValues:values=>{for(let i=0;i<n;i++)for(let j=0;j<m;j++)tables[name][row+i-1][col+j-1]=values[i][j];}})});
   const ss={getId:()=>'test-sheet',getSpreadsheetTimeZone:()=>'Asia/Kolkata',getSheetByName:name=>tables[name]?sheet(name):null,insertSheet:name=>{tables[name]=[];return sheet(name)}};
   let held=false, acquisitions=0;
   const lock={waitLock(){assert.equal(held,false,'no nested lock');held=true;acquisitions++},hasLock:()=>held,releaseLock(){assert.equal(held,true);held=false}};
@@ -18,10 +18,10 @@ function fixture(){
     const draft=structuredClone(tables);
     for(const req of body.requests){
       const change=req.updateCells||req.appendCells;
-      const id=req.updateCells?change.range.sheetId:change.sheetId;
+      const id=req.updateCells?(change.range || change.start).sheetId:change.sheetId;
       const name=Object.keys(ids).find(n=>ids[n]===id);assert.ok(name);
       const values=change.rows[0].values.map(c=>c.userEnteredValue.numberValue??c.userEnteredValue.stringValue);
-      if(req.updateCells)draft[name][change.range.startRowIndex][change.range.startColumnIndex]=values[0];else draft[name].push(values);
+      if(req.updateCells)values.forEach((value, index) => { const position = change.range || change.start; draft[name][position.startRowIndex ?? position.rowIndex][(position.startColumnIndex ?? position.columnIndex) + index] = value; });else draft[name].push(values);
     }
     Object.assign(tables,draft);
   }};
@@ -43,7 +43,7 @@ test('T6 one confirmation leaves balances and ledger unchanged',()=>{const f=fix
 test('T7 both confirm: debit, credit and exactly one ledger row',()=>{const f=fixture(),id=f.slot();f.api('book',{email:f.learner,slot:id});f.past(id);f.api('confirm',{email:f.learner,slot:id});assert.equal(f.api('confirm',{email:f.tutor,slot:id}).transferred,true);assert.equal(f.tables.Users[1][4],3);assert.equal(f.tables.Users[2][4],1);assert.equal(f.tables.Ledger.length,2)});
 test('T8 repeated confirmation cannot transfer again',()=>{const f=fixture(),id=f.slot();f.api('book',{email:f.learner,slot:id});f.past(id);f.api('confirm',{email:f.learner,slot:id});f.api('confirm',{email:f.tutor,slot:id});assert.match(f.api('confirm',{email:f.tutor,slot:id}).error,/not in booked/);assert.equal(f.tables.Ledger.length,2)});
 test('profile, search and mine preserve the existing API shape',()=>{const f=fixture();assert.equal(f.api('profile',{email:f.tutor,offers:'Python, Excel',wants:'Figma'}).ok,true);assert.deepEqual(f.api('login',{email:f.tutor}).offers,['Python','Excel']);f.slot();assert.equal(f.api('search',{email:f.learner,skill:'python'}).length,1);assert.equal(f.api('search',{email:f.tutor}).length,0);assert.equal(f.api('mine',{email:f.tutor}).slots.length,1)});
-test('invalid key, malformed emails, dates, times and unsafe venues fail',()=>{const f=fixture();assert.equal(JSON.parse(f.context.handleRequest({key:'wrong',action:'ping'}).body).data.error,'bad key');for(const email of ['@uohyd.ac.in','a@b@uohyd.ac.in','a@elsewhere.com'])assert.ok(f.api('login',{email}).error);for(const patch of [{date:'2030-02-30'},{time:'9:5'},{place:'hostel room'},{place:'home'},{place:'anywhere'}])assert.ok(f.api('publish',{email:f.tutor,skill:'Python',date:'2030-01-01',time:'10:00',place:'Library',...patch}).error)});
+test('invalid key, malformed emails, dates, times and empty or excessive venues fail',()=>{const f=fixture();assert.equal(JSON.parse(f.context.handleRequest({key:'wrong',action:'ping'}).body).data.error,'bad key');for(const email of ['@uohyd.ac.in','a@b@uohyd.ac.in','a@elsewhere.com'])assert.ok(f.api('login',{email}).error);for(const patch of [{date:'2030-02-30'},{time:'9:5'},{place:'   '},{place:'x'.repeat(201)}])assert.ok(f.api('publish',{email:f.tutor,skill:'Python',date:'2030-01-01',time:'10:00',place:'Library',...patch}).error)});
 test('expired slots cannot be booked; future sessions cannot be confirmed',()=>{const f=fixture(),id=f.slot();f.api('book',{email:f.learner,slot:id});assert.ok(f.api('confirm',{email:f.tutor,slot:id}).error);const expired=f.slot();f.past(expired);assert.ok(f.api('book',{email:f.learner,slot:expired}).error)});
 test('ratings require completion, participants, integer stars, and no duplicate',()=>{const f=fixture(),id=f.slot();f.api('book',{email:f.learner,slot:id});assert.ok(f.api('rate',{email:f.learner,slot:id,stars:5}).error);f.past(id);f.api('confirm',{email:f.learner,slot:id});f.api('confirm',{email:f.tutor,slot:id});for(const stars of ['x',2.5,0,6])assert.ok(f.api('rate',{email:f.learner,slot:id,stars}).error);assert.equal(f.api('rate',{email:f.learner,slot:id,stars:5}).ok,true);assert.ok(f.api('rate',{email:f.learner,slot:id,stars:5}).error);f.api('login',{email:'other@uohyd.ac.in'});assert.ok(f.api('rate',{email:'other@uohyd.ac.in',slot:id,stars:5}).error)});
 test('requests release locks on route errors and preserve report/dashboard actions',()=>{const f=fixture();assert.ok(f.api('unknown',{email:f.learner}).error);assert.equal(f.held(),false);assert.equal(f.api('report',{email:f.learner,target:f.tutor,reason:'Test only'}).ok,true);assert.equal(f.api('dashboard',{email:f.learner}).usersCount,2);assert.ok(f.acquisitions()>0)});
@@ -89,3 +89,43 @@ test('invalid legacy clock values never become bookable slots',()=>{
     assert.ok(f.api('book',{email:f.learner,slot:id}).error);
   }
 });
+
+test('publishing persists optional session details and keeps older slots readable', () => {
+  const f = fixture();
+  const older = f.slot();
+  const category = 'Content & Video';
+  const description = 'Bring a practice clip.\nBeginners welcome.';
+  const saved = f.api('publish', {email:f.tutor, skill:'Video editing', date:'2030-01-02', time:'09:05', place:'Library', category, description});
+  assert.ok(saved.slotId, saved.error);
+  for (const slots of [f.api('mine', {email:f.tutor}).slots, f.api('search', {email:f.learner})]) {
+    const updated = slots.find(slot => slot.slotId === saved.slotId);
+    assert.equal(updated.category, category);
+    assert.equal(updated.description, description);
+    assert.equal(slots.find(slot => slot.slotId === older).description, '');
+  }
+});
+
+test('bio survives sign-in, appears on tutor sessions and can be cleared', () => {
+  const f = fixture();
+  const slotId = f.slot();
+  const bio = '=Plain text, not a formula';
+  assert.equal(f.api('profile', {email:f.tutor, bio}).bio, bio);
+  assert.equal(f.api('login', {email:f.tutor}).bio, bio);
+  assert.equal(f.api('search', {email:f.learner}).find(slot => slot.slotId === slotId).tutorBio, bio);
+  assert.equal(f.api('profile', {email:f.tutor, bio:''}).bio, '');
+  assert.equal(f.api('mine', {email:f.tutor}).bio, '');
+});
+
+test('dashboard aggregates Sheet rows for demand, published skills and venues', () => {
+  const f = fixture();
+  f.tables.Users[1][3] = 'Python, python, Statistics';
+  f.tables.Users[2][3] = 'Python';
+  f.slot();
+  f.slot(48);
+  const data = f.api('dashboard', { email: f.tutor });
+  assert.deepEqual(data.topWantedSkills, [{ skill: 'python', count: 2 }, { skill: 'statistics', count: 1 }]);
+  assert.deepEqual(data.topOfferedSkills, [{ skill: 'Python & Excel', count: 2 }]);
+  assert.deepEqual(data.popularVenues, [{ venue: 'SCIS Lab 1', count: 2 }]);
+});
+
+test('custom and diverse venues are accepted without a keyword allowlist',()=>{ for(const place of ['Student centre','Sports pavilion','Campus lake gazebo','Cafe','Hostel common room','Home','Online - Google Meet']) {const f=fixture(); const result=f.api('publish',{email:f.tutor,skill:'Conversation',date:'2030-01-01',time:'09:05',place});assert.ok(result.slotId,result.error);assert.equal(f.tables.Slots[1][5],place);} });

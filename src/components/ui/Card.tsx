@@ -14,11 +14,11 @@ export const Card: React.FC<CardProps> = ({
   ...props
 }) => {
   const variants = {
-    default: 'bg-white border border-slate-200/90 shadow-card rounded-2xl transition-all duration-200',
-    subtle: 'bg-slate-50/70 border border-slate-200/70 rounded-2xl',
-    bordered: 'bg-white border-2 border-slate-200 rounded-2xl',
-    interactive: 'bg-white border border-slate-200/90 shadow-card hover:shadow-card-hover hover:border-brand-200 rounded-2xl transition-all duration-200 cursor-pointer',
-    gradient: 'bg-linear-to-br from-white via-slate-50 to-white border border-slate-200/90 shadow-card rounded-2xl',
+    default: 'bg-white border border-[#DDE3DE] shadow-card rounded-2xl transition-all duration-150',
+    subtle: 'bg-[#F6F7F3] border border-[#DDE3DE] rounded-2xl',
+    bordered: 'bg-white border-2 border-[#1F5240] rounded-2xl',
+    interactive: 'bg-white border border-[#DDE3DE] shadow-card hover:shadow-card-hover hover:border-[#1F5240] rounded-2xl transition-all duration-150 cursor-pointer',
+    gradient: 'bg-gradient-to-br from-white to-[#F6F7F3] border border-[#DDE3DE] shadow-card rounded-2xl',
   };
 
   const paddings = {

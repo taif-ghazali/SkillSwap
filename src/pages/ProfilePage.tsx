@@ -132,12 +132,11 @@ export const ProfilePage: React.FC = () => {
           { label: 'My Profile' },
         ]}
         actions={
-          <Button
+          !appService.isLive() && <Button
             variant="outline"
             size="sm"
             leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
             onClick={handleResetData}
-              disabled={appService.isLive()}
             title="Reset test data to initial defaults"
           >
             Reset Demo Data
@@ -390,7 +389,8 @@ export const ProfilePage: React.FC = () => {
           <textarea
             rows={3}
             value={bio}
-            disabled={appService.isLive()}
+            maxLength={500}
+            aria-label="Student bio and about me"
             onChange={(e) => setBio(e.target.value)}
             placeholder="Tell peers about your academic interests, preferred study hours, or teaching style..."
             className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-900 focus:outline-none focus:ring-3 focus:ring-brand-500/15 placeholder:text-slate-400"
@@ -400,7 +400,7 @@ export const ProfilePage: React.FC = () => {
         {/* Save Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
           <span className="text-xs text-slate-500 font-medium">
-            Changes persist to your browser profile immediately across refreshes
+            Save your profile to share your bio with peers.
           </span>
           <Button
             type="submit"

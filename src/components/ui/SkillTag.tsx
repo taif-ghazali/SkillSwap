@@ -22,10 +22,10 @@ export const SkillTag: React.FC<SkillTagProps> = ({
   const isClickable = !!onClick;
 
   const variants = {
-    offer: 'bg-[#DDF7EB] text-[#0A6B5B] border-[#bdf1d9] hover:bg-[#cbf5e2]',
-    want: 'bg-brand-50 text-brand-700 border-brand-200 hover:bg-brand-100',
-    neutral: 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200',
-    interactive: 'bg-white text-slate-700 border-slate-200 hover:border-brand-400 hover:text-brand-600 hover:bg-brand-50/40 shadow-2xs cursor-pointer',
+    offer: 'bg-[#E4ECE5] text-[#1F5240] border-[#DDE3DE] hover:bg-[#d8e3d9]',
+    want: 'bg-[#F0F4F1] text-[#1F5240] border-[#DDE3DE] hover:bg-[#E4ECE5]',
+    neutral: 'bg-[#F6F7F3] text-[#1E2A24] border-[#DDE3DE] hover:bg-[#E4ECE5]',
+    interactive: 'bg-white text-[#1E2A24] border-[#DDE3DE] hover:border-[#1F5240] hover:text-[#1F5240] hover:bg-[#E4ECE5]/50 shadow-2xs cursor-pointer',
   };
 
   const sizes = {
@@ -46,8 +46,8 @@ export const SkillTag: React.FC<SkillTagProps> = ({
         className
       )}
     >
-      {variant === 'offer' && <Sparkles className="w-3 h-3 text-[#0A6B5B] shrink-0" />}
-      {variant === 'want' && <BookOpen className="w-3 h-3 text-brand-600 shrink-0" />}
+      {variant === 'offer' && <Sparkles className="w-3 h-3 text-[#1F5240] shrink-0" />}
+      {variant === 'want' && <BookOpen className="w-3 h-3 text-[#1F5240] shrink-0" />}
       <span>{skill}</span>
       {onRemove && (
         <button

@@ -14,11 +14,9 @@ import {
 } from 'lucide-react';
 
 export const CampusAnalyticsSection: React.FC = () => {
-  if (appService.isLive()) {
-    const data = appService.dashboard;
-    return <Card><h2>Campus activity</h2>{data ? <p>{data.usersCount} students · {data.openCount} open sessions · {data.bookedCount} booked · {data.completedCount} completed</p> : <p>Campus activity is currently unavailable.</p>}</Card>;
-  }
-  const analytics = appService.getCampusAnalytics();
+  const live = appService.isLive();
+  const analytics = live ? appService.dashboard : appService.getCampusAnalytics();
+  if (!analytics) return <Card><h2>Campus activity</h2><p>Campus analytics are currently unavailable.</p></Card>;
 
   // Find max count for normalized visual bar widths
   const maxWanted = Math.max(...analytics.topWantedSkills.map((s) => s.count), 1);
@@ -36,7 +34,7 @@ export const CampusAnalyticsSection: React.FC = () => {
             <h2 className="text-lg font-extrabold text-slate-900 tracking-tight">
               Campus Skills &amp; Exchange Analytics
             </h2>
-            <Badge variant="teal">Day 13 Dashboard</Badge>
+            <Badge variant="teal">{live ? "Live campus data" : "Demo data"}</Badge>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
             Real-time supply and demand trends across School of Computer &amp; Information Sciences (SCIS)
@@ -103,6 +101,7 @@ export const CampusAnalyticsSection: React.FC = () => {
               Topics students actively want to learn:
             </p>
             <div className="space-y-3">
+              {analytics.topWantedSkills.length === 0 && <p className="text-xs text-slate-500">No requested skills yet.</p>}
               {analytics.topWantedSkills.map((item, idx) => {
                 const percent = Math.round((item.count / maxWanted) * 100);
                 return (
@@ -130,21 +129,22 @@ export const CampusAnalyticsSection: React.FC = () => {
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-teal-600" />
-                Top Taught Skills (Offers)
+                Top Taught Skills
               </h3>
               <Badge variant="teal">Tutor Capacity</Badge>
             </div>
             <p className="text-[11px] text-slate-400 mb-4">
-              Skills with strongest peer tutor availability:
+              {live ? "Topics with the most published sessions:" : "Skills offered by peer tutors:"}
             </p>
             <div className="space-y-3">
+              {analytics.topOfferedSkills.length === 0 && <p className="text-xs text-slate-500">No published session topics yet.</p>}
               {analytics.topOfferedSkills.map((item, idx) => {
                 const percent = Math.round((item.count / maxOffered) * 100);
                 return (
                   <div key={item.skill} className="space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-slate-800 font-semibold">{idx + 1}. {item.skill}</span>
-                      <span className="font-bold text-teal-700 text-[11px]">{item.count} tutors</span>
+                      <span className="font-bold text-teal-700 text-[11px]">{item.count} {live ? "sessions" : "tutors"}</span>
                     </div>
                     <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
                       <div
@@ -165,14 +165,15 @@ export const CampusAnalyticsSection: React.FC = () => {
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-brand-600" />
-                Public Campus Venues
+                Venue Distribution
               </h3>
               <Badge variant="brand">Verified Safe</Badge>
             </div>
             <p className="text-[11px] text-slate-400 mb-4">
-              Peer-approved public study spaces:
+              Locations listed on published sessions:
             </p>
             <div className="space-y-3">
+              {analytics.popularVenues.length === 0 && <p className="text-xs text-slate-500">No venues listed yet.</p>}
               {analytics.popularVenues.map((item) => (
                 <div key={item.venue} className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between text-xs">
                   <span className="text-slate-700 font-medium truncate max-w-[190px]" title={item.venue}>
@@ -188,21 +189,6 @@ export const CampusAnalyticsSection: React.FC = () => {
         </Card>
       </div>
 
-      {/* Looker Studio Notice Bar */}
-      <div className="p-4 bg-gradient-to-r from-[#263778]/10 via-[#4969F5]/5 to-teal-500/10 border border-brand-200/80 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-800">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-brand-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
-            📊
-          </div>
-          <div>
-            <p className="font-bold text-slate-900">Google Looker Studio Connector Ready</p>
-            <p className="text-[11px] text-slate-500">Live data synchronization with Google Sheets database (`Users`, `Slots`, `Ledger`, `Ratings` tabs)</p>
-          </div>
-        </div>
-        <span className="font-bold text-brand-700 bg-white px-3 py-1 rounded-full border border-brand-200/80 shrink-0 text-center">
-          IE209 Spec 4A Compliant
-        </span>
-      </div>
     </div>
   );
 };

@@ -1,0 +1,111 @@
+# SkillSwap: RESUME PRODUCTION PUBLICATION FROM EXACT STOPPING POINT
+
+Resume the existing SkillSwap project and continue from the precise state at which you stopped due to the usage limit.
+
+Do not restart the project, redo completed work, or repeat investigations already performed.
+
+## 1. Established state
+
+The following has already been completed:
+
+- SkillSwap website built and locally launched.
+- Apps Script Version 2 backend successfully deployed and tested.
+- Existing QA backend and `SkillSwap_TestDataBase` are working.
+- 35 live integration checks passed.
+- 28 website tests and 24 backend tests passed.
+- Early-morning time-format bug fixed and verified.
+- Complete booking, cancellation, confirmation, credit-transfer and rating submission workflows passed.
+- Final browser acceptance exposed two deferred display issues:
+  - Tutor profiles do not display saved ratings correctly.
+  - Wallets do not display saved ledger transactions correctly.
+- Both issues are intentionally deferred until after publication.
+- A separate Google Spreadsheet named `SkillSwap_Production` has already been created.
+- No QA records or deployments should be modified.
+- The Google Workspace account blocked `clasp` OAuth with `Error 400: admin_policy_enforced`.
+- Therefore, do not retry `clasp login` or university-account CLI OAuth.
+- The agreed approach is manual Apps Script editor deployment.
+- You previously committed to preparing the production backend locally, deployment instructions, and hosting configuration separately.
+- You stopped because of your Codex usage limit, not because of a project failure.
+
+## 2. First: inspect existing progress
+
+Inspect the current project files, outputs and working tree.
+
+Locate:
+- Existing Version 2 backend source.
+- Existing production spreadsheet ID/configuration.
+- Any production Apps Script files already prepared.
+- Existing website build and hosting configuration.
+- Any deployment instructions or partially completed artifacts from the previous run.
+
+Reuse completed work. Do not recreate the production spreadsheet.
+
+## 3. Complete the production backend package
+
+Prepare the production Apps Script source locally using the tested Version 2 implementation.
+
+Requirements:
+- Bind it to the existing `SkillSwap_Production` spreadsheet.
+- Ensure it never points to `SkillSwap_TestDataBase`.
+- Preserve the tested API contract and time-format fix.
+- Use a fresh production API credential, not the exposed development key.
+- Preserve University of Hyderabad email restrictions.
+- Keep the production spreadsheet private.
+- Include all necessary Apps Script source files and manifest/configuration.
+- Prepare exact, concise instructions for inserting the files into the Apps Script editor and deploying the Web App manually.
+
+Do not alter the existing QA backend or deployment.
+
+## 4. Prepare website publication independently
+
+While the manual backend deployment is pending:
+
+- Finish the production website build.
+- Configure the website for the production endpoint.
+- Keep production configuration separate from QA configuration.
+- Prepare the hosting deployment.
+- Use the existing hosting account/configuration where available.
+- Do not deploy the website against the QA database.
+- Do not expose credentials in GitHub or public files.
+
+Do not waste time on the two deferred display bugs.
+
+## 5. Publication
+
+Once I manually deploy the production Apps Script backend and provide its endpoint:
+
+- Connect the website to that endpoint.
+- Complete the hosting deployment.
+- Open the actual public URL in a fresh browser session.
+- Confirm that the website loads and login/registration entry points work.
+- Confirm that the production backend is reachable.
+
+Do not start another full acceptance-testing cycle.
+
+If hosting authorization or another external approval is needed, identify the exact action I must take.
+
+## 6. Preserve these boundaries
+
+- Do not reset, delete or alter QA records.
+- Do not change the existing QA backend or deployment.
+- Do not modify the Android `.aia` project.
+- Do not redesign the website.
+- Do not fix the deferred rating and ledger display issues.
+- Do not repeat completed tests unnecessarily.
+- Do not claim anything has been deployed unless it actually has.
+
+## 7. Immediate next output
+
+Do not give me another long progress report.
+
+First complete the locally possible work and provide:
+
+1. The production Apps Script package location.
+2. The exact files I must insert into the Apps Script editor.
+3. The exact manual deployment steps.
+4. The prepared website build/hosting status.
+5. Any one action you need from me to unblock publication.
+
+**END GOAL: Complete the manual production backend deployment, publish SkillSwap publicly, verify its URL, and close the website phase.**
+
+Continue from the existing work. Do not start over.

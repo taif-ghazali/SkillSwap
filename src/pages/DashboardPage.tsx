@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { appService } from '../services/appService';
-import { PageHeader } from '../components/layout/PageHeader';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
 import { SkillTag } from '../components/ui/SkillTag';
 import { SessionCard } from '../components/ui/SessionCard';
 import { SessionDetailsModal } from '../components/ui/SessionDetailsModal';
@@ -23,11 +21,7 @@ import {
   Search,
   TrendingUp,
   AlertCircle,
-  GraduationCap,
   History,
-  Repeat,
-  ArrowUpRight,
-  ArrowDownLeft
 } from 'lucide-react';
 
 export const DashboardPage: React.FC = () => {
@@ -90,22 +84,22 @@ export const DashboardPage: React.FC = () => {
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="max-w-xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-white text-xs font-bold border border-white/20">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <Sparkles className="w-3.5 h-3.5 text-[#E4ECE5]" />
               <span>SkillSwap UoH &bull; Learn Together. Grow Together.</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight">
-              Welcome back, <span className="text-amber-300">{user.nick}</span>!
+              Welcome back, <span className="text-[#E4ECE5]">{user.nick}</span>!
             </h1>
-            <p className="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-normal">
-              University of Hyderabad peer learning network. Trade skills in LaTeX, Python, Figma, and Excel with fellow campus scholars using Time Credits.
+            <p className="text-xs sm:text-sm text-[#E4ECE5]/90 leading-relaxed font-normal">
+              Share a skill. Learn something new. Teach what you know, learn what you need using peer Time Credits.
             </p>
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <Button
-                variant="credit"
+                variant="secondary"
                 size="md"
-                leftIcon={<PlusCircle className="w-4 h-4 text-slate-900" />}
+                leftIcon={<PlusCircle className="w-4 h-4 text-[#1F5240]" />}
                 onClick={() => navigate('/teach')}
-                className="shadow-md hover:shadow-lg hover:scale-102 transition-all"
+                className="bg-white text-[#1F5240] hover:bg-[#E4ECE5] font-bold shadow-md hover:scale-102 transition-all"
               >
                 Offer a Session
               </Button>
@@ -122,27 +116,27 @@ export const DashboardPage: React.FC = () => {
           </div>
 
           {/* Time Wallet Spotlight in Hero */}
-          <div className="lg:min-w-[280px] bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5 text-white shadow-inner flex flex-col justify-between">
+          <div className="lg:min-w-[280px] bg-white/15 backdrop-blur-md border border-white/25 rounded-2xl p-5 text-white shadow-inner flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-200">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#E4ECE5]">
                 Your Time Wallet
               </span>
-              <div className="w-8 h-8 rounded-full bg-amber-400 text-slate-900 flex items-center justify-center font-bold text-sm shadow-md">
+              <div className="w-8 h-8 rounded-full bg-[#E4ECE5] text-[#1F5240] flex items-center justify-center font-bold text-sm shadow-md">
                 ⏱
               </div>
             </div>
             <div className="my-3">
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-black text-amber-300">{availableCredits}</span>
-                <span className="text-xs font-medium text-blue-200">Credits Available</span>
+                <span className="text-4xl font-black text-white">{availableCredits}</span>
+                <span className="text-xs font-medium text-[#E4ECE5]">Credits Available</span>
               </div>
-              <p className="text-[11px] text-blue-200/80 mt-1">
+              <p className="text-[11px] text-[#E4ECE5]/80 mt-1">
                 {totalCredits} total balance &bull; {reservedCredits} in escrow
               </p>
             </div>
             <div className="pt-3 border-t border-white/15 flex items-center justify-between text-xs">
-              <span className="text-[11px] text-blue-100">1 hr session = 1 credit</span>
-              <Link to="/wallet" className="text-amber-300 font-bold hover:underline flex items-center gap-1">
+              <span className="text-[11px] text-[#E4ECE5]">1 hr session = 1 credit</span>
+              <Link to="/wallet" className="text-[#E4ECE5] font-bold hover:underline flex items-center gap-1">
                 Ledger &rarr;
               </Link>
             </div>
@@ -157,7 +151,7 @@ export const DashboardPage: React.FC = () => {
         <div
           className={`p-4 rounded-2xl border text-sm flex items-center gap-3 transition-all ${
             bookingMessage.type === 'success'
-              ? 'bg-[#DDF7EB] border-[#bdf1d9] text-[#0A6B5B]'
+              ? 'bg-[#E4ECE5] border-[#DDE3DE] text-[#1F5240]'
               : 'bg-rose-50 border-rose-200 text-rose-900'
           }`}
         >
@@ -172,23 +166,23 @@ export const DashboardPage: React.FC = () => {
         <Card
           variant="interactive"
           onClick={() => navigate('/sessions')}
-          className="flex flex-col justify-between"
+          className="flex flex-col justify-between border-[#DDE3DE]"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] font-bold text-[#6B7570] uppercase tracking-wider">
               Active Bookings
             </span>
-            <div className="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#E4ECE5] text-[#1F5240] flex items-center justify-center">
               <Calendar className="w-4 h-4" />
             </div>
           </div>
           <div className="my-2 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-slate-900">{bookedSessionsCount}</span>
-            <span className="text-xs font-semibold text-slate-500">Upcoming</span>
+            <span className="text-3xl font-black text-[#1E2A24]">{bookedSessionsCount}</span>
+            <span className="text-xs font-semibold text-[#6B7570]">Upcoming</span>
           </div>
-          <div className="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
-            <span className="text-slate-400 text-[11px]">Tutor &amp; Learner</span>
-            <span className="text-brand-600 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+          <div className="pt-2 border-t border-[#DDE3DE]/60 flex justify-between items-center text-xs">
+            <span className="text-[#6B7570] text-[11px]">Tutor &amp; Learner</span>
+            <span className="text-[#1F5240] font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
               View all &rarr;
             </span>
           </div>
@@ -198,25 +192,25 @@ export const DashboardPage: React.FC = () => {
         <Card
           variant="interactive"
           onClick={() => navigate('/profile')}
-          className="flex flex-col justify-between"
+          className="flex flex-col justify-between border-[#DDE3DE]"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] font-bold text-[#6B7570] uppercase tracking-wider">
               Skills I Teach
             </span>
-            <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#E4ECE5] text-[#1F5240] flex items-center justify-center">
               <Sparkles className="w-4 h-4" />
             </div>
           </div>
           <div className="my-2 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-slate-900">{user.offers.length}</span>
-            <span className="text-xs font-semibold text-teal-700">Skills Listed</span>
+            <span className="text-3xl font-black text-[#1E2A24]">{user.offers.length}</span>
+            <span className="text-xs font-semibold text-[#1F5240]">Skills Listed</span>
           </div>
-          <div className="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
-            <span className="text-slate-400 text-[11px] truncate max-w-[120px]">
+          <div className="pt-2 border-t border-[#DDE3DE]/60 flex justify-between items-center text-xs">
+            <span className="text-[#6B7570] text-[11px] truncate max-w-[120px]">
               {user.offers[0] || 'Add skills'}
             </span>
-            <span className="text-brand-600 font-bold">Manage &rarr;</span>
+            <span className="text-[#1F5240] font-bold">Manage &rarr;</span>
           </div>
         </Card>
 
@@ -224,25 +218,25 @@ export const DashboardPage: React.FC = () => {
         <Card
           variant="interactive"
           onClick={() => navigate('/profile')}
-          className="flex flex-col justify-between"
+          className="flex flex-col justify-between border-[#DDE3DE]"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] font-bold text-[#6B7570] uppercase tracking-wider">
               Want to Learn
             </span>
-            <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#E4ECE5] text-[#1F5240] flex items-center justify-center">
               <BookOpen className="w-4 h-4" />
             </div>
           </div>
           <div className="my-2 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-slate-900">{user.wants.length}</span>
-            <span className="text-xs font-semibold text-brand-700">Topics</span>
+            <span className="text-3xl font-black text-[#1E2A24]">{user.wants.length}</span>
+            <span className="text-xs font-semibold text-[#1F5240]">Topics</span>
           </div>
-          <div className="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
-            <span className="text-slate-400 text-[11px] truncate max-w-[120px]">
+          <div className="pt-2 border-t border-[#DDE3DE]/60 flex justify-between items-center text-xs">
+            <span className="text-[#6B7570] text-[11px] truncate max-w-[120px]">
               {user.wants[0] || 'Add topics'}
             </span>
-            <span className="text-brand-600 font-bold">Add &rarr;</span>
+            <span className="text-[#1F5240] font-bold">Add &rarr;</span>
           </div>
         </Card>
 
@@ -250,33 +244,33 @@ export const DashboardPage: React.FC = () => {
         <Card
           variant="interactive"
           onClick={() => navigate('/wallet')}
-          className="flex flex-col justify-between"
+          className="flex flex-col justify-between border-[#DDE3DE]"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] font-bold text-[#6B7570] uppercase tracking-wider">
               Total Credits
             </span>
-            <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+            <div className="w-8 h-8 rounded-xl bg-[#E4ECE5] text-[#1F5240] flex items-center justify-center font-bold">
               ⏱
             </div>
           </div>
           <div className="my-2 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-slate-900">{totalCredits}</span>
-            <span className="text-xs font-semibold text-amber-800">Time Credits</span>
+            <span className="text-3xl font-black text-[#1E2A24]">{totalCredits}</span>
+            <span className="text-xs font-semibold text-[#1F5240]">Time Credits</span>
           </div>
-          <div className="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
-            <span className="text-slate-400 text-[11px]">{availableCredits} Available</span>
-            <span className="text-brand-600 font-bold">Wallet &rarr;</span>
+          <div className="pt-2 border-t border-[#DDE3DE]/60 flex justify-between items-center text-xs">
+            <span className="text-[#6B7570] text-[11px]">{availableCredits} Available</span>
+            <span className="text-[#1F5240] font-bold">Wallet &rarr;</span>
           </div>
         </Card>
       </div>
 
       {/* 3. Quick Skill Explorer Chips */}
-      <Card padding="sm" className="bg-white">
+      <Card padding="sm" className="bg-white border-[#DDE3DE]">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-1 sm:p-2">
           <div className="flex items-center gap-2 shrink-0">
-            <TrendingUp className="w-4 h-4 text-brand-500 shrink-0" />
-            <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">
+            <TrendingUp className="w-4 h-4 text-[#1F5240] shrink-0" />
+            <span className="text-xs font-extrabold text-[#1E2A24] uppercase tracking-wider">
               Popular at UoH:
             </span>
           </div>
@@ -306,16 +300,16 @@ export const DashboardPage: React.FC = () => {
       <div>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-extrabold text-slate-900 tracking-tight">
+            <h2 className="text-lg font-extrabold text-[#1E2A24] tracking-tight">
               Recommended Peer Learning Slots
             </h2>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-[#6B7570]">
               Personalized based on what you want to learn ({user.wants.join(', ') || 'all topics'})
             </p>
           </div>
           <Link
             to="/discover"
-            className="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1 group"
+            className="text-xs font-bold text-[#1F5240] hover:underline flex items-center gap-1 group"
           >
             <span>Explore all open slots</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -323,14 +317,14 @@ export const DashboardPage: React.FC = () => {
         </div>
 
         {recommendedSlots.length === 0 ? (
-          <Card className="text-center p-8 bg-white">
-            <p className="text-sm text-slate-500 font-medium">No open future slots available right now.</p>
+          <Card className="text-center p-8 bg-white border-[#DDE3DE]">
+            <p className="text-sm text-[#6B7570] font-medium">No open future slots available right now.</p>
             <Button
               className="mt-3.5"
               size="sm"
               onClick={() => navigate('/teach')}
             >
-              Publish the First Slot
+              Publish Session
             </Button>
           </Card>
         ) : (
@@ -350,38 +344,37 @@ export const DashboardPage: React.FC = () => {
 
       {/* 6. Recent Activity & Transaction Mini-Feed */}
       {recentTransactions.length > 0 && (
-        <Card className="bg-white p-5">
+        <Card className="bg-white p-5 border-[#DDE3DE]">
           <div className="flex items-center justify-between mb-3.5">
             <div className="flex items-center gap-2">
-              <History className="w-4 h-4 text-brand-500" />
-              <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
+              <History className="w-4 h-4 text-[#1F5240]" />
+              <h3 className="text-xs font-extrabold text-[#1E2A24] uppercase tracking-wider">
                 Recent Campus Ledger Activity
               </h3>
             </div>
-            <Link to="/wallet" className="text-xs font-bold text-brand-600 hover:underline">
+            <Link to="/wallet" className="text-xs font-bold text-[#1F5240] hover:underline">
               Full Ledger &rarr;
             </Link>
           </div>
-          <div className="divide-y divide-slate-100 text-xs">
+          <div className="divide-y divide-[#DDE3DE]/60 text-xs">
             {recentTransactions.map((tx) => {
-              const isMine = tx.from.toLowerCase() === user.email.toLowerCase() || tx.to.toLowerCase() === user.email.toLowerCase();
               return (
                 <div key={tx.id} className="py-2.5 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center font-bold text-xs">
+                    <div className="w-7 h-7 rounded-lg bg-[#E4ECE5] text-[#1F5240] flex items-center justify-center font-bold text-xs">
                       ⏱
                     </div>
                     <div>
-                      <p className="font-semibold text-slate-800">
+                      <p className="font-semibold text-[#1E2A24]">
                         {tx.skill}{' '}
-                        <span className="text-slate-400 font-normal">
+                        <span className="text-[#6B7570] font-normal">
                           ({tx.fromNick} &rarr; {tx.toNick})
                         </span>
                       </p>
-                      <p className="text-[11px] text-slate-400">{tx.time}</p>
+                      <p className="text-[11px] text-[#6B7570]">{tx.time}</p>
                     </div>
                   </div>
-                  <span className="font-bold text-teal-700 bg-[#DDF7EB] px-2.5 py-0.5 rounded-full border border-[#bdf1d9]">
+                  <span className="font-bold text-[#1F5240] bg-[#E4ECE5] px-2.5 py-0.5 rounded-full border border-[#DDE3DE]">
                     1 Credit Transferred
                   </span>
                 </div>

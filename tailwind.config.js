@@ -7,109 +7,116 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Primary: Deep Indigo (#263778) & Electric Blue (#4969F5)
+        // Team Exact Color Palette from SkillSwap_MiniProject_Team_SD.aia
+        // Primary Pine Green (#1F5240)
         brand: {
-          50: '#f0f4ff',
-          100: '#e2ebff',
-          200: '#c8d7fe',
-          300: '#a2bdfd',
-          400: '#7498fb',
-          500: '#4969F5', // Electric Blue (Primary Accent)
-          600: '#3553e8',
-          700: '#2b40d0',
-          800: '#263778', // Deep Indigo (Primary)
-          900: '#202d64',
-          950: '#141c40',
+          50: '#F6F7F3',
+          100: '#E4ECE5', // Exact team pill/badge tint
+          200: '#C8D7CB',
+          300: '#9BB6A0',
+          400: '#5C8E64',
+          500: '#2D6A53',
+          600: '#255D49',
+          700: '#1F5240', // Exact team primary color
+          800: '#174032',
+          900: '#102D23',
+          950: '#0A1C16',
+        },
+        forest: {
+          50: '#F6F7F3',
+          100: '#E4ECE5',
+          200: '#C8D7CB',
+          300: '#9BB6A0',
+          400: '#5C8E64',
+          500: '#2D6A53',
+          600: '#255D49',
+          700: '#1F5240',
+          800: '#174032',
+          900: '#102D23',
         },
         primary: {
-          DEFAULT: '#263778',
-          accent: '#4969F5',
+          DEFAULT: '#1F5240',
+          dark: '#174032',
+          light: '#2D6A53',
+          tint: '#E4ECE5',
         },
-        // Secondary: Teal (#16A89A)
-        teal: {
-          50: '#f0fdfc',
-          100: '#ccfbf7',
-          200: '#99f6ee',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#16A89A', // Signature Teal
-          600: '#0f877d',
-          700: '#0f6c64',
-          800: '#115651',
-          900: '#134844',
+        // Surfaces matching team App Inventor designer:
+        surface: {
+          bg: '#F6F7F3',       // Exact Screen1.BackgroundColor
+          card: '#FFFFFF',     // Exact White Card
+          pill: '#E4ECE5',     // Exact Selection / Badge color
+          border: '#DDE3DE',   // Soft border
+          text: '#1E2A24',     // Exact Dark Charcoal Pine
+          muted: '#6B7570',    // Exact Muted Sage Slate
         },
-        // Success: Mint Green (#DDF7EB)
-        mint: {
-          50: '#f4fcf8',
-          100: '#DDF7EB', // Surface / Badge background
-          200: '#bdf1d9',
-          500: '#10b981',
-          600: '#059669',
-          700: '#047857',
-          800: '#065f46',
+        // Text scale
+        slate: {
+          50: '#F6F7F3',       // Canvas
+          100: '#E4ECE5',      // Pill / Badge
+          200: '#DDE3DE',      // Border
+          300: '#CBD2CD',
+          400: '#9AA49F',
+          500: '#6B7570',      // Exact team hint/muted text
+          600: '#545D59',
+          700: '#3D4541',
+          800: '#28302C',
+          900: '#1E2A24',      // Exact team headline text
+          950: '#121715',
         },
-        // Highlight & Time Credits: Warm Amber (#F5B84B)
+        // Time Credits / Wallet Accents
         credit: {
-          50: '#fffbf2',
-          100: '#fef5e0',
-          200: '#fde7be',
-          300: '#fbd392',
-          400: '#f8bd63',
-          500: '#F5B84B', // Warm Amber Signature
-          600: '#dc9933',
-          700: '#b77524',
-          800: '#925a22',
+          50: '#FDF8EC',
+          100: '#FBF0D5',
+          200: '#F7DC9E',
+          300: '#F2C662',
+          400: '#EAA932',
+          500: '#D97706',
+          600: '#B45309',
+          700: '#92400E',
         },
         amber: {
-          50: '#fffbf2',
-          100: '#fef5e0',
-          200: '#fde7be',
-          300: '#fbd392',
-          400: '#f8bd63',
-          500: '#F5B84B',
-          600: '#dc9933',
-          700: '#b77524',
-          800: '#925a22',
-          900: '#78461f',
+          50: '#FDF8EC',
+          100: '#FBF0D5',
+          200: '#F7DC9E',
+          300: '#F2C662',
+          400: '#EAA932',
+          500: '#D97706',
+          600: '#B45309',
+          700: '#92400E',
         },
-        // Base surfaces
-        surface: {
-          bg: '#F6F7FB',       // Soft Off-White Background
-          card: '#FFFFFF',     // White Surface
-          border: '#E5E9F1',   // Soft Grey Borders
-          text: '#20283B',     // Deep Slate Text
-          muted: '#748096',    // Muted Slate Text
+        mint: {
+          50: '#F6F7F3',
+          100: '#E4ECE5',
+          200: '#C8D7CB',
+          300: '#9BB6A0',
+          400: '#5C8E64',
+          500: '#2D6A53',
+          600: '#1F5240',
         },
-        // Overridden slate to match exact design specification
-        slate: {
-          50: '#F6F7FB',       // Background
-          100: '#eff2f8',
-          200: '#E5E9F1',      // Soft Grey Borders
-          300: '#d3dae6',
-          400: '#9faec4',
-          500: '#748096',      // Muted Slate
-          600: '#58647a',
-          700: '#404c62',
-          800: '#2b354b',
-          900: '#20283B',      // Deep Slate Main Text
-          950: '#121826',
+        teal: {
+          50: '#F6F7F3',
+          100: '#E4ECE5',
+          200: '#C8D7CB',
+          300: '#9BB6A0',
+          400: '#5C8E64',
+          500: '#2D6A53',
+          600: '#1F5240',
         }
       },
       fontFamily: {
         sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       boxShadow: {
-        'subtle': '0 1px 3px 0 rgba(32, 40, 59, 0.04)',
-        'card': '0 2px 10px -2px rgba(38, 55, 120, 0.05), 0 1px 3px 0 rgba(38, 55, 120, 0.03)',
-        'card-hover': '0 12px 28px -6px rgba(38, 55, 120, 0.12), 0 6px 12px -4px rgba(38, 55, 120, 0.06)',
-        'elevated': '0 16px 36px -12px rgba(38, 55, 120, 0.14), 0 4px 10px -2px rgba(38, 55, 120, 0.04)',
-        'credit': '0 4px 14px 0 rgba(245, 184, 75, 0.28)',
-        'pill': '0 2px 8px 0 rgba(73, 105, 245, 0.22)',
+        'subtle': '0 1px 3px 0 rgba(31, 82, 64, 0.04)',
+        'card': '0 2px 8px -1px rgba(31, 82, 64, 0.06), 0 1px 3px 0 rgba(31, 82, 64, 0.03)',
+        'card-hover': '0 8px 24px -4px rgba(31, 82, 64, 0.12), 0 4px 8px -2px rgba(31, 82, 64, 0.04)',
+        'elevated': '0 14px 32px -8px rgba(31, 82, 64, 0.14), 0 4px 10px -2px rgba(31, 82, 64, 0.04)',
+        'pill': '0 1px 4px 0 rgba(31, 82, 64, 0.12)',
       },
       borderRadius: {
-        'xl': '0.875rem',
-        '2xl': '1.125rem',
-        '3xl': '1.5rem',
+        'xl': '0.75rem',
+        '2xl': '0.875rem', // Matches element corner radius 14 in SD
+        '3xl': '1.25rem',
       }
     },
   },

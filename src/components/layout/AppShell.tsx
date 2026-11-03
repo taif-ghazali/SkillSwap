@@ -22,7 +22,7 @@ export const AppShell: React.FC = () => {
           <p className="mb-3 text-sm">{isLive ? 'Live backend' : 'Demo mode: changes stay on this device'}</p>
           {isLive && <button className="mb-3 underline" disabled={isBusy} onClick={() => void appService.refresh().catch(() => {})}>Refresh from server</button>}
           {error && <p role="alert" className="mb-4 text-rose-700">{error}</p>}
-          {isLive && <p className="mb-4 text-sm text-slate-500">The backend provides balances and sessions. Ledger history, rating history, peer profiles, categories, descriptions and bios are unavailable through its current API.</p>}
+          {isLive && <p className="mb-4 text-sm text-slate-500">The backend provides balances and sessions. Ledger history, rating history, and peer profile pages are unavailable through its current API.</p>}
           <fieldset disabled={isBusy} className="min-w-0">{isBusy && <p role="status">Connecting to server...</p>}<Outlet /></fieldset>
         </main>
 

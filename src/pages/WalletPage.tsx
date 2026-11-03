@@ -49,15 +49,14 @@ export const WalletPage: React.FC = () => {
         ]}
         actions={
           <div className="flex items-center gap-2">
-            <Button
+            {!appService.isLive() && <Button
               variant="outline"
               size="sm"
               leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
               onClick={handleResetData}
-              disabled={appService.isLive()}
             >
               Reset Demo
-            </Button>
+            </Button>}
             <Button
               variant="outline"
               size="sm"

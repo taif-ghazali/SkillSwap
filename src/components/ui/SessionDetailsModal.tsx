@@ -88,6 +88,8 @@ export const SessionDetailsModal: React.FC<SessionDetailsModalProps> = ({
           </div>
         </div>
 
+        {slot.tutorBio && <p className="mb-5 whitespace-pre-wrap break-words text-sm text-slate-600">{slot.tutorBio}</p>}
+
         {/* Schedule & Venue Details */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5 text-xs text-slate-700">
           <div className="p-3.5 rounded-xl border border-slate-200 bg-white shadow-2xs">
@@ -117,7 +119,7 @@ export const SessionDetailsModal: React.FC<SessionDetailsModalProps> = ({
             <BookOpen className="w-3.5 h-3.5 text-brand-500" />
             What You Will Cover
           </h4>
-          <p className="text-xs text-slate-600 leading-relaxed bg-slate-50/70 p-3.5 rounded-xl border border-slate-200/60 font-medium">
+          <p className="whitespace-pre-wrap break-words text-xs text-slate-600 leading-relaxed bg-slate-50/70 p-3.5 rounded-xl border border-slate-200/60 font-medium">
             {slot.description ||
               `Hands-on peer mentoring session covering fundamental concepts, problem solving, and best practices in ${slot.skill}.`}
           </p>

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 160" fill="none">
+  <defs>
+    <linearGradient id="logoBgGrad" x1="10" y1="10" x2="150" y2="150" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1B4332" />
+      <stop offset="60%" stop-color="#143728" />
+      <stop offset="100%" stop-color="#0B1F16" />
+    </linearGradient>
+
+    <linearGradient id="logoEmeraldFlow" x1="40" y1="40" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#52B788" />
+      <stop offset="100%" stop-color="#2D6A4F" />
+    </linearGradient>
+
+    <linearGradient id="logoMintGlow" x1="30" y1="70" x2="110" y2="130" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#74C69D" />
+      <stop offset="100%" stop-color="#40916C" />
+    </linearGradient>
+
+    <linearGradient id="logoGold" x1="60" y1="60" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FDE047" />
+      <stop offset="50%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+
+    <filter id="logoShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Left Icon Mark -->
+  <g transform="translate(10, 10)">
+    <!-- Base Icon Container (140x140) -->
+    <rect width="140" height="140" rx="36" fill="url(#logoBgGrad)" />
+    <rect width="138" height="138" x="1" y="1" rx="35" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+
+    <g filter="url(#logoShadow)">
+      <!-- Top Loop -->
+      <path d="M44 58 C44 40, 60 30, 78 30 C96 30, 108 42, 108 56 C108 67, 100 75, 86 82 L71 89 C58 95, 50 103, 50 114"
+            stroke="url(#logoEmeraldFlow)"
+            stroke-width="11"
+            stroke-linecap="round"
+            stroke-linejoin="round" />
+
+      <!-- Bottom Loop -->
+      <path d="M96 82 C96 100, 80 110, 62 110 C44 110, 32 98, 32 84 C32 73, 40 65, 54 58 L69 51 C82 45, 90 37, 90 26"
+            stroke="url(#logoMintGlow)"
+            stroke-width="11"
+            stroke-linecap="round"
+            stroke-linejoin="round" />
+
+      <!-- Arrowheads -->
+      <polygon points="83,20 97,30 83,40" fill="#52B788" />
+      <polygon points="57,120 43,110 57,100" fill="#74C69D" />
+
+      <!-- Center Coin -->
+      <circle cx="70" cy="70" r="14" fill="url(#logoGold)" stroke="#FFFFFF" stroke-width="2" />
+      <circle cx="70" cy="70" r="2.5" fill="#78350F" />
+    </g>
+
+    <!-- Sparkle -->
+    <path d="M112 32 L114 37 L119 39 L114 41 L112 46 L110 41 L105 39 L110 37 Z" fill="#FDE047" opacity="0.9" />
+  </g>
+
+  <!-- Brand Typography -->
+  <g transform="translate(170, 0)">
+    <!-- "SkillSwap" Wordmark -->
+    <text x="0" y="78" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="52" font-weight="900" fill="#1C2A24" letter-spacing="-1.5">
+      Skill<tspan fill="#1B4332">Swap</tspan>
+    </text>
+
+    <!-- UoH Badge Pill -->
+    <g transform="translate(268, 40)">
+      <rect width="64" height="28" rx="8" fill="#D8F3DC" stroke="#74C69D" stroke-width="1.5" />
+      <text x="32" y="19" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="14" font-weight="800" fill="#1B4332" text-anchor="middle" letter-spacing="0.5">
+        UoH
+      </text>
+    </g>
+
+    <!-- Subtitle / Mission Tagline -->
+    <text x="2" y="112" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="16" font-weight="700" fill="#52B788" letter-spacing="0.2">
+      Campus Peer Skill Exchange
+      <tspan fill="#94A3B8" font-weight="400"> &bull; </tspan>
+      <tspan fill="#64748B" font-weight="600">Time Credits, Not Money</tspan>
+    </text>
+
+    <!-- Institution Line -->
+    <text x="2" y="134" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="12" font-weight="500" fill="#94A3B8" letter-spacing="0.3">
+      School of Computer &amp; Information Sciences &bull; University of Hyderabad
+    </text>
+  </g>
+</svg>

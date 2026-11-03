@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <!-- Background Gradient: Deep Forest Green to Rich Pine -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1B4332" />
+      <stop offset="50%" stop-color="#143728" />
+      <stop offset="100%" stop-color="#0B1F16" />
+    </linearGradient>
+
+    <!-- Accent Emerald Flow -->
+    <linearGradient id="emeraldFlow" x1="120" y1="120" x2="380" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#52B788" />
+      <stop offset="100%" stop-color="#2D6A4F" />
+    </linearGradient>
+
+    <!-- Golden Time Credit Gradient -->
+    <linearGradient id="goldCredit" x1="200" y1="100" x2="420" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FDE047" />
+      <stop offset="50%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+
+    <!-- Mint Highlights -->
+    <linearGradient id="mintGlow" x1="100" y1="200" x2="300" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#74C69D" />
+      <stop offset="100%" stop-color="#40916C" />
+    </linearGradient>
+
+    <!-- Soft Drop Shadow for Depth -->
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.35" />
+    </filter>
+
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Base App Tile with Smooth Rounded Corners -->
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" />
+  <rect width="508" height="508" x="2" y="2" rx="126" stroke="rgba(255,255,255,0.12)" stroke-width="4" />
+
+  <!-- Ambient Internal Glow -->
+  <circle cx="160" cy="140" r="160" fill="#52B788" opacity="0.12" filter="url(#glow)" />
+  <circle cx="380" cy="380" r="140" fill="#F59E0B" opacity="0.1" filter="url(#glow)" />
+
+  <!-- Dynamic Reciprocal Arrows / Infinity "S" Loop -->
+  <g filter="url(#softShadow)">
+    <!-- Top-Right Swoosh Arrow (Teaching / Sharing) -->
+    <path d="M160 210 C160 145, 215 110, 280 110 C345 110, 390 150, 390 205 C390 245, 360 275, 310 300 L256 325 C210 348, 180 375, 180 415 C180 435, 190 450, 205 460"
+          stroke="url(#emeraldFlow)"
+          stroke-width="38"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+
+    <!-- Bottom-Left Swoosh Arrow (Learning / Receiving) -->
+    <path d="M352 302 C352 367, 297 402, 232 402 C167 402, 122 362, 122 307 C122 267, 152 237, 202 212 L256 187 C302 164, 332 137, 332 97 C332 77, 322 62, 307 52"
+          stroke="url(#mintGlow)"
+          stroke-width="38"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+
+    <!-- Dynamic Exchange Arrowheads -->
+    <!-- Top Arrowhead -->
+    <polygon points="300,75 350,110 300,145" fill="#52B788" />
+    <!-- Bottom Arrowhead -->
+    <polygon points="212,437 162,402 212,367" fill="#74C69D" />
+
+    <!-- Center Floating Time Credit Coin -->
+    <circle cx="256" cy="256" r="48" fill="url(#goldCredit)" stroke="#FFFFFF" stroke-width="5" />
+    <!-- Hourglass / Star Motif inside Coin -->
+    <path d="M244 238 L268 238 L256 256 L268 274 L244 274 L256 256 Z" fill="#78350F" />
+    <circle cx="256" cy="256" r="4" fill="#FFFFFF" />
+  </g>
+
+  <!-- Academic Knowledge Sparkles -->
+  <g fill="#FDE047" opacity="0.9">
+    <path d="M400 120 L405 135 L420 140 L405 145 L400 160 L395 145 L380 140 L395 135 Z" />
+    <path d="M120 370 L124 382 L136 386 L124 390 L120 402 L116 390 L104 386 L116 382 Z" />
+  </g>
+</svg>

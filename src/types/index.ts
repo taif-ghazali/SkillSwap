@@ -17,8 +17,9 @@ export interface SessionSlot {
   slotId: string;
   tutor: string; // tutor email
   tutorNick: string;
+  tutorBio?: string;
   skill: string;
-  category?: 'Programming' | 'Tools & Tech' | 'Academics & Writing' | 'Design & Media' | 'Languages' | 'Other';
+  category?: 'Programming' | 'Tools & Tech' | 'Academics & Writing' | 'Design & Media' | 'Languages' | 'AI & Automation' | 'Math & Science' | 'Content & Video' | 'Marketing & Business' | 'Sports & Fitness' | 'Other';
   date: string; // YYYY-MM-DD
   time: string; // HH:mm
   place: string; // "Library 2nd Floor", "CIS Lab 1", "Campus Cafe", "Online - GMeet"

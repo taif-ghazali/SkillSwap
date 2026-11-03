@@ -14,11 +14,24 @@ describe('live service contract using isolated responses (no live calls)', () =>
   function backend() {
     let booked = false;
     return vi.spyOn(apiClient, 'call').mockImplementation(async (action, params) => {
-      const data: any = action === 'login' ? user : action === 'mine' ? { credits: 2, nick: user.nick, slots: booked ? [{ ...slot, learner: user.email, status: 'booked' }] : [] } : action === 'search' ? booked ? [] : [slot] : action === 'dashboard' ? { usersCount: 2, completedCount: 0, openCount: 1, bookedCount: 0, popularSkills: [] } : action === 'publish' ? { ok: true, slotId: 'published-slot' } : action === 'profile' ? { ok: true, nick: 'Updated', offers: 'Python, Excel', wants: 'Figma' } : { ok: true, transferred: action === 'confirm' };
+      const data: any = action === 'login' ? user : action === 'mine' ? { credits: 2, nick: user.nick, slots: booked ? [{ ...slot, learner: user.email, status: 'booked' }] : [] } : action === 'search' ? booked ? [] : [slot] : action === 'dashboard' ? { usersCount: 2, completedCount: 0, openCount: 1, bookedCount: 0, popularSkills: [], topWantedSkills: [], topOfferedSkills: [], popularVenues: [] } : action === 'publish' ? { ok: true, slotId: 'published-slot' } : action === 'profile' ? { ok: true, nick: 'Updated', offers: 'Python, Excel', wants: 'Figma' } : { ok: true, transferred: action === 'confirm' };
       if (action === 'book') booked = true;
       return { success: true, data };
     });
   }
+  it('keeps sessions and wallet when dashboard fails', async () => {
+    const calls = backend();
+    const respond = calls.getMockImplementation()!;
+    calls.mockImplementation((action, params) => action === 'dashboard'
+      ? Promise.resolve({ success: false, error: 'Server returned HTTP 503.' })
+      : respond(action, params));
+    const service = new AppService();
+    await service.loginWithEmail(user.email);
+    expect(service.searchOpenSlots()).toHaveLength(1);
+    expect(service.getCreditBreakdown().total).toBe(2);
+    expect(service.dashboard).toBeNull();
+    expect(service.error).toContain('HTTP 503');
+  });
   it('defaults to live mode with no fabricated user or slots', () => {
     const service = new AppService(); expect(service.isLive()).toBe(true); expect(service.getCurrentUser().email).toBe(''); expect(service.searchOpenSlots()).toEqual([]);
   });
@@ -29,13 +42,13 @@ describe('live service contract using isolated responses (no live calls)', () =>
     expect(service.getCreditBreakdown()).toEqual({ total: 2, reserved: 1, available: 1 });
     expect(calls).toHaveBeenCalledWith('book', { email: user.email, slot: slot.slotId });
   });
-  it('profile and publishing send only fields in the existing backend contract', async () => {
+  it('profile and publishing send editable details', async () => {
     const calls = backend(), service = new AppService(); await service.loginWithEmail(user.email);
-    await service.updateProfile({ nick: 'Updated', offers: ['Python', 'Excel'], wants: ['Figma'], bio: 'not supported' });
-    expect(calls).toHaveBeenCalledWith('profile', { email: user.email, nick: 'Updated', offers: 'Python, Excel', wants: 'Figma' });
+    await service.updateProfile({ nick: 'Updated', offers: ['Python', 'Excel'], wants: ['Figma'], bio: 'Peer tutor' });
+    expect(calls).toHaveBeenCalledWith('profile', { email: user.email, nick: 'Updated', offers: 'Python, Excel', wants: 'Figma', bio: 'Peer tutor' });
     expect(service.getCurrentUser().wants).toEqual(['Figma']);
-    await service.createSlot({ skill: 'Excel', date: slot.date, time: slot.time, place: slot.place, description: 'not supported' });
-    expect(calls).toHaveBeenCalledWith('publish', { email: user.email, skill: 'Excel', date: slot.date, time: slot.time, place: slot.place });
+    await service.createSlot({ skill: 'Excel', date: slot.date, time: slot.time, place: slot.place, category: 'Math & Science', description: 'Bring a calculator.' });
+    expect(calls).toHaveBeenCalledWith('publish', { email: user.email, skill: 'Excel', date: slot.date, time: slot.time, place: slot.place, category: 'Math & Science', description: 'Bring a calculator.' });
   });
   it('cancel, confirm and rating use slot/stars and never change credits locally', async () => {
     const calls = backend(), service = new AppService(); await service.loginWithEmail(user.email);

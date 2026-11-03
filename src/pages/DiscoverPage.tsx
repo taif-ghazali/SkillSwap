@@ -12,7 +12,7 @@ import { SkillTag } from '../components/ui/SkillTag';
 import { AcademicIntegrityBanner } from '../components/shared/AcademicIntegrityBanner';
 import { POPULAR_CAMPUS_SKILLS } from '../data/mockData';
 import { SessionSlot } from '../types';
-import { Search, Filter, AlertCircle, Sparkles, CheckCircle } from 'lucide-react';
+import { Search, Filter, AlertCircle, Sparkles } from 'lucide-react';
 
 export const DiscoverPage: React.FC = () => {
   const { user, availableCredits, refreshUserData } = useAuth();
@@ -115,7 +115,7 @@ export const DiscoverPage: React.FC = () => {
         <div
           className={`p-4 rounded-2xl border text-sm flex items-center gap-3 transition-all ${
             bookingMessage.type === 'success'
-              ? 'bg-[#DDF7EB] border-[#bdf1d9] text-[#0A6B5B]'
+              ? 'bg-[#E4ECE5] border-[#DDE3DE] text-[#1F5240]'
               : 'bg-rose-50 border-rose-200 text-rose-900'
           }`}
         >
@@ -125,7 +125,7 @@ export const DiscoverPage: React.FC = () => {
       )}
 
       {/* Search Bar & Filters Card */}
-      <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/90 shadow-card space-y-4">
+      <div className="bg-white p-5 sm:p-6 rounded-2xl border border-[#DDE3DE] shadow-card space-y-4">
         <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-2.5">
           <Input
             id="skillSearch"
@@ -137,7 +137,7 @@ export const DiscoverPage: React.FC = () => {
           />
           <div className="flex items-center gap-2">
             <Button type="submit" size="md" className="shrink-0">
-              Search
+              Search Skills
             </Button>
             {(searchTerm || selectedCategory !== 'all') && (
               <Button
@@ -155,14 +155,14 @@ export const DiscoverPage: React.FC = () => {
 
         {/* Quick Skill Tags & Match My Wants */}
         <div className="flex items-center gap-2 flex-wrap pt-1">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Quick Suggestions:</span>
+          <span className="text-xs font-bold text-[#6B7570] uppercase tracking-wider">Quick Suggestions:</span>
           {user.wants && user.wants.length > 0 && (
             <button
               type="button"
               onClick={() => handleQuickSkillClick(user.wants[0])}
-              className="text-xs px-3 py-1 rounded-full font-bold bg-brand-50 text-brand-700 border border-brand-200 hover:bg-brand-100 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
+              className="text-xs px-3 py-1 rounded-full font-bold bg-[#E4ECE5] text-[#1F5240] border border-[#DDE3DE] hover:bg-[#d8e3d9] transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
             >
-              <Sparkles className="w-3.5 h-3.5 text-brand-600" />
+              <Sparkles className="w-3.5 h-3.5 text-[#1F5240]" />
               <span>Match My Want: {user.wants[0]}</span>
             </button>
           )}
@@ -181,9 +181,9 @@ export const DiscoverPage: React.FC = () => {
         </div>
 
         {/* Category Filter Pills (Clearable) */}
-        <div className="pt-3 border-t border-slate-100 flex items-center gap-2 overflow-x-auto pb-1">
-          <Filter className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-          <span className="text-xs text-slate-400 font-bold uppercase tracking-wider shrink-0">Filter:</span>
+        <div className="pt-3 border-t border-[#DDE3DE]/60 flex items-center gap-2 overflow-x-auto pb-1">
+          <Filter className="w-3.5 h-3.5 text-[#6B7570] shrink-0" />
+          <span className="text-xs text-[#6B7570] font-bold uppercase tracking-wider shrink-0">Filter:</span>
           {categories.map((cat) => {
             const isCatActive = selectedCategory === cat.id;
             return (
@@ -193,8 +193,8 @@ export const DiscoverPage: React.FC = () => {
                 onClick={() => handleCategoryClick(cat.id)}
                 className={`text-xs px-3.5 py-1.5 rounded-full font-bold transition-all shrink-0 cursor-pointer ${
                   isCatActive
-                    ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/25'
-                    : 'bg-slate-100/90 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-[#1F5240] text-white shadow-sm'
+                    : 'bg-[#F6F7F3] text-[#6B7570] hover:bg-[#E4ECE5]'
                 }`}
               >
                 {cat.label}
@@ -205,15 +205,15 @@ export const DiscoverPage: React.FC = () => {
       </div>
 
       {/* Results Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 px-1">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-[#6B7570] px-1">
         <div>
-          Showing <strong className="text-slate-900 font-bold">{filteredSlots.length}</strong> available open session{filteredSlots.length !== 1 ? 's' : ''}
-          {searchTerm && <span> matching &ldquo;<span className="text-brand-600 font-bold">{searchTerm}</span>&rdquo;</span>}
-          {selectedCategory !== 'all' && <span> in <span className="font-semibold">{selectedCategory}</span></span>}
+          Showing <strong className="text-[#1E2A24] font-bold">{filteredSlots.length}</strong> available open session{filteredSlots.length !== 1 ? 's' : ''}
+          {searchTerm && <span> matching &ldquo;<span className="text-[#1F5240] font-bold">{searchTerm}</span>&rdquo;</span>}
+          {selectedCategory !== 'all' && <span> in <span className="font-semibold text-[#1E2A24]">{selectedCategory}</span></span>}
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-slate-500">Available credits:</span>
-          <strong className="text-[#8c5717] bg-[#fef5e0] px-2.5 py-1 rounded-full border border-[#fde7be] font-bold">
+          <span className="text-[#6B7570]">Available credits:</span>
+          <strong className="text-[#1F5240] bg-[#E4ECE5] px-2.5 py-1 rounded-full border border-[#DDE3DE] font-bold">
             ⏱ {availableCredits} Credits
           </strong>
         </div>

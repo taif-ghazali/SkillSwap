@@ -1,0 +1,307 @@
+# SkillSwap Android: Production Backend Integration, Full Live QA & Release Readiness
+
+You are taking ownership of the final production integration and testing phase of the SkillSwap Android application.
+
+This is NOT a redesign or a fresh implementation. The Android application has already been developed in MIT App Inventor, transformed using the Figma design reference, and functionally integrated with the development backend.
+
+Your responsibility is to take the FINALIZED `.aia` project, connect it to the NEW PRODUCTION Google Apps Script backend, comprehensively test the entire application against the live production infrastructure, resolve any genuine integration defects, and prepare a release-ready Android APK.
+
+The objective is a working, production-connected Android application, not merely a successful build.
+
+---
+
+## 1. Initial Project Reconnaissance
+
+Before modifying anything:
+
+1. Inspect the complete project directory and understand its structure.
+2. Locate the finalized Figma-driven MIT App Inventor `.aia` project.
+3. Locate the original AIA backup and previously reviewed AIA versions.
+4. Locate the production backend source, deployment documentation, website implementation, API contracts, automated tests and previous testing reports.
+5. Identify the exact production Google Apps Script `/exec` endpoint and corresponding API key.
+6. Understand the backend request/response contract by inspecting the actual production `Code.gs`.
+7. Identify any differences between the QA backend and production backend.
+8. Establish which AIA file is the authoritative final design.
+
+Do not assume that the latest modified file is necessarily the final version.
+
+Preserve the original AIA and create a separate working copy for production integration.
+
+Do not modify the website frontend or unrelated project components.
+
+## 2. Production Backend Integration
+
+The Android application and website must use the SAME production backend and production Google Spreadsheet.
+
+Configure the finalized AIA:
+
+- `global apiUrl`: production Apps Script `/exec` URL.
+- `global apiKey`: matching production backend credential.
+
+Use the existing API contract. Do not invent new endpoints, parameter names or response formats.
+
+Inspect every `callApi` invocation and ensure that:
+
+- Correct actions are dispatched.
+- Required parameters are supplied.
+- Responses are parsed correctly.
+- API errors are handled gracefully.
+- Network timeouts do not leave the UI permanently disabled.
+- Duplicate requests and double submissions are prevented.
+- Stale responses cannot overwrite newer application state.
+
+Verify that no QA endpoint or development credential remains in the production application.
+
+IMPORTANT SECURITY REQUIREMENT:
+
+The production API key must never appear in committed source, public reports, terminal output or screenshots.
+
+The current MIT App Inventor architecture may embed the key in the AIA/APK. Explicitly document this limitation and assess whether a server-side proxy is needed for public distribution. Do not claim that an embedded key is secure.
+
+Do not change the backend authentication contract or rotate credentials without authorization.
+
+## 3. Preserve the Figma Implementation
+
+The finalized Figma-driven application is the design authority.
+
+Preserve:
+
+- Forest Green and Sage Cream design system.
+- Typography, spacing and visual hierarchy.
+- Button styling and interaction states.
+- Input fields and date/time pickers.
+- Time wallet indicators.
+- Session cards and status indicators.
+- Navigation and screen layouts.
+- All existing visual assets and branding.
+
+Do not revert to the original blue/green prototype styling.
+
+Do not redesign screens unnecessarily.
+
+Only make UI changes required to fix actual functional defects or serious usability issues.
+
+## 4. Full End-to-End Functional Testing
+
+Test every core workflow against the production backend.
+
+### A. Authentication and registration
+- University email validation.
+- New user registration.
+- Initial credit allocation.
+- Existing user login.
+- Duplicate registration handling.
+- Correct retrieval of existing user balances.
+
+### B. Profile management
+- Save nickname.
+- Save teaching skills/offers.
+- Save learning preferences/wants.
+- Refresh and retrieve saved information.
+- Sign out and sign back in.
+- Verify profile persistence.
+
+### C. Tutor discovery
+- Search by skill.
+- Retrieve available teaching slots.
+- Correct tutor and slot information.
+- Exclude inappropriate or unavailable slots.
+- Verify date and time formatting, especially early-morning times such as 02:45 and 09:05.
+
+### D. Publishing teaching sessions
+- Validate skill, date, time and venue.
+- Publish a new teaching slot.
+- Verify the corresponding production Sheets row.
+- Verify that the slot appears in discovery.
+- Reject invalid or incomplete submissions.
+- Prevent accidental duplicate publication.
+
+### E. Booking
+- Book an available session.
+- Display the academic integrity notice.
+- Reserve exactly one learner credit.
+- Verify slot status and learner identity.
+- Prevent double booking.
+- Verify insufficient-credit handling.
+
+### F. Cancellation
+- Verify cancellation eligibility.
+- Enforce the backend's FR-6 two-hour cancellation restriction.
+- Restore the slot to open status where permitted.
+- Verify reservation and balance restoration.
+- Reject unauthorized cancellation.
+
+### G. Session confirmations
+- Tutor confirmation.
+- Learner confirmation.
+- Pending confirmation state.
+- Both-party confirmation.
+- Ensure that credit transfer occurs exactly once.
+
+### H. Wallet and ledger
+- Verify learner debit.
+- Verify tutor credit.
+- Verify wallet balances.
+- Verify ledger entries.
+- Ensure balances remain consistent after refresh and re-login.
+- Test repeated confirmation requests for duplicate-credit protection.
+
+### I. Ratings and reviews
+- Submit a rating between 1 and 5.
+- Reject invalid ratings.
+- Prevent duplicate ratings.
+- Verify saved ratings in the production spreadsheet.
+- Verify tutor profile rating and review count where supported.
+
+### J. Session management
+- Verify active, open, booked and completed session listings.
+- Verify tutor and learner perspectives.
+- Check session status after cancellation and confirmation.
+- Ensure all displayed information agrees with the backend.
+
+## 5. Production Database Integrity
+
+The production database is authoritative.
+
+Inspect the following tabs:
+
+- Users
+- Slots
+- Ledger
+- Ratings
+
+Verify:
+
+- Column headers match the expected schema.
+- No accidental QA data has been imported.
+- No duplicate transactions have been created.
+- No negative or inconsistent credit balances exist.
+- No orphaned ledger entries exist.
+- Slot statuses agree with their transaction history.
+
+IMPORTANT:
+
+Do not run initialization/reset routines on an existing production database.
+
+Do not delete production users, slots, ratings or ledger records.
+
+Do not insert arbitrary test accounts into production.
+
+For destructive or transactional testing, use explicitly authorized test accounts and a disposable test slot. If these are unavailable, stop before creating production records and report exactly what authorization is needed.
+
+Clean up only records explicitly designated as disposable QA records, and only after verifying their identities and obtaining authorization.
+
+## 6. Automated Testing and Build Verification
+
+Run the available project test suites.
+
+At minimum:
+
+- Frontend tests.
+- Backend contract tests.
+- Android AIA structural validation.
+- API request/response validation.
+- Production endpoint connectivity.
+- Website regression tests where relevant.
+- Android build verification.
+
+Inspect the AIA archive structure and confirm that all screens, components, event handlers, procedures and global variables remain valid.
+
+Check for:
+
+- Missing assets.
+- Broken component references.
+- Invalid block structures.
+- Incorrect screen navigation.
+- Unhandled API responses.
+- Incorrect date/time conversions.
+- Compilation errors.
+
+Do not treat successful automated tests as proof that the actual Android application works.
+
+## 7. Real Device Validation
+
+Prepare the production AIA for MIT App Inventor compilation.
+
+If APK compilation is available through the environment, build it.
+
+Otherwise, prepare the exact importable AIA and provide the necessary MIT App Inventor build instructions.
+
+The installed APK must be tested independently of MIT App Inventor Companion.
+
+Verify:
+
+- Fresh installation.
+- Application launch.
+- Login.
+- Profile retrieval.
+- Navigation.
+- Backend connectivity.
+- Session discovery.
+- Booking-related screens.
+- Wallet display.
+- Error handling.
+- Application restart and persistence.
+
+Do not claim device-level validation if no actual device test was performed.
+
+## 8. Release Deliverables
+
+Produce a clean release directory containing:
+
+1. Final production-configured AIA.
+2. Production APK, if successfully compiled.
+3. Original AIA backup.
+4. Production integration documentation.
+5. Comprehensive testing report.
+6. Outstanding defects and limitations.
+7. Exact MIT App Inventor import/build instructions if manual compilation is required.
+
+The testing report must distinguish:
+
+- PASS: verified successfully.
+- FAIL: verified defect.
+- BLOCKED: requires access, authorization or manual action.
+- NOT TESTED: not actually executed.
+
+Include evidence for critical production workflows, including relevant API responses and Sheets records, while redacting credentials and personal information.
+
+## 9. Strict Operating Rules
+
+- Production and QA databases must remain separate.
+- Never overwrite the original finalized AIA.
+- Never modify the website unnecessarily.
+- Never change the production backend API contract without justification.
+- Never expose production credentials.
+- Never fabricate test results.
+- Never report a successful APK build unless an APK actually exists.
+- Never delete production records as part of automated cleanup.
+- Never publish the APK or distribute it externally without explicit authorization.
+- Preserve all successful work and document every modification.
+
+If a defect appears, investigate its root cause, implement the smallest appropriate correction, and rerun the relevant tests.
+
+Do not stop merely because the first test fails.
+
+---
+
+## FINAL OBJECTIVE
+
+Take the finalized Figma-driven MIT App Inventor project, integrate it with the live production Google Apps Script backend, and carry out the most comprehensive practical end-to-end validation possible.
+
+Resolve all fixable defects.
+
+Prepare the final production AIA and APK.
+
+At completion, provide a concise release-readiness assessment stating:
+
+1. What was integrated.
+2. What was tested.
+3. What passed.
+4. What failed or remains blocked.
+5. Whether production data integrity is verified.
+6. Whether the APK was successfully built.
+7. Whether the installed application was tested on a real device.
+8. Exactly what, if anything, I must personally do before distributing the app.
+
+The desired outcome is a fully functional, production-connected SkillSwap Android application ready for release, with no unnecessary redesign or redevelopment.

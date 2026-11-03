@@ -4,20 +4,19 @@
 
 @layer base {
   :root {
-    --primary-indigo: #263778;
-    --primary-accent: #4969F5;
-    --secondary-teal: #16A89A;
-    --success-mint: #DDF7EB;
-    --highlight-amber: #F5B84B;
-    --bg-surface: #F6F7FB;
-    --text-slate: #20283B;
-    --text-muted: #748096;
-    --border-grey: #E5E9F1;
+    --primary-brand: #1F5240;
+    --primary-dark: #174032;
+    --accent-tint: #E4ECE5;
+    --bg-canvas: #F6F7F3;
+    --card-white: #FFFFFF;
+    --text-headline: #1E2A24;
+    --text-muted: #6B7570;
+    --border-soft: #DDE3DE;
   }
 
   body {
-    background-color: #F6F7FB;
-    color: #20283B;
+    background-color: #F6F7F3;
+    color: #1E2A24;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -25,7 +24,7 @@
     overflow-x: hidden;
   }
 
-  /* Smooth custom scrollbars */
+  /* Smooth custom scrollbars in soft sage tint */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -34,36 +33,38 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #d3dae6;
+    background: #CBD2CD;
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #9faec4;
+    background: #9AA49F;
   }
 }
 
 @layer utilities {
   /* Subtle glassmorphism */
   .glass-card {
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(229, 233, 241, 0.9);
+    border: 1px solid rgba(221, 227, 222, 0.9);
   }
 
-  /* Academic hero gradient */
+  /* Team Hero Gradient (#174032 -> #1F5240 -> #2A6852) */
   .bg-hero-gradient {
-    background: linear-gradient(135deg, #263778 0%, #2f4396 45%, #3c54ba 80%, #4969F5 100%);
+    background: linear-gradient(135deg, #174032 0%, #1F5240 55%, #2A6852 100%);
   }
 
-  /* Subtle warmth credit gradient */
-  .bg-wallet-gradient {
-    background: linear-gradient(135deg, #fffbf2 0%, #fef5e0 50%, #ffffff 100%);
+  /* Team Wallet Badge Pill */
+  .bg-wallet-pill {
+    background-color: #E4ECE5;
+    color: #1F5240;
   }
 
-  /* Reciprocal swap badge gradient */
-  .bg-swap-gradient {
-    background: linear-gradient(135deg, #eefcfb 0%, #f0f4ff 100%);
+  /* Clean Card Gradient */
+  .bg-card-clean {
+    background: #FFFFFF;
+    border: 1px solid #DDE3DE;
   }
 }
 

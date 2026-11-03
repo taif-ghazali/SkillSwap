@@ -8,11 +8,9 @@ import { SessionDetailsModal } from '../components/ui/SessionDetailsModal';
 import { EmptyState } from '../components/ui/EmptyState';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
 import { AcademicIntegrityBanner } from '../components/shared/AcademicIntegrityBanner';
 import { SessionSlot } from '../types';
 import {
-  CalendarCheck,
   GraduationCap,
   BookOpen,
   CheckCircle2,
@@ -150,7 +148,7 @@ export const SessionsPage: React.FC = () => {
         <div
           className={`p-4 rounded-2xl border text-sm flex items-center gap-3 transition-all ${
             actionAlert.type === 'success'
-              ? 'bg-[#DDF7EB] border-[#bdf1d9] text-[#0A6B5B]'
+              ? 'bg-[#E4ECE5] border-[#DDE3DE] text-[#1F5240]'
               : 'bg-rose-50 border-rose-200 text-rose-900'
           }`}
         >
@@ -234,22 +232,22 @@ export const SessionsPage: React.FC = () => {
 
       {/* Polished 5-Star Rating Modal */}
       {ratingSlot && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <Card className="w-full max-w-md p-6 sm:p-7 bg-white shadow-2xl relative animate-fade-in border-slate-200">
+        <div className="fixed inset-0 z-50 bg-[#1E2A24]/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <Card className="w-full max-w-md p-6 sm:p-7 bg-white shadow-2xl relative animate-fade-in border-[#DDE3DE]">
             <button
               onClick={() => setRatingSlot(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors"
+              className="absolute top-4 right-4 text-[#6B7570] hover:text-[#1E2A24] p-1 rounded-lg hover:bg-[#F6F7F3] transition-colors"
               title="Close"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <h3 className="text-lg font-black text-slate-900 mb-1 tracking-tight">
+            <h3 className="text-lg font-black text-[#1E2A24] mb-1 tracking-tight">
               Rate Your Peer Mentorship Session
             </h3>
-            <p className="text-xs text-slate-500 mb-4">
-              Session: <strong className="text-slate-800">{ratingSlot.skill}</strong> with{' '}
-              <strong className="text-brand-600">
+            <p className="text-xs text-[#6B7570] mb-4">
+              Session: <strong className="text-[#1E2A24]">{ratingSlot.skill}</strong> with{' '}
+              <strong className="text-[#1F5240]">
                 {ratingSlot.tutor.toLowerCase() === user.email.toLowerCase() ? ratingSlot.learnerNick : ratingSlot.tutorNick}
               </strong>
             </p>
@@ -263,7 +261,7 @@ export const SessionsPage: React.FC = () => {
 
             <form onSubmit={handleRateSubmit} className="space-y-4">
               {/* Star Picker */}
-              <div className="flex flex-col items-center justify-center py-4 bg-[#fef5e0]/60 border border-[#fde7be] rounded-2xl">
+              <div className="flex flex-col items-center justify-center py-4 bg-[#E4ECE5]/50 border border-[#DDE3DE] rounded-2xl">
                 <div className="flex items-center gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -276,31 +274,32 @@ export const SessionsPage: React.FC = () => {
                         className={`w-8 h-8 ${
                           star <= selectedStars
                             ? 'text-amber-500 fill-amber-400'
-                            : 'text-slate-200'
+                            : 'text-[#DDE3DE]'
                         }`}
                       />
                     </button>
                   ))}
                 </div>
-                <span className="text-xs font-bold text-[#8c5717] mt-2">
+                <span className="text-xs font-bold text-[#1F5240] mt-2">
                   {selectedStars} out of 5 Stars
                 </span>
               </div>
 
               {/* Comment */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-800 uppercase tracking-wide">
-                  Feedback or Review (Optional)
-                </label>
-                <textarea
-                  rows={3}
-                  value={ratingComment}
-                  disabled={appService.isLive()}
-                  onChange={(e) => setRatingComment(e.target.value)}
-                  placeholder="How was the explanation, clarity, and pacing?"
-                  className="w-full rounded-xl border border-slate-200 p-3 text-xs text-slate-900 focus:outline-none focus:ring-3 focus:ring-brand-500/15"
-                />
-              </div>
+              {!appService.isLive() && (
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#1E2A24] uppercase tracking-wide">
+                    Feedback or Review (Optional)
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={ratingComment}
+                    onChange={(e) => setRatingComment(e.target.value)}
+                    placeholder="How was the explanation, clarity, and pacing?"
+                    className="w-full rounded-xl border border-[#DDE3DE] p-3 text-xs text-[#1E2A24] focus:outline-none focus:ring-3 focus:ring-[#1F5240]/15"
+                  />
+                </div>
+              )}
 
               <div className="flex justify-end gap-2.5 pt-2">
                 <Button
@@ -312,7 +311,7 @@ export const SessionsPage: React.FC = () => {
                   Cancel
                 </Button>
                 <Button type="submit" size="sm" variant="primary">
-                  Submit Rating
+                  Rate Session
                 </Button>
               </div>
             </form>

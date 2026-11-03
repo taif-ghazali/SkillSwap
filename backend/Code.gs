@@ -144,7 +144,7 @@ function route(ss, p) {
 
   // Ping / health check
   if (action === 'ping') {
-    return { status: 'healthy', timestamp: new Date().toISOString(), university: 'University of Hyderabad' };
+    return { status: 'healthy', timestamp: new Date().toISOString(), university: 'University of Hyderabad', capabilities: ['session-details', 'profile-bio'] };
   }
 
   // 1. LOGIN / SIGNUP (FR-1)
@@ -175,7 +175,8 @@ function route(ss, p) {
       credits: Number(me.credits),
       isNew: false,
       offers: me.offers ? me.offers.split(',').map(s => s.trim()).filter(Boolean) : [],
-      wants: me.wants ? me.wants.split(',').map(s => s.trim()).filter(Boolean) : []
+      wants: me.wants ? me.wants.split(',').map(s => s.trim()).filter(Boolean) : [],
+      bio: me.bio || ''
     };
   }
 
@@ -187,6 +188,8 @@ function route(ss, p) {
   }
 
   const slots = rows(ss, 'Slots');
+  const tutorBios = new Map(allUsers.map(user => [user.email.toLowerCase(), user.bio || '']));
+  const withTutorBio = slot => ({ ...slot, tutorBio: tutorBios.get(slot.tutor.toLowerCase()) || '' });
 
   // 2. SEARCH SLOTS (FR-4)
   if (action === 'search') {
@@ -209,7 +212,7 @@ function route(ss, p) {
       if (query && !s.skill.toLowerCase().includes(query)) return false;
 
       return true;
-    });
+    }).map(withTutorBio);
   }
 
   // 3. EDIT PROFILE OFFERS & WANTS (FR-2)
@@ -219,12 +222,26 @@ function route(ss, p) {
     const cleanOffers = String(p.offers || '').trim();
     const cleanWants = String(p.wants || '').trim();
     const cleanNick = p.nick ? String(p.nick).trim() : me.nick;
+    const bio = p.bio === undefined ? undefined : String(p.bio).trim();
+    if (bio !== undefined && bio.length > 500) return { error: 'Keep your bio to 500 characters or fewer.' };
 
     for (let i = 1; i < v.length; i++) {
       if (String(v[i][0]).toLowerCase() === email) {
-        // Update nick (col 2), offers (col 3), wants (col 4)
-        sh.getRange(i + 1, 2, 1, 3).setValues([[cleanNick, cleanOffers, cleanWants]]);
-        return { ok: true, nick: cleanNick, offers: cleanOffers, wants: cleanWants };
+        if (bio !== undefined) {
+          const header = v[0][5];
+          if (header && header !== 'bio') return { error: 'Bio column conflicts with the current spreadsheet layout.' };
+          const write = (row, column, values) => ({ updateCells: {
+            start: { sheetId: sh.getSheetId(), rowIndex: row, columnIndex: column },
+            rows: [{ values: values.map(value => ({ userEnteredValue: { stringValue: value } })) }],
+            fields: 'userEnteredValue'
+          } });
+          const requests = [write(i, 1, [cleanNick, cleanOffers, cleanWants]), write(i, 5, [bio])];
+          if (!header) requests.push(write(0, 5, ['bio']));
+          Sheets.Spreadsheets.batchUpdate({ requests }, ss.getId());
+        } else {
+          sh.getRange(i + 1, 2, 1, 3).setValues([[cleanNick, cleanOffers, cleanWants]]);
+        }
+        return { ok: true, nick: cleanNick, offers: cleanOffers, wants: cleanWants, bio: bio ?? me.bio ?? '' };
       }
     }
     return { error: 'User row not found' };
@@ -241,11 +258,16 @@ function route(ss, p) {
       return { error: 'Use a future campus date yyyy-MM-dd and time HH:mm' };
     }
     if (!String(p.skill).trim() || !permittedPlace(p.place)) {
-      return { error: 'Sessions must be in public campus areas (library, labs, canteen) or online; never in private rooms.' };
+      return { error: 'Enter a skill and a meeting location or online link (up to 200 characters).' };
     }
 
     const id = 'SL' + Utilities.getUuid();
-    appendSlot(ss, [
+    const category = String(p.category || '').trim();
+    const description = String(p.description || '').trim();
+    if (category.length > 80 || description.length > 1500) {
+      return { error: 'Use a category under 81 characters and an overview of up to 1500 characters.' };
+    }
+    const row = [
       id,
       email,
       p.skill.trim(),
@@ -256,7 +278,17 @@ function route(ss, p) {
       '',
       '',
       ''
-    ]);
+    ];
+    if (category || description) {
+      const headerRange = ss.getSheetByName('Slots').getRange(1, 11, 1, 2);
+      const [headers] = headerRange.getValues();
+      if (headers.some((header, index) => header && header !== ['category', 'description'][index])) {
+        return { error: 'Session details columns conflict with the current spreadsheet layout.' };
+      }
+      if (!headers[0] || !headers[1]) headerRange.setValues([['category', 'description']]);
+      row.push(category, description);
+    }
+    appendSlot(ss, row);
     return { ok: true, slotId: id };
   }
 
@@ -342,7 +374,8 @@ function route(ss, p) {
     return {
       credits: Number(me.credits),
       nick: me.nick,
-      slots: userSlots
+      bio: me.bio || '',
+      slots: userSlots.map(withTutorBio)
     };
   }
 
@@ -367,23 +400,27 @@ function route(ss, p) {
     const bookedCount = slots.filter(s => s.status === 'booked').length;
     const openCount = slots.filter(s => s.status === 'open').length;
 
-    // Skill counts from offers and slots
-    const skillCounts = {};
-    for (const s of slots) {
-      const sk = s.skill;
-      skillCounts[sk] = (skillCounts[sk] || 0) + 1;
-    }
-
+    const activeSlots = slots.filter(slot => slot.status !== 'cancelled');
+    const rank = (values, label, limit) => {
+      const counts = new Map();
+      for (const value of values) {
+        const name = String(value || '').trim();
+        if (!name) continue;
+        const key = name.toLowerCase();
+        const entry = counts.get(key) || { [label]: name, count: 0 };
+        entry.count++;
+        counts.set(key, entry);
+      }
+      return Array.from(counts.values()).sort((a, b) => b.count - a.count).slice(0, limit);
+    };
+    const wants = allUsers.flatMap(user => [...new Set(String(user.wants || '').split(',').map(skill => skill.trim().toLowerCase()).filter(Boolean))]);
+    const popularSkills = rank(activeSlots.map(slot => slot.skill), 'skill', 6);
     return {
-      usersCount,
-      slotsCount,
-      completedCount,
-      bookedCount,
-      openCount,
-      popularSkills: Object.entries(skillCounts)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([skill, count]) => ({ skill, count }))
+      usersCount, slotsCount, completedCount, bookedCount, openCount,
+      popularSkills: popularSkills.slice(0, 5),
+      topWantedSkills: rank(wants, 'skill', 6),
+      topOfferedSkills: popularSkills,
+      popularVenues: rank(activeSlots.map(slot => slot.place), 'venue', 5)
     };
   }
 
@@ -492,9 +529,9 @@ function slotInstant(date, time) {
 }
 
 function permittedPlace(place) {
-  const text = String(place).trim().toLowerCase();
-  if (/\b(hostel|private|bedroom|my room|home|residence)\b/.test(text)) return false;
-  return /^(online\b|https:\/\/)/.test(text) || /\b(library|lab|labs|laboratory|canteen|foyer|seminar hall|amphitheatre|amphitheater)\b/.test(text);
+  // The venue is user-selected; do not impose a keyword/location allowlist.
+  const text = String(place == null ? '' : place).trim();
+  return text.length > 0 && text.length <= 200;
 }
 
 function transferCredit(ss, slotSheet, slotRowIndex, headers, slot) {

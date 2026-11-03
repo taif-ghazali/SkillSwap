@@ -3,7 +3,7 @@ import { cn } from '../../utils';
 import { Loader2 } from 'lucide-react';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'credit' | 'teal';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'credit' | 'teal' | 'forest';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
@@ -21,23 +21,24 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-semibold transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none rounded-xl active:scale-[0.98] cursor-pointer';
+  const baseStyles = 'inline-flex items-center justify-center font-bold transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none rounded-xl active:scale-[0.98] cursor-pointer';
 
   const variants = {
-    // Primary: Electric Blue (#4969F5) with Deep Indigo hover
-    primary: 'bg-brand-500 text-white hover:bg-brand-600 active:bg-brand-800 focus:ring-brand-400 shadow-sm hover:shadow-md hover:shadow-brand-500/20',
-    secondary: 'bg-slate-100 text-slate-800 hover:bg-slate-200/80 active:bg-slate-300 focus:ring-slate-400',
-    outline: 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300 active:bg-slate-100 focus:ring-brand-400 shadow-2xs',
-    ghost: 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 focus:ring-slate-400',
+    // Primary: Exact Team Pine Green (#1F5240)
+    primary: 'bg-[#1F5240] text-white hover:bg-[#174032] active:bg-[#102D23] focus:ring-[#1F5240]/40 shadow-sm',
+    forest: 'bg-[#1F5240] text-white hover:bg-[#174032] active:bg-[#102D23] focus:ring-[#1F5240]/40 shadow-sm',
+    secondary: 'bg-[#E4ECE5] text-[#1F5240] hover:bg-[#D4E2D6] active:bg-[#C8D7CB] focus:ring-[#1F5240]/40',
+    outline: 'border border-[#DDE3DE] bg-white text-[#1E2A24] hover:bg-[#F6F7F3] hover:border-[#1F5240] focus:ring-[#1F5240]/40 shadow-2xs',
+    ghost: 'text-[#6B7570] hover:bg-[#E4ECE5]/50 hover:text-[#1E2A24] focus:ring-[#1F5240]/40',
     danger: 'bg-rose-600 text-white hover:bg-rose-700 active:bg-rose-800 focus:ring-rose-400 shadow-sm',
-    credit: 'bg-amber-500 text-slate-900 hover:bg-amber-600 active:bg-amber-700 focus:ring-amber-400 shadow-sm font-bold',
-    teal: 'bg-teal-500 text-white hover:bg-teal-600 active:bg-teal-700 focus:ring-teal-400 shadow-sm hover:shadow-teal-500/20',
+    credit: 'bg-[#E4ECE5] text-[#1F5240] hover:bg-[#D4E2D6] active:bg-[#C8D7CB] border border-[#C8D7CB] shadow-2xs font-extrabold',
+    teal: 'bg-[#1F5240] text-white hover:bg-[#174032] active:bg-[#102D23] focus:ring-[#1F5240]/40 shadow-sm',
   };
 
   const sizes = {
     sm: 'text-xs px-3 py-1.5 gap-1.5 rounded-lg',
-    md: 'text-sm px-4 py-2 gap-2 rounded-xl',
-    lg: 'text-base px-5 py-2.5 gap-2.5 rounded-xl',
+    md: 'text-sm px-4 py-2.5 gap-2 rounded-xl',
+    lg: 'text-base px-5 py-3 gap-2.5 rounded-xl',
   };
 
   return (

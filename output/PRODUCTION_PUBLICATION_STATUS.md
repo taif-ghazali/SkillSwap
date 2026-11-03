@@ -1,5 +1,7 @@
 # Production publication status — 3 November 2026
 
+**Superseded by MANUAL_PUBLICATION_STATUS.md. University policy blocked CLI OAuth; do not follow the login instructions below.**
+
 Local-first workflow; no browser automation used for this pass.
 
 - Existing production spreadsheet: `190vT9WqEuo-JC7qY1ojLSlKZsNnsjs9zoJ8dfEG8afY` (reused, not recreated).

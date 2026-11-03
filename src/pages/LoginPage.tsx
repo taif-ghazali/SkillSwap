@@ -7,7 +7,7 @@ import { Card } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { AcademicIntegrityBanner } from '../components/shared/AcademicIntegrityBanner';
-import { ShieldCheck, Mail, User, ArrowRight, Sparkles, Clock, CheckCircle } from 'lucide-react';
+import { ShieldCheck, Mail, User, ArrowRight, Settings2 } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const { login, user } = useAuth();
@@ -38,8 +38,11 @@ export const LoginPage: React.FC = () => {
     try {
       await login(cleanEmail, nick.trim() || undefined);
       navigate('/dashboard');
-    } catch (error) { setError(error instanceof Error ? error.message : 'Login failed.'); }
-    finally { setIsLoading(false); }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Login failed.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleQuickDemoUser = async (demoEmail: string, demoNick: string) => {
@@ -51,46 +54,68 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      <BackendConfigModal isOpen={showConfig} onClose={() => setShowConfig(false)} />
-      <button type="button" onClick={() => setShowConfig(true)} className="relative z-10 mx-auto mb-4 underline">Configure live backend</button>
-      <p className="relative z-10 text-center mb-4">{appService.isLive() ? 'Live mode: sign in to your university account.' : 'Demo mode: changes stay on this device.'}</p>
-      {/* Decorative ambient background accents */}
-      <div className="absolute top-0 -left-40 w-96 h-96 bg-brand-400/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-0 -right-40 w-96 h-96 bg-teal-400/10 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="flex justify-center mb-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#263778] via-[#2f4396] to-[#4969F5] text-white flex items-center justify-center font-black text-2xl shadow-elevated">
-            S
-          </div>
+    <div className="min-h-screen bg-[#F6F7F3] flex flex-col justify-center py-10 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Top Navigation Bar with Backend Config Pill */}
+      <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20 max-w-7xl mx-auto">
+        <div className="flex items-center gap-2">
+          <img src="/SkillSwapLogo.png" alt="SkillSwap" className="h-7 w-auto object-contain" />
         </div>
-        <h1 className="text-center text-3xl font-black text-slate-900 tracking-tight">
-          SkillSwap <span className="text-brand-500">UoH</span>
-        </h1>
-        <p className="mt-1 text-center text-xs font-semibold text-slate-500 tracking-wide uppercase">
-          School of Computer &amp; Information Sciences &bull; University of Hyderabad
-        </p>
-        <div className="mt-2.5 flex justify-center">
-          <span className="text-center text-xs font-bold text-slate-700 bg-gradient-to-r from-[#fef5e0] to-white border border-[#fde7be] rounded-full py-1 px-4 shadow-2xs">
-            ✨ Learn Together. Grow Together. &bull; Time Credits, Not Money
+        <button
+          type="button"
+          onClick={() => setShowConfig(true)}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-white text-[#1F5240] border border-[#DDE3DE] shadow-2xs hover:bg-[#E4ECE5]/50 transition-all active:scale-95 cursor-pointer"
+        >
+          <span className="relative flex h-2 w-2">
+            <span
+              className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                appService.isLive() ? 'bg-emerald-500' : 'bg-amber-400'
+              }`}
+            />
+            <span
+              className={`relative inline-flex rounded-full h-2 w-2 ${
+                appService.isLive() ? 'bg-emerald-600' : 'bg-amber-500'
+              }`}
+            />
           </span>
-        </div>
+          <span>{appService.isLive() ? 'Live Mode' : 'Demo Mode'}</span>
+          <Settings2 className="w-3.5 h-3.5 text-[#6B7570] ml-0.5" />
+        </button>
       </div>
 
+      <BackendConfigModal isOpen={showConfig} onClose={() => setShowConfig(false)} />
+
+      {/* Hero Header: Exact copy from Screen1.scm */}
+      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 pt-4 text-center">
+        <img
+          src="/SkillSwapLogo.png"
+          alt="SkillSwap Logo"
+          className="h-16 w-auto object-contain mx-auto mb-3"
+        />
+        <h1 className="text-3xl font-black text-[#1F5240] tracking-tight">
+          SkillSwap
+        </h1>
+        <p className="mt-1 text-sm font-semibold text-[#6B7570]">
+          Teach what you know, learn what you need
+        </p>
+        <h2 className="mt-3 text-xl font-bold text-[#1E2A24]">
+          Share a skill. Learn something new.
+        </h2>
+      </div>
+
+      {/* Main Login Card */}
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <Card className="shadow-elevated border-slate-200/90 p-7 sm:p-8 bg-white">
+        <Card className="shadow-card border-[#DDE3DE] p-7 sm:p-8 bg-white rounded-2xl">
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <Input
                 label="University Email"
                 id="email"
                 type="email"
-                placeholder="name.rollno@uohyd.ac.in"
+                placeholder="Enter your university email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                leftIcon={<Mail className="w-4 h-4" />}
-                helperText="Must end with @uohyd.ac.in (New students receive 2 time credits)"
+                leftIcon={<Mail className="w-4 h-4 text-[#6B7570]" />}
+                helperText="Sign in with your university email to get started."
                 error={error}
                 required
               />
@@ -98,51 +123,51 @@ export const LoginPage: React.FC = () => {
 
             <div>
               <Input
-                label="Campus Nickname (Public)"
+                label="Nickname"
                 id="nick"
                 type="text"
-                placeholder="e.g. Ravi, Sneha, Dev"
+                placeholder="Enter Nickname"
                 value={nick}
                 onChange={(e) => setNick(e.target.value)}
-                leftIcon={<User className="w-4 h-4" />}
-                helperText="Only your nickname and skills are shown to peers (no phone numbers)"
+                leftIcon={<User className="w-4 h-4 text-[#6B7570]" />}
+                helperText="Your nickname and skills are visible to campus peers."
               />
             </div>
 
             <div className="pt-2">
               <Button
                 type="submit"
-                className="w-full shadow-md"
+                className="w-full shadow-sm bg-[#1F5240] hover:bg-[#174032] text-white font-bold py-3 text-base rounded-xl transition-all active:scale-98"
                 size="lg"
                 isLoading={isLoading}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
               >
-                Enter Campus Marketplace
+                Login
               </Button>
             </div>
           </form>
 
           {/* Quick Demo Switcher */}
-          <div className="mt-6 pt-5 border-t border-slate-100">
-            <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 text-center mb-3">
+          <div className="mt-6 pt-5 border-t border-[#DDE3DE]">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-[#6B7570] text-center mb-3">
               Fast Demo Accounts (IE209 Evaluation)
             </p>
-            <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="grid grid-cols-2 gap-2.5 text-xs">
               <button
                 type="button"
                 onClick={() => handleQuickDemoUser('ravi.23mcse01@uohyd.ac.in', 'Ravi Teja')}
-                className="p-3 border border-slate-200 rounded-xl hover:border-brand-500 hover:bg-brand-50/50 text-left transition-all active:scale-98 cursor-pointer group"
+                className="p-3 border border-[#DDE3DE] rounded-xl hover:border-[#1F5240] hover:bg-[#E4ECE5]/40 text-left transition-all active:scale-98 cursor-pointer group shadow-2xs bg-white"
               >
-                <div className="font-bold text-slate-900 group-hover:text-brand-600">Ravi Teja</div>
-                <div className="text-[10px] text-slate-500 truncate mt-0.5">M.Tech CS &bull; ⏱ 2 credits</div>
+                <div className="font-bold text-[#1E2A24] group-hover:text-[#1F5240]">Ravi Teja</div>
+                <div className="text-[10px] text-[#6B7570] truncate mt-0.5">M.Tech CS &bull; ⏱ 2 credits</div>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickDemoUser('sneha.des@uohyd.ac.in', 'Sneha Rao')}
-                className="p-3 border border-slate-200 rounded-xl hover:border-brand-500 hover:bg-brand-50/50 text-left transition-all active:scale-98 cursor-pointer group"
+                className="p-3 border border-[#DDE3DE] rounded-xl hover:border-[#1F5240] hover:bg-[#E4ECE5]/40 text-left transition-all active:scale-98 cursor-pointer group shadow-2xs bg-white"
               >
-                <div className="font-bold text-slate-900 group-hover:text-brand-600">Sneha Rao</div>
-                <div className="text-[10px] text-slate-500 truncate mt-0.5">Design &bull; ⏱ 3 credits</div>
+                <div className="font-bold text-[#1E2A24] group-hover:text-[#1F5240]">Sneha Rao</div>
+                <div className="text-[10px] text-[#6B7570] truncate mt-0.5">Design &bull; ⏱ 3 credits</div>
               </button>
             </div>
           </div>
